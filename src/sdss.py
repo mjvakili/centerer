@@ -126,7 +126,7 @@ def sdss_centroid(data , f , sigma):
   """
   size = data.shape[0]
   zero = size/2
-  kernel = profile.makeGaussian(17 , f , 0 , np.array([zero,zero]))
+  kernel = profile.makeGaussian(size , f , 0 , np.array([zero,zero]))
   
   smoothed_image = signal.convolve2d(data , kernel , mode = "same")
   
