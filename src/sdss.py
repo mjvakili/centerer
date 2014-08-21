@@ -95,7 +95,7 @@ def lupton_2d(I , f , s):
 def BP(data , f):
 
   size = data.shape[0]
-  zero = size/2
+  zero = size/2 + .5
   kernel = profile.makeGaussian(17 , f , 0 , np.array([zero,zero]))
   smoothed_image = signal.convolve2d(data , kernel , mode = "same")
   data = smoothed_image/np.sum(smoothed_image)
@@ -125,7 +125,7 @@ def sdss_centroid(data , f , sigma):
 
   """
   size = data.shape[0]
-  zero = size/2
+  zero = size/2 + .5
   kernel = profile.makeGaussian(size , f , 0 , np.array([zero,zero]))
   
   smoothed_image = signal.convolve2d(data , kernel , mode = "same")
