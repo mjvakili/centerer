@@ -6,12 +6,13 @@
 Goal: This code tests centroiding of a set of 
 normalized moffat profiles with a given FWHM and beta
 in a given range of signal-to-noise-ratios,
-using three different models:
+using four different models:
 SDSS method, Polynomial method, 
-and PSF fitting method.
+and Round PSF fitting method, and 
+Elliptical PSF fitting.
 
-Dependencies: numpy, profile.py,
-              poly.py, sdss.py
+Dependencies: numpy
+              
 Author: Mohammadjavad Vakili (July and August 2014)
 """
 
