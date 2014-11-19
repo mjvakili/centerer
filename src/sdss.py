@@ -1,7 +1,10 @@
 import numpy as np
+from scipy.optimize import fsolve
+import profile
 from scipy import signal
 
-import profile
+
+
 
 def lupton(x , f , sigma):
   
@@ -60,12 +63,12 @@ def lupton_2d(I , f , s):
 
   """
   
-  mx_plus , mx_zero , mx_minus = lupton(I[:,2] ,f,s)[0] , lupton(I[:,1],f,s)[0] , lupton(I[:,0],f,s)[0]
-  varx_plus , varx_zero , varx_minus = lupton(I[:,2],f,s)[1] , lupton(I[:,1],f,s)[1] , lupton(I[:,0],f,s)[1]
+  mx_plus , mx_zero , mx_minus = lupton(I[2,:] ,f,s)[0] , lupton(I[1,:],f,s)[0] , lupton(I[0,:],f,s)[0]
+  varx_plus , varx_zero , varx_minus = lupton(I[2,:],f,s)[1] , lupton(I[1,:],f,s)[1] , lupton(I[0,:],f,s)[1]
   yerr_x = np.array([varx_plus , varx_zero , varx_minus])
 
-  my_plus , my_zero , my_minus = lupton(I[2,:],f,s)[0] , lupton(I[1,:],f,s)[0] , lupton(I[0,:],f,s)[0]
-  vary_plus , vary_zero , vary_minus = lupton(I[2,:],f,s)[1] , lupton(I[1,:],f,s)[1] , lupton(I[0,:],f,s)[1]  
+  my_plus , my_zero , my_minus = lupton(I[:,2],f,s)[0] , lupton(I[:,1],f,s)[0] , lupton(I[:,0],f,s)[0]
+  vary_plus , vary_zero , vary_minus = lupton(I[:,2],f,s)[1] , lupton(I[:,1],f,s)[1] , lupton(I[:,0],f,s)[1]  
   yerr_y = np.array([vary_plus , vary_zero , vary_minus])
 
   mx_x , mx_y =  np.array([1. , 0. , -1.]) , np.array([mx_plus , mx_zero , mx_minus])
@@ -92,23 +95,29 @@ def lupton_2d(I , f , s):
   return xs , ys
 
 
-def BP(data , f):
 
+def BP(data , f):
+  """
+     Inputs: data
+     f = FWHM of the smoothing kernel
+  """
   size = data.shape[0]
   zero = size/2 + .5
   kernel = profile.makeGaussian(17 , f , 0 , np.array([zero,zero]))
   smoothed_image = signal.convolve2d(data , kernel , mode = "same")
-  data = smoothed_image/np.sum(smoothed_image)
+  data = smoothed_image#/np.sum(smoothed_image)
   
   bp = np.where((data==data.max())) #brightest pixel in the smoothed image
   cen = [bp[0][0] , bp[1][0]]
 
-  kk = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
- 
+  #kk = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
+  
+  """
   if (kk.shape!= 3):
      cen = [size/2 , size/2]
      kk = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
      cen = [size/2 , size/2]
+  """
   return cen
 
 
@@ -126,25 +135,24 @@ def sdss_centroid(data , f , sigma):
   """
   size = data.shape[0]
   zero = size/2 + .5
-  kernel = profile.makeGaussian(size , f , 0 , np.array([zero,zero]))
+  kernel = profile.makeGaussian(7 , f , 0 , np.array([3.5,3.5]))
   
   smoothed_image = signal.convolve2d(data , kernel , mode = "same")
   
-  image = smoothed_image/np.sum(smoothed_image)
+  image = smoothed_image#/np.sum(smoothed_image)
   
   bp = np.where((image==image.max())) #brightest pixel in the smoothed image
   cen = [bp[0][0] , bp[1][0]]
 
-  kk = image[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
- 
-  if (kk.shape!= 3):
-     cen = [size/2 , size/2]
-     kk = image[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
+  kk = image[cen[0]-1:cen[0]+2 , cen[1]-1:cen[1]+2]
+  
+  if (kk.shape!= (3,3)):
+     xs = np.array([0.,0.])
+  else:
+     xs = lupton_2d(kk , f , sigma)
      
-  xs = lupton_2d(kk , f , sigma)
-     
-  return xs
+  center_t = np.array(xs) + np.array([.5,.5]) + cen
+  return np.array([center_t[1] , center_t[0]])
 
 if __name__ == "__main__":
     print 'sdss main'
-
