@@ -40,18 +40,13 @@ def regression( A , obs):
 
 def BP(data):
 
-  size = data.shape[0]
-  zero = size/2
+  #size = data.shape[0]
+  #zero = size/2
   
   bp = np.where((data==data.max())) #brightest pixel in the smoothed image
   cen = [bp[0][0] , bp[1][0]]
 
-  k = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
- 
-  if (k.shape!= 3):
-     cen = [size/2 , size/2]
-     k = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
-     cen = [size/2 , size/2]
+  #k = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
   return cen
    
 
@@ -61,21 +56,22 @@ def poly_centroid(data , design):
   zero = size/2
   
   bp = np.where((data==data.max())) #brightest pixel in the smoothed image
-  cen = [bp[0][0] , bp[1][0]]
-
-  k = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
- 
-  if (k.shape!= 3):
-     cen = [size/2 , size/2]
-     k = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
-     
-  X = regression(design , k.flatten())
-  a , b , c, d , e , f = X
-  matrix = np.array([[2.*d , e],[e , 2.*f]])
-  vector = np.array([-1.*b , -1.*c])
-  center = np.dot(np.linalg.inv(matrix) , vector)
-     
-  return center
+  cen = [bp[1][0] , bp[0][0]]
+  #print cen
+  k = data[cen[1]-1:cen[1]+2,cen[0]-1:cen[0]+2]
+  #print k.shape
+  
+  
+  if (k.shape!= (3,3)):
+     center = np.array([0. , 0.])
+  else:   
+     X = regression(design , k.flatten())
+     a , b , c, d , e , f = X
+     matrix = np.array([[2.*d , e],[e , 2.*f]])
+     vector = np.array([-1.*b , -1.*c])
+     center = np.dot(np.linalg.inv(matrix) , vector)
+  #print center   
+  return np.array(cen) + np.array([.5,.5]) + center
 
 if __name__ == "__main__":
     print 'poly main'
