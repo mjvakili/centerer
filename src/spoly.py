@@ -100,11 +100,12 @@ def spoly_centroid(data , A , f , sigma):
      X = regression(A , C , k.flatten())
   
      a , b , c, d , e , f = X
-     matrix = np.array([[2.*d , e],[e , 2.*f]]) + sigma/9.
+     matrix = np.array([[2.*d , e],[e , 2.*f]])
+     #matrix = matrix + (np.max(np.abs(matrix))/10.)*np.array([[1,0],[0,1]])
+     
      vector = np.array([-1.*b , -1.*c])
      center = np.dot(np.linalg.inv(matrix) , vector)
      #center = (c*e - b*f)/(2.*d*f - 2.*e**2.) , (b*e - c*d)/(2.*d*f - 2.*e**2.)   
   return np.array(cen) + np.array([.5,.5]) + center
 
 if __name__ == "__main__":
-    print 'spoly main'
