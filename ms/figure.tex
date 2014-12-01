@@ -32,31 +32,30 @@ citecolor=darkblue }
 
 \begin{abstract}
 
-We present a 3$\times$3 method for estimating the centroid of stars in astronomical images. After simulating a large number of stars in a wide range of scales, in signal-to-noise-ratio, full width at half maxima, and ellipticity, we compare the results of our model to those obtained from the centroiding method implemented in
-SDSS photometric pipeline, as well as $\chi^{2}$ PSF fitting. Comparison of the median centroid bias, binned on signal-to-noise-ratio, resulting from the proposed technique to the Cramer-Rao lower bound on the variance of centroid estimates, suggests that, the 3$\times$3 polynomial trick, once modified by smoothing the image with a Gaussian kernel, is able to deliver unbiased estimates of centroid at a wide range of values in the parameter space. Furthermore, we show that at low signal-to-noise-ratios, the unmodified polynomial method gives rise bias on centroid estimate comparable to the Cramer-Rao lower bound. 
+We present a 3$\times$3 method for estimating the centroid of stars in astronomical images. After simulating a large number of stars in a wide range of scales, in signal-to-noise-ratio, and full width at half maxima, we compare the results of our method to those obtained from the fourth order approximation method implemented in SDSS photometric pipeline, as well as finding the centroid by fitting the exact PSF model used to generate the simulated data. Comparison of the median squared error in centroid measurement, resulting from the proposed techniques to the Cramer-Rao lower bound of centroid estimates, suggests that, the 3$\times$3 polynomial trick, once modified by smoothing the image with a Gaussian kernel, is able to deliver sufficiently accurate estimates of centroid over a wide range of values in the parameter space.
 
 \end{abstract}
 
 \section{Introduction}
 
-A common practice in astronomy is taking imaging data, and then finding the coordinates of various light sources across the sky. Having access to unbiased estimate of the center of point sources, convolved with telescope point spread function (and atmospheric PSF in case of ground based telescopes) and pixel response function, is crucial in further steps of astronomical image processing. For instance, proper measurement of the shape of galaxies requires interpolating the PSF from the position of sparsely located stars across the image to the position of galaxies. The accuracy of the PSF estimation therefore, depends on how accurately we know the centroid of stars.
+A common practice in astronomy is taking imaging data, and then finding the coordinates of various light sources across the sky. Finding unbiased estimate of the center of point sources, convolved with telescope point spread function (and atmospheric PSF in case of ground based telescopes) and pixel response function, is crucial to further steps of astronomical image processing. For instance, proper measurement of the shape of galaxies requires interpolating the PSF from the position of sparsely located stars across the image to the position of galaxies. The accuracy of the PSF estimation therefore, depends on how accurately we know the centroid of stars.
 
 Ideally, we want a centroiding procedure that provides measurements as accurate as possible, without putting a huge computational burden on the photometric pipeline. Reducing the computational cost becomes even more important in large surveys, where we want to estimate the centroid of thousands of point sources detected on the focal plane. 
 
-Reaching the optimal precision however, is limited by the presence of noise; both sky noise and CCD readout noise. Variance of the centroid estimate, will always have a theoretically set lower bound, known as the Cramer-Rao lower bound (hereafter denoted by CRLB) which has an inverse relation with the signal-to-noise-ratio. Thus, of particular interest is devising a fast method that returns less biased estimate of centroids especially in a realistic range of signal-to-noise ratios.       
+Reaching the optimal measurement of the centroid of stars however, is limited by the lack of knowledge about the exact shape of PSF, and also presence of noise; both sky noise and CCD readout noise. Variance of the centroid estimate, will always have a theoretically set lower bound, known as the Cramer-Rao lower bound (hereafter denoted by CRLB) which has an inverse relation with the signal-to-noise-ratio. Thus, of particular interest is devising a fast method that returns less biased estimate of centroids in a realistic range of signal-to-noise ratios.       
 
 To date, a number of softwares have been designed for the purpose of extracting astronomical sources and making catalogs. One of these softwares is SExtractor \citep{sex}, whose centroiding method involves first, finding the zeroth moment of the object as a first order estimate, and then iteratively correcting the centroid by computing the zeroth order moment of the object weighted by a Gaussian window function, until the correction falls below a particular threshold value. The width of the Gaussian window function is set by the object's half light radius.
 
 Another examples are DAOPHOT \citep{daophot} and DOPHOT \citep{dophot} which both assume analytic models for the stellar PSF profiles with centroid coordinates being free parameters of these models. DAOPHOT (DoPHOT) finds the centroid by fitting a Gaussian (power law) PSF to the light profile of stars.
 
-In this paper, we propose to find the centroid of stars by fitting a second order polynomial to the $3\times3$ pixels around the brightest pixel of stars. We focus on studying the accuracy of this model by comparing the centroid measurement errors with the ones obtained from the method used in SDSS. In order to do so, we apply these methods to a large number of simulated stars with different noise and size realizations.
+In this paper, we propose to find the centroid of stars by smoothing the image of stars by a Gaussian kernel, and fitting a second order polynomial to the $3\times3$ pixels around the brightest pixel of smoothed image. We focus on studying the accuracy of this model by comparing the centroid measurement errors with the ones obtained from the approximate method used in SDSS. In order to do so, we apply these methods to a large number of simulated stars with different noise and size realizations.
 
 This paper is structured as follows. In section \ref{sec:model}, we give a brief overview of the methods used in our investigation. In section \ref{sec:data}, we discuss the simulated data. In section \ref{sec:results}, we compare the results of our centroid measurement with those of SDSS method, once for a fixed set of full width at half maxima, and once for a set of fixed signal-to-noise-ratios. Finally, we discuss and conclude in \ref{sec:discussion}.               
 
 \section{Model}\label{sec:model}
 
 In order to find the centroid of a star, we fit a simple 2d polynomial $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ to the $3\times3$ patch centered on the brightest pixel of the
-image. We apply this method to star images in the sky-dominated regime. In this regime, the covariance matrix of pixel uncertianties is given by $\sigma^{2}\mathbf{I}$, where $\sigma^{2}$ is variance of the uncorrelated Gaussian noise, and $\mathbf{I}$ is a 9$\times$9 identity matrix. Upon constructing a universal 9$\times$6 design matrix
+image. We apply this method to star images in the sky-dominated regime. In this regime, the covariance matrix of pixel uncertianties is simply given by $\sigma^{2}\mathbf{I}$, where $\sigma^{2}$ is variance of the uncorrelated Gaussian noise, and $\mathbf{I}$ is a 9$\times$9 identity matrix. Upon constructing a universal 9$\times$6 design matrix
 
 \begin{equation}
     \mathbf{A} = 
@@ -68,15 +67,12 @@ image. We apply this method to star images in the sky-dominated regime. In this 
         1 & x_{9} & y_{9} & x_{9}^{2} & x_{9}y_{9} & y_{9}^{2}
     \end{bmatrix},
 \end{equation}
-
-
-
 the free parameters of the model $\{a,b,c,d,e,f\}$ (hereafter compactly denoted by $\mathbf{X}$) can be determined by 
 \beq
 \mathbf{X} = (\mathbf{A}^{T}\mathbf{A})^{-1}\mathbf{A}^{T}\mathbf{Z},
 \label{linearfit}
 \eeq
-where $\mathbf{Z}$ is given by $(I_{1},...,I_{9})^{T}$, with $I_{i}$, denotes the brightness of the $i-$th pixel. Afterwards, the best fit parameters can be used to compute the centroid coordinate
+where $\mathbf{Z}$ is given by $(I_{1},...,I_{9})^{T}$, with $I_{i}$, being the brightness of the $i-$th pixel of the 3$\times$3 patch. Afterwards, the best fit parameters can be used to compute the centroid coordinate
 
 \beq
   \begin{bmatrix}
@@ -94,21 +90,21 @@ where $\mathbf{Z}$ is given by $(I_{1},...,I_{9})^{T}$, with $I_{i}$, denotes th
 \label{center}
 \eeq
 
-Now, we modify the polynomial method by smoothing the image of the star with a Gaussian kernel whose FWHM is equal to that of PSF at that location of image. Then we apply the same polynomial method to the 3$\times$3 patch around the brightest pixel of the smoothed image. The important difference between the previous approach and the modified method is that, there are non-zero covariances among the uncertainties of brightness of the different pixels of the smoothed image. That is, the covariance matrix $\mathbf{C}$ is non-diagonal. It can be shown that after smoothing, elements of the covariance matrix are given by
-
+Now, we modify the simple polynomial method explained above, by smoothing the image of the star with a Gaussian kernel with a given width (2 pixels in this study). Then we apply the same polynomial method to the 3$\times$3 patch around the brightest pixel of the smoothed image. The important difference between the previous approach and the modified method is that, there are non-zero covariances among the uncertainties of the brightness of different pixels of the smoothed image. That is, the covariance matrix $\mathbf{C}$ is non-diagonal. It can be shown that after smoothing, elements of the covariance matrix are given by
 \begin{eqnarray}
 \mathbf{C}_{ij} &=& \frac{\sigma^{2}}{4\pi w^{2}} \exp(-\frac{r_{ij}^{2}}{4\pi w^{2}}),\\
 r_{ij}^{2} &=& (x_{i} - x_{j})^{2} + (y_{i} - y_{j})^{2},
+\label{nondiagonal}
 \end{eqnarray}
-where $w$ is the FWHM of star, and $x_{i}$ , $y_{i}$ are the $x$, and $y$ coordinates of the $i$-th pixel respectively. In the presence of the non-diagonal covariance matrix $\mathbf{C}$, equation (\ref{linearfit}) needs to be modified in the following way
+where $w$ is width of the kernel, and $x_{i}$ , $y_{i}$ are the $x$, and $y$ coordinates of the $i$-th pixel respectively. In the presence of the non-diagonal covariance matrix $\mathbf{C}$, equation (\ref{linearfit}) needs to be modified in the following way
 \beq
 \mathbf{X} = [\mathbf{A}^{T}\mathbf{C}^{-1}\mathbf{A}]^{-1}[\mathbf{A}^{T}\mathbf{C}^{-1}\mathbf{Z}].
 \label{linearfit2}
 \eeq
 
-Therefore, for a given star and its corresponding smoothing kernel, the outcome of equation (\ref{linearfit2}) can be plugged into equation (\ref{center}) to find the centroid estimate of the star. Hereafter, we call this method the modified polynomial method.
+Therefore, for a given star and a smoothing kernel, the outcome of equation (\ref{linearfit2}) can be plugged into equation (\ref{center}) to find the centroid estimate of the star. Hereafter, we call this method the modified polynomial method.
  
-Now, let us give a brief overview of centroiding method implemented in SDSS photometric pipeline \citep{sdss}: Consider any row or column of the 3$\times$3 patch around the brightest pixel of the smooth image and let us denote the brightness of these three pixels by $\{I_{-},I_{0},I_{+}\}$. The fundamental assumption behind the model is that these brightness values are in fact the function $P(x) = Q\exp((x-x_{c})^{2}/2\beta^{2})$ evaluated at $x=-1,0,+1$; with $x_{c}$ being the position of centroid. Knowing the value of $P$ at $\{-1,0,1\}$, expanding $P(x)$ up to fourth order in $x$ leads to
+Now, let us give a brief overview of centroiding method implemented in SDSS photometric pipeline \citep{sdss}: Consider any row or column of the 3$\times$3 patch around the brightest pixel of the smooth image and let us denote the brightness of these three pixels by $\{I_{-},I_{0},I_{+}\}$. The fundamental assumption behind the technique is that these brightness values can be approximated by the function $P(x) = Q\exp((x-x_{c})^{2}/2\beta^{2})$ evaluated at $x=-1,0,+1$; with $x_{c}$ being the position of centroid. Knowing the value of $P$ at $\{-1,0,1\}$, expanding $P(x)$ up to fourth order in $x$ leads to
 \beq
 x = \frac{s}{t}(1+k\frac{t}{4Q}(1-(s/t)^{2})),
 \eeq
@@ -121,114 +117,133 @@ Q &=& I_{0} +s^{2}/2t.
 \label{def}
 \end{eqnarray}
 
-If we apply this method to every column and row of the 3$\times$3 patch around the brightest pixel of the smoothed image, we will find three local maxima for three rows $\{(x_{-},-1)$, $(x_{0},0)$, $(x_{+},1)\}$, and three local maxima for three columns $\{(-1,y_{-})$, $(0,y_{0})$, $(1,y_{+})\}$. It is important to note that, since the image has been smoothed, the covariance matrix between different pixels is not zero. Therefore, there is an uncertianty associated with any of these local maxima. The centroid is then estimated by finding the intersection of a line fitted to three maxima corresponding to rows, and another curve fitted to three maxima corresponding to columns. 
-
-Figures [\ref{ex}] demonstrates the performances of the modified polynomial, and SDSS method in centroiding the simulated stars with known true centroids.
-
-\section{Simulated data}\label{sec:data}
+If we apply this method to every column and row of the 3$\times$3 patch around the brightest pixel of the smoothed image, we will find three local maxima for three rows $\{(x_{-},-1)$, $(x_{0},0)$, $(x_{+},1)\}$, and three local maxima for three columns $\{(-1,y_{-})$, $(0,y_{0})$, $(1,y_{+})\}$. It is important to note that, since the image has been smoothed, the covariance matrix between different pixels is not zero. Therefore, there is an uncertianty associated with any of these local maxima. The centroid is then estimated by finding the intersection of two curves, one fitted to three maxima corresponding to rows, and the other fitted to three maxima corresponding to columns.
+\section{Simulations and Tests}\label{sec:data}
 
 In order to test the accuracy of the two models and compare them against each other, we need to simulate a large set of stars for which we know the exact position of centroids. Furthermore, we uniformly draw the centroids within sub-pixel regions. 
 
-We use the Moffat profile \citep{moffat} for our simulations. Moffat profile is an analytic model for stellar PSFs which has broader wings than a simple Gaussian model. The surface brightness of the Moffat profile is given by
+We use the Moffat profile \citep{moffat} for our simulations. Moffat profile is an analytic model for stellar PSFs. It has broader wings than a simple Gaussian model. The surface brightness of the Moffat profile is given by
 \beq
-P(r) = \frac{F(\beta -1)}{\pi \alpha^{2}}[1+(r/\alpha)^{2}]^{-\beta},
+I(r) = \frac{F(\beta -1)}{\pi \alpha^{2}}[1+(r/\alpha)^{2}]^{-\beta},
 \label{mof}
 \eeq
-where $F$ is the total flux, $\beta$ is a dimensionless paramter, and $\alpha$ is the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$) being $2\alpha\sqrt{2^{1/\beta}-1}$. The radial light profile of the stars generated in our simulations are shown in Figure[\ref{moffat}].
+where $F$ is the total flux, $\beta$ is a dimensionless paramter, and $\alpha$ is the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$) being $2\alpha\sqrt{2^{1/\beta}-1}$. 
+We want to investigate the performance of the two models introduced in section \ref{sec:model} for different background noise levels, and also different values of $\gamma$. For further simplicity, we set the flux of all stars in our simulations to unity. Per pixel uncertainties are assumed to be uncorrelated Gaussian, and we only study the sky dominated regime.
 
-We want to investigate the performance of the two models introduced in section \ref{sec:model} for different background noise levels, and also different values of $\gamma$. For further simplicity, we set the flux of all stars to one. Per pixel uncertainties are assumed to be uncorrelated Gaussian (resulting in a diagonal covariance matrix), and we only study the sky dominated regime.
+Moreover, it is more convenient to work with the signal-to-noise ratio (hereafter denoted by SNR) instead of the variance of the Gaussian noise. This is due to the fact that at the same noise level, simulated stars with different values of $\gamma$ have different SNRs. 
 
-Moreover, it is more useful to work with the signal-to-noise ratio instead of the variance of the Gaussian noise. This is due to the fact that at the same noise level, simulated stars with different values of $\gamma$ have different signal-to-noise-ratios. 
-
-First, let us find an analytic expression for $S/N$. We define $S/N$ as the ratio of the mean and variance of the distribution which the flux estimator is drawn from. Assume that the total flux from the point source is $f$, and that the PSF at the $i$-th pixel is given by $P_{i}$. Therefore the brightness of the $i$-th pixel is drawn from a Gaussian distribution $p(I_{i}) = \mathcal{N}(fP_{i},\sigma^{2})$. 
+First, let us find an analytic expression for SNR. We define SNR as the ratio of the mean and variance of the distribution which the flux estimator is drawn from. Assume that the total flux from the point source is $f$, and that the PSF at the $i$-th pixel is given by $P_{i}$. Therefore the brightness of the $i$-th pixel is drawn from a Gaussian distribution $p(I_{i}) = \mathcal{N}(fP_{i},\sigma^{2})$. 
 
 The optimal estimator of flux (an estimator which saturates Cramer-Rao bound), is the weighted average $\tilde{f}=\sum_{i}I_{i}P_{i}$. Knowing the distribution of $I_{i}$, it can be shown that 
 \beq
 p(\tilde{f}) = \mathcal{N}(f , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
 \eeq  
-which leads to
+which leads us to
 \beq
 \begin{array}{l}
-S/N $=$ \frac{\sqrt{\sum_{i} P_{i}^{2}}}{\sigma}.
+\text{SNR} $=$ \frac{\sqrt{\sum_{i} P_{i}^{2}}}{\sigma}.
 \end{array}
 \label{snr}
 \eeq
 
-Note that (\ref{snr}) is valid in the limit of sky-dominated star images, and that is the limit we are interested in. In the case of our simulations the expression (\ref{snr}) can be analytically expressed in terms of $\sigma$, $\gamma$, and also $\beta$. We fix $\beta$ at the fiducial value of 2.5. In this case we have
+Note that (\ref{snr}) is valid in the limit of sky-dominated images, and that is the limit we are interested in. In the case of our simulations, the expression (\ref{snr}) can be analytically expressed in terms of $\sigma$, $\gamma$, and also $\beta$. We fix $\beta$ at the fiducial value of 2.5. In this case we have
 \beq
-S/N = \frac{0.478}{\sigma \gamma}.
+\text{SNR} = \frac{0.478}{\sigma \gamma}.
 \label{snr2}
 \eeq
 
-Equation (\ref{snr2}) implies that for stars with the same flux $f$ and background noise level $\sigma$, those with bigger size have lower $S/N$ and therefore, we expect to obtain more biased estimates for larger $\gamma$. 
+Equation (\ref{snr2}) implies that for stars with the same flux $f$ and background noise level $\sigma$, those with bigger effective size have lower SNR.
+In this work, we study the relation between error in centroid measurement and $\gamma$ at fixed SNR, and vice versa. In the first experiment, we generate 100000 Moffat profiles centered randomly in the sub-pixel region inside the central pixel of a 17$\times$17 image, at four different full width at half maxima of 2, 2.8, 4, and 5.6 pixels with SNR ranging from 5 to 150. In the second experiment, we generate the same number of Moffat profiles with $\gamma$ ranging from 2 pixels to 6 pixels, with four different SNR values of 5, 50, 100, 150.
 
-In this work, we study the relation between bias in centroid measurement and $\gamma$ at fixed $S/N$ and vice versa. In the first experiment, we generate Moffat profiles centered randomly in the sub-pixel region inside the central pixel of a 17$\times$17 image, at four different full width at half maxima of 2, 2.8, 4, and 5.6 pixels with signal-to-noise ratio ranging from 10 to 150. In the second experiment, we generate Moffat profiles with $\gamma$ ranging from 2 to 6, with four different signal-to-noise-ratios of 10, 50, 100, 150.
+In addition to the centroiding methods discussed in the previous sections, we compute the error from fitting the PSF model with the exact $\gamma$. That is, we find the best estimates of flux and centroid by optimizing the $\chi^{2}$. 
 
-In addition to the centroiding methods discussed in the previous sections, we compute the bias in centroid measurement from, $(i)$ fitting the exact analytic PSF model and $(ii)$ fitting a round PSF to the data by minimizing $\chi^{2}$. In both experiments, we compare the bias with the quantity
+In order to test the accuracy of each model, we need to compare the mean squared error to the Cramer-Rao lower bound (hereafter CRLB). That is, after finding the centroid error for each model, we compute the mean in bins of $S/N$ (bins of $\gamma$ in the second experiment). The closer the mean bias is to the CRLB, the more accurate the centroid estimate is.
 
+In practice however, instead of mean squared error, we work with the median squared error. The reason is that, at the faint end of our simulations (SNR $\leq$ 10), the unmodified polynomial method leads to some catastrophic failures which could skew the mean squared centroid error of the sample. Thus, we use median squared error as a less biased representative of the performance of different centroiding techniques. 
+ 
+In statistics, CRLB sets a lower bound for the variance of the point estimator of a variable. Let us assume that the data is generated from the analytic model $f(\mathbf{x}, \{\theta\})$, where the vector $\mathbf{x}$ denotes coordinate, and $\{\theta\}$ represents parameters of the model. CRLB of the  estimator of the parameter $\theta_{i}$ can be computed from the inverse of the Fisher information information matrix  
 \beq
-\rho := \frac{\gamma}{SNR}
+\text{CRLB}[\hat{\theta}_{i}] = (F^{-1})_{ii}, 
+\label{crlb}
 \eeq
-
-In order to do so, after computing the bias $\Delta x = \sqrt{(x_{t}-x_{c})^2 + (y_{t}-y_{c})^2}$ for each model, we compute the median in bins of $S/N$. The closer the median bias is to $\rho$, the less biased the centroid estimate is. This quantity is, in fact, the Cramer-Rao lower bound (hereafter CRLB). In statistics, CRLB sets a lower bound for the point estimate of a variable. This lower bound can be analytically calculayed from the log-likelihood function 
-
+where the elements of the Fisher matrix can be computed according to
 \beq
-var(\hat{\theta}) \geq \langle (\frac{\partial \log \mathcal{L}}{\partial \theta})^{2}\rangle^{-1},
+F_{ij} = \left \langle -\frac{\partial^{2} \ln \mathcal{L}}{\partial \theta_{i}\partial \theta_{j}} \right \rangle,   
+\label{fisher}
 \eeq
-
-where $\theta$ compactly denotes the centroid coordinate, and the dependence of likelihood on centroid $\theta$ comes through (\ref{mof}). Taking the derivative of the log-likelihood w.r.t the centroid coordiantes, yields
-
+where $\ln \mathcal{L}$ is the log-likelihood function (or Log probability density function of the observations) and is given by $-\chi^{2}/2$: 
 \beq
-\sum_{a=1}^{2} \langle \delta x_{a}^{2} \rangle = \frac{(2\beta + 1)\pi \gamma \sigma}{4 \beta (\beta-1)^{2}(2^{1/\beta}-1)^{1.5}},
+\chi^{2} = \sigma^{-2}\sum_{\mathbf{p}}\big [ f(\mathbf{x}_{\mathbf{p}},\{\theta_{t}\})+ n(\mathbf{x}_\mathbf{p}) - f(\mathbf{x}_{\mathbf{p}},\{\theta\}) \big ]^{2},
+\label{lik}
 \eeq
-
-where, in the case of $\beta = 2.5$, is given by $0.4\gamma^{2}\sigma$ which is approximately equal to $\rho$.
-
-Theoretically, we expect the median bias resulting from the exact PSF fitting method to be arbitrarily close to CRLB. This is due to the fact that, we find the centroid by fitting the model that used to generate the data. In this case, the log-likelihood can be written as
-
+in which summation is over all pixels, ${\theta_{t}}$ represents the set of parameters used to generate the data, and $n(\mathbf{x}_{\mathbf{p}})$ is uncorrelated Gaussian noise map
+\begin{eqnarray}
+\langle n(\mathbf{x}) \rangle &=& 0, \\
+\langle n(\mathbf{x_{p}})n(\mathbf{x_{p^{\prime}}}) \rangle &=& \sigma^{2}\delta_{\mathbf{p}\mathbf{p}^{\prime}}. 
+\end{eqnarray}
+  
+Combining (\ref{fisher}) and (\ref{lik}) yields
 \beq
-\log \mathcal{L}(\theta) = -\frac{1}{2\sigma^{2}}\sum_{\mathbf{p}}(f(\mathbf{x}_{\mathbf{p}},\theta_{t})+ n(\mathbf{x}_{\mathbf{p}}) - f(\mathbf{x}_{\mathbf{p}},\theta)),
-\label{like}
-\eeq  
-
-where $\theta$ encompasses all the free parameters of the model (with $\theta_{t}$ denoting the true value of the parameters), and $n(\mathbf{x}_{\mathbf{p}})$ is the uncorrelated Gaussian noise map with variance $\sigma^{2}$. Upon expanding (\ref{like}) around the true parameter, and assuming that the the point estimate is close to the true value, it can be shown that the covariance of the parameters $\hat{\theta}$ is given by the inverse Fisher information matrix
-
-\beq
-F_{ij} = \sum_{\mathbf{p}}\frac{\partial f(\mathbf{x}_{\mathbf{p}},\theta_{t})}{\partial \theta_{i}}\frac{\partial f(\mathbf{x}_{\mathbf{p}},\theta_{t})}{\partial \theta_{j}},
+F_{ij} = \sigma^{-2}\sum_{\mathbf{p}}\frac{\partial f(\mathbf_{x}_{\mathbf{p}} , \{\theta_{t}\})}{\partial \theta_{i}}\frac{\partial f(\mathbf_{x}_{\mathbf{p}} , \{\theta_{t}\})}{\partial \theta_{j}}.
 \eeq 
-whose inverse is CRLB.
+
+Assuming the model (\ref{mof}) with $\beta = 2.5$, it can be shown that the inverse of the Fisher matrix is given by
+\beq
+  F^{-1} \simeq 0.6846 \frac{\gamma}{\text{SNR}} 
+  \begin{pmatrix}
+      1 & 0\\
+      0 & 1\\
+  \end{pmatrix}.
+\label{crlbmoffat}
+\eeq
+
+Equation (\ref{crlbmoffat}) implies that for different noise realizations of a moffat PSF at a given SNR and $\gamma$, an optimal centroiding technique delivers estimates whose mean (in this study, median) squared error along each axis is less than or equal to $0.6846 \gamma/\text{SNR}$.
+
+Moreover, it is worth investigating cases where we do not know the exact PSF model, or the model we use to find the centroid is slightly wrong. For instance, let us consider a set of images of stars generated from elliptical Moffat profile
+\beq
+P(r) = \frac{F(\beta - 1)}{\pi a_{1}a_{2}}\Big[1+\Big(\frac{x}{a_{1}}\Big)^{2}+\Big(\frac{y}{a_{2}}\Big)^{2}\Big]^{-\beta},
+\eeq    
+where $a_{1}$ is the major axis, $a_{2}$ is the minor axis, and for simplicity we have assumed that the major axis is along the $x$ axis. In this case, the CRLB associated with  the $x$ component of centroid is given by $0.6846 a_{1}/\text{SNR}$, and the CRLB associated with the $y$ component is given by $0.6846 a_{2}/\text{SNR}$. 
+
+We also generate a set of elliptical Moffat profiles with $e=0.2$, and $a_{1} = 2.8$ pixels, with signal-to-noise ratios ranging from 5 to 150. In addition to the exact (elliptical) PSF model, we use circular PSF model with $\gamma = \sqrt{a_{1}a_{2}}$ to find the centroid of these stars.
+
+ 
+ 
 
 
 \section{Results}\label{sec:results}
 
 \subsection{Experiment 1}
    
-Results of the first experiment, in the case of zero ellipticity, are shown in Figures [\ref{1}], [\ref{4}], [\ref{7}], [\ref{10}], and [\ref{13}]. As we expected, for all methods, median bias becomes larger for fainter stars. This bias is even larger as $\gamma$ gets larger. As it can be seen in figures [\ref{10}] and [\ref{13}], the difference between the median bias and the CRLB (hereafter denoted by $\Delta$) in the case of PSF fitting is quite negligible. Furthermore, it is evident that in the case of 3$\times$3 polynomial method [\ref{1}], there are certain ranges of signal-to-noise ratio (higher than 10), where $\Delta$ is bigger than the one obtained from SDSS trick [\ref{7}]. However, in a wide range of $\gamma$, and $S/N$, the bias from the modified polynomial method [\ref{4}] is comparable to that of SDSS method. 
+Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}], [\ref{3}], [\ref{4}]. As we expected, for all methods, median squared error becomes larger for fainter stars, and for stars with larger $\gamma$. As it can be seen in figure [\ref{1}], centroid estimate obtained from the polynomial method does not saturate the CRLB unless at smaller values of SNR. 
 
-We repeat the same experiment, this time with assigning non-zero ellipticities of 0.1, and 0.2 to the simulated stars. We keep the orientation of all stars fixed. As it can be seen, in figures [\ref{2}],[\ref{3}],[\ref{5}],[\ref{6}],[\ref{8}],[\ref{9}],[\ref{11}],[\ref{12}],[\ref{14}],[\ref{15}], centroid measurements of stars with smaller $\gamma$ give rise to larger bias than the centroid measurements of stars with bigger $\gamma$.
-
+The modified polynomial centroiding however, is able to deliver median squared error arbitrarily close to the CRLB in all ranges of SNR. At $\gamma = 2$ the modified centroiding estimate does not saturates the CRLB, but as $\gamma$ gets larger, centroid estimates of this techniques saturate and eventually, get lower than the CRLB. The median error from the SDSS method shows similar behaviour to that of modified polynomial method. See figures [\ref{2}], [\ref{3}]. And finally, the centroid estimates from the exact fitting the exact PSF model give rise to a median error that is always below the CRLB [\ref{4}].
 
 \subsection{Experiment 2}
 
-Behavior of bias as a function of $\gamma$ for different values of $S/N$, and different ellipticities, is shown in figures [\ref{16}], [\ref{17}], [\ref{18}], [\ref{19}], [\ref{20}], [\ref{21}], [\ref{22}], [\ref{23}], [\ref{24}], [\ref{25}], [\ref{26}], [\ref{27}], [\ref{28}], [\ref{29}], [\ref{30}].  Again, by decreasing noise level of the background sky, $\Delta x$ becomes smaller at all ranges of $\gamma$. Also, in the case of non-zero ellipticities, again, we observe that centroiding stars with smaller $\gamma$ leads to larger bias.  
+Behavior of error as a function of $\gamma$ for different values of SNR, is shown in figures [\ref{5}], [\ref{6}], [\ref{7}], and [\ref{8}]. 
+By decreasing noise level of the background sky, $\Delta x$ becomes smaller at all ranges of $\gamma$. 
 
-Interstingly, at $S/N=10$, the bias from the polynomial method, is fairly comparable to CRLB at all three ellipticities. At higher $S/N$ however, the bias from the polynomial method is significantly larger than CRLB [\ref{16}], [\ref{17}], [\ref{18}]. On the other hand, the bias from the modified polynomial methods (see figures [\ref{19}], [\ref{20}], [\ref{21}]), and SDSS method (see figures [\ref{22}], [\ref{23}], [\ref{24}]), are smaller than that of polynomial method in signal-to-noise-ratios higher than 10, and in a wide range of $\gamma$.
+The polynomial method fails to saturate the CRLB except in simulations with SNR of 5. The modified polynomial method, and the SDSS method result in  median squared error always lower than CRLB, except in simulated stars with small $\gamma$. As we expect, the median error from fitting the exact PSF model always saturates the CRLB.
 
-   
+\subsection{Elliptical PSF}   
 
-   
+In the last experiment, we compare the performances of the modified polynomial method, and SDSS method, with fitting the exact PSF model to the elliptical Moffat profiles, and also with fitting a circular PSF model.
+
+The median error from the modified polynomial and SDSS methods are very close to the CRLB. But only by fitting an approximate (circular) PSF profile, or eventually by fitting an exact PSF model, one can saturate the CRLB. However, it is important to note that centroiding errors of all four methods are extremely close to each other.    
 
 
 \section{Discussion}\label{sec:discussion}
 
-In this work, we proposed a method for centroiding stars based on fitting a low order polynomial to a 3$\times$3 patch of star images. Employing this technique into large scale astronomical surveys can considerably reduce the computational cost of initial astrometry of these surveys. The advantage of this method becomes more pronounced in PSF estimation in which we need to estimate the centroid of stars, and we can compute these estimates with a few number of algebraic operations.
+In this work, we proposed a method for centroiding stars based on fitting a low order polynomial to a 3$\times$3 patch of star images smoothed by a Gaussian kernel. Employing this technique into large scale astronomical surveys can considerably reduce the computational cost of initial astrometry of these surveys. The advantage of this method becomes more pronounced in PSF estimation in which we need to know the centroid of stars accurately, but at the same time, with fewer number of algebraic operations.
 
-This method can be roughly thousand times faster than centroiding through model fitting, and requires fewer operations than the method implemented in SDSS photo pipeline. Moreover, we presented a modified version of the model, in which before applying the polynomial fitting, we smooth the image with a Gaussian kernel. Comparison of the modified method with centroiding method of SDSS photo pipeline suggests that in wide ranges of size and noise level of the background sky, the bias arising from this method is close to the theoretically set CRLB, and comparable to, ans in some cases smaller than, the bias obtained from SDSS method. 
+This method can roughly be thousand times faster than centroiding through model fitting, and requires fewer operations than the method implemented in SDSS photo pipeline. More importantly, it requires no prior knowledge about the shape of the PSF.
 
-However, it is important to note that, without smoothing the image, the bias from the polynomial method can be larger. This can be attributed to the fact that any estimate obtained from application of this method to the smoothed image, tends to make use of more information about the brightness of the pixels out of the 3$\times$3
-patch around the brightest pixel of the original image. 
+Comparison of this technique with the centroiding method based on a fourth-order approximation implemented in SDSS photo pipeline suggests that in wide ranges of size and noise level of the background sky, the error arising from this method is close to the theoretically set CRLB, and comparable to the error obtained from SDSS method. 
 
-In this investigation we narrowed our focus on a set of data simulated from a very specific model. Although there are various cases where Moffat profiles provide reasonable representation of point spread function, these models are not generic enough to let us reach a more general conclusion. Another important, and untapped, area of study would be devising a model that infers the centroid of stars and point spread function (in its full extent, not at the catalog level) across an astronomical image simultaneously. 
+Although having a reasonable PSF model should always deliver better centroid estimates, one can achieve sensibly accurate results by employing this simple 3$\times$3 method without making any assumption about the PSF model.
+
+In this investigation we narrowed our focus on a set of data simulated from a very specific model. Although there are various cases where Moffat profiles provide reasonable representation of point spread function, these models are not generic enough to let us reach a more general conclusion. Another important, and untapped, area of study would be devising a model that infers the centroid of stars and point spread function (in its full extent, not at the catalog level) across an astronomical image simultaneously. This is beyond the scope of this study. 
 
 
 
@@ -246,268 +261,67 @@ In this investigation we narrowed our focus on a set of data simulated from a ve
 \clearpage
 
 
-
-
 \begin{figure}[!htb]
-\minipage{.5\textwidth}
-  \includegraphics[width=\linewidth]{4025.pdf}
+\minipage{.8\textwidth}
+  \includegraphics[width=\linewidth]{snr_poly.png}
 \endminipage
-\minipage{.5\textwidth}
-  \includegraphics[width=\linewidth]{4050.pdf}
-\endminipage
-
-\minipage{.5\textwidth}
-  \includegraphics[width=\linewidth]{10025.pdf}
-\endminipage
-\minipage{.5\textwidth}
-  \includegraphics[width=\linewidth]{10050.pdf}
-\endminipage
-\caption{Demonstration of the performance of SDSS and modified polynomial method on finding the centroid around the brightest pixel, from top to bottom, and from left to right: for a star image with $S/N=40$ and $\gamma = 2.5$, $S/N=40$ and $\gamma = 5$, $S/N=100$ and $\gamma = 2.5$, and $S/N=100$ and $\gamma = 5$. In each plot, the true centroid, and the centroid estimate from the modified polynomial method are markerd by $*$, $\wedge$ respectively; and the centroid estimate from SDSS trick is given by intersection of the two curves.}\label{ex}
-\end{figure}
-
-
-\begin{figure}[!htb]
-\minipage{1\textwidth}
-  \includegraphics[width=\linewidth]{moffat.png}
-\endminipage
-\caption{The radial light profile of stars used in this study, with FWHM of 2(star), 2.8(circle), 4(pentagon), and 5.6(square) pixels. The parameter $\beta$ is set to $2.5$.}\label{moffat}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{1\textwidth}
-\includegraphics[width=\linewidth]{map-1000-5.png}
-\endminipage
-
-\minipage{1\textwidth}
-\includegraphics[width=\linewidth]{map-100-5.png}
-\endminipage
-\caption{Demonstration of the centroid bias resulting from \emph{left}: the modified polynomial method, and \emph{right}: SDSS method applied to Moffat profiles with $\gamma=5$ pixels, as a function of subpixel position of centroid. Top, and bottom maps are obtained from taking the median bias of different noise realization of a simulated star with signal-to-noise-ratio of 10$^{3}$, and 10$^{2}$ respectively.}\label{map}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{1\textwidth}
-  \includegraphics[width=\linewidth]{map-1000-25.png}
-\endminipage
-
-\minipage{1\textwidth}
-  \includegraphics[width=\linewidth]{map-100-25.png}
-\endminipage
-\caption{Demonstration of the centroid bias resulting from \emph{left}: the modified polynomial method, and \emph{right}: SDSS method applied to Moffat profiles with $\gamma=2.5$ pixels, as a function of subpixel position of centroid. Top, and bottom maps are obtained from taking the median bias of different noise realization of a simulated star with signal-to-noise-ratio of 10$^{3}$, and 10$^{2}$ respectively.}\label{map}
-\end{figure}
-
-\begin{figure}[!htb]
- \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{poly_bias(snr)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the polynomial method and the signal-to-noise ratio of stars with $e=0$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{1}
+\caption{Scatter plots showing the relation between error in centroid measurement from the polynomial method and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{1}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{poly_bias(snr)_e=01.pdf}
+  \includegraphics[width=\linewidth]{snr_spoly.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the polynomial method and the signal-to-noise ratio of stars with $e=0.1$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{2}
+\caption{Scatter plots showing the relation between error in centroid measurement from the modified polynomial method and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{2}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{poly_bias(snr)_e=02.pdf}
+  \includegraphics[width=\linewidth]{snr_sdss.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the polynomial method and the signal-to-noise ratio of stars with $e=0.2$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{3}
+\caption{Scatter plots showing the relation between error in centroid measurement from the SDSS method and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{3}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{smoothpoly_bias(snr)_e=00.pdf}
+  \includegraphics[width=\linewidth]{snr_fitting.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the modified polynomial method and the signal-to-noise ratio of stars with $e=0$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{4}
+\caption{Scatter plots showing the relation between error in centroid measurement from fitting the exact PSF model to the stars and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{4}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{smoothpoly_bias(snr)_e=01.pdf}
+  \includegraphics[width=\linewidth]{fwhm_poly.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the modified polynomial method and the signal-to-noise ratio of stars with $e=0.1$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{5}
+\caption{Scatter plots showing the relation between error in centroid measurement from the polynomial method and FWHM of stars, with SNR  of : 5 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{5}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{smoothpoly_bias(snr)_e=02.pdf}
+  \includegraphics[width=\linewidth]{fwhm_spoly.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the modified polynomial method and the signal-to-noise ratio of stars with $e=0.2$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{6}
-\end{figure}
-
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{sdss_bias(snr)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the SDSS method and the signal-to-noise ratio of stars with $e=0$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{7}
+\caption{Scatter plots showing the relation between error in centroid measurement from the modified polynomial method and FWHM of stars, with SNR  of : 5 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{6}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{sdss_bias(snr)_e=01.pdf}
+  \includegraphics[width=\linewidth]{fwhm_sdss.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the SDSS method and the signal-to-noise ratio of stars with $e=0.1$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{8}
+\caption{Scatter plots showing the relation between error in centroid measurement from the SDSS method and FWHM of stars, with SNR  of : 5 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{7}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{sdss_bias(snr)_e=02.pdf}
+  \includegraphics[width=\linewidth]{fwhm_fitting.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the SDSS method and the signal-to-noise ratio of stars with $e=0.2$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{9}
+\caption{Scatter plots showing the relation between error in centroid measurement from fitting the exact PSF model and FWHM of stars, with SNR  of : 5 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{8}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{roundpsf_bias(snr)_e=00.pdf}
+  \includegraphics[width=\linewidth]{snr_wrongpsf.png}
 \endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting a round PSF to stars, and the signal-to-noise ratio of stars with $e=0$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{10}
+\caption{Scatter plots showing the relation between error in centroid measurement from: the SDSS method (upper left), the modified polynomial method (upper right), fitting circular PSF model (lower left), and  fitting the exact PSF model (lower right) and SNR of stars with major axis of 2.8 pixels and ellipticity of 0.2. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{9}
 \end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{roundpsf_bias(snr)_e=01.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting a round PSF to stars, and the signal-to-noise ratio of stars with $e=0.1$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{11}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{roundpsf_bias(snr)_e=02.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting a round PSF to stars, and the signal-to-noise ratio of stars with $e=0.2$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{12}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{ellipticalpsf_bias(snr)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting an elliptical PSF to stars, and the signal-to-noise ratio of stars with $e=0$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{13}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{ellipticalpsf_bias(snr)_e=01.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting an elliptical PSF to stars, and the signal-to-noise ratio of stars with $e=0.1$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{14}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{ellipticalpsf_bias(snr)_e=02.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting an elliptical PSF to stars, and the signal-to-noise ratio of stars with $e=0.2$, and FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{15}
-\end{figure}
-
-
-\begin{figure}[!htb]
-
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{poly_bias(fwhm)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the polynomial method and FWHM of stars with $e=0$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{16}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{poly_bias(fwhm)_e=01.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the polynomial method and FWHM of stars with $e=0.1$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{17}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{poly_bias(fwhm)_e=02.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the polynomial method and FWHM of stars with $e=0.2$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{18}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{smoothpoly_bias(fwhm)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the modified polynomial method and FWHM of stars with $e=0$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{19}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{smoothpoly_bias(fwhm)_e=01.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the modified polynomial method and FWHM of stars with $e=0.1$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{20}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{smoothpoly_bias(fwhm)_e=02.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the modified polynomial method and FWHM of stars with $e=0.2$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{21}
-\end{figure}
-
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{sdss_bias(fwhm)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the SDSS method and FWHM of stars with $e=0$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{22}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{sdss_bias(fwhm)_e=01.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the SDSS method and FWHM of stars with $e=0.1$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{23}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{sdss_bias(fwhm)_e=02.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from the SDSS method and FWHM of stars with $e=0.2$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{24}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{roundpsf_bias(fwhm)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting a round PSF to stars, and FWHM of stars with $e=0$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{25}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{roundpsf_bias(fwhm)_e=01.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting a round PSF to stars, and FWHM of stars with $e=0.1$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{26}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{roundpsf_bias(fwhm)_e=02.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting a round PSF to stars, and FWHM of stars with $e=0.2$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{27}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{ellipticalpsf_bias(fwhm)_e=00.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting an elliptical PSF to stars, and FWHM of stars with $e=0$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{28}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{ellipticalpsf_bias(fwhm)_e=01.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting an elliptical PSF to stars, and FWHM of stars with $e=0.1$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{29}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{ellipticalpsf_bias(fwhm)_e=02.pdf}
-\endminipage
-\caption{Scatter plots showing the relation between bias in centroid measurement from fitting an elliptical PSF to stars, and FWHM of stars with $e=0.2$, with $S/N$  of : 10 (upper left), 50 (upper right), 100 (lower left), and 150 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green dashed line represents $\rho$.}\label{30}
-\end{figure}
-
 
 \end{document}
