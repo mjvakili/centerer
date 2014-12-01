@@ -88,7 +88,7 @@ def spoly_centroid(data , A , f , sigma):
   
   image = smoothed_image#/np.sum(smoothed_image)
   
-  bp = np.where((image==image.max())) #brightest pixel in the smoothed image
+  bp = np.where(image==image.max()) #brightest pixel in the smoothed image
   cen = [bp[1][0] , bp[0][0]]
 
   k = image[cen[1]-1:cen[1]+2,cen[0]-1:cen[0]+2]
@@ -101,11 +101,12 @@ def spoly_centroid(data , A , f , sigma):
   
      a , b , c, d , e , f = X
      matrix = np.array([[2.*d , e],[e , 2.*f]])
-     #matrix = matrix + (np.max(np.abs(matrix))/10.)*np.array([[1,0],[0,1]])
-     
+     #matrix = matrix + (np.max(np.abs(matrix))/1000.)*np.array([[1,0],[0,1]])
+     matrix = matrix + (sigma/1000.)*np.array([[1,0],[0,1]])
      vector = np.array([-1.*b , -1.*c])
      center = np.dot(np.linalg.inv(matrix) , vector)
      #center = (c*e - b*f)/(2.*d*f - 2.*e**2.) , (b*e - c*d)/(2.*d*f - 2.*e**2.)   
   return np.array(cen) + np.array([.5,.5]) + center
 
 if __name__ == "__main__":
+    print 'spoly main'
