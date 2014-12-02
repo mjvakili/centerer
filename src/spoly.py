@@ -103,7 +103,10 @@ def spoly_centroid(data , A , f , sigma):
      a , b , c, d , e , f = X
      matrix = np.array([[2.*d , e],[e , 2.*f]])
      #matrix = matrix + (np.max(np.abs(matrix))/9.)*np.array([[1,0],[0,1]])
-     matrix = matrix + (sigma/np.sqrt(4.*np.pi*f**2.))*np.array([[1,0],[0,1]])
+     matrix = matrix + (sigma/np.sqrt(4.*np.pi*f**2.))*np.array([[1,0],[0,1]]) #add maximum per pixel variance
+                                                                               #of the smoothed image to the
+                                                                               # diagonal elements of the curvature
+                                                                               #matrix
      vector = np.array([-1.*b , -1.*c])
      center = np.dot(np.linalg.inv(matrix) , vector)
      #center = (c*e - b*f)/(2.*d*f - 2.*e**2.) , (b*e - c*d)/(2.*d*f - 2.*e**2.)   
