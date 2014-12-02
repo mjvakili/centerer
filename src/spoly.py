@@ -33,9 +33,9 @@ def design(degree = 2):
 
 def regression( A , C , obs):
 
-  co = np.linalg.inv(np.dot(A.T , np.linalg.solve(C , A)))
+  co = np.linalg.inv(np.dot(A.T , np.dot(np.linalg.inv(C) , A)))
   
-  X = np.dot(co , np.dot(A.T , np.linalg.solve(C , obs)))
+  X = np.dot(co , np.dot(A.T , np.dot(np.linalg.inv(C) , obs)))
 
   return X
 
@@ -75,14 +75,14 @@ def cov(f , sigma):
       C[i,j] = np.exp(-1.*r2/(4.*f**2.))
    
  
-  return C
+  return (C*sigma**2.)/(4.*np.pi*f**2.)
    
 
 def spoly_centroid(data , A , f , sigma):
 
   size = data.shape[0]
   zero = size/2 + .5
-  kernel = profile.makeGaussian(17, f , 0 , np.array([8.5,8.5]))
+  kernel = profile.makeGaussian(7, f , 0 , np.array([3.5,3.5]))
   
   image = signal.convolve2d(data , kernel , mode = "same")
   
@@ -102,12 +102,12 @@ def spoly_centroid(data , A , f , sigma):
   
      a , b , c, d , e , f = X
      matrix = np.array([[2.*d , e],[e , 2.*f]])
-     #matrix = matrix + (np.max(np.abs(matrix))/10000.)*np.array([[1,0],[0,1]])
-     #matrix = matrix + (sigma/1000.)*np.array([[1,0],[0,1]])
+     #matrix = matrix + (np.max(np.abs(matrix))/9.)*np.array([[1,0],[0,1]])
+     matrix = matrix + (sigma/np.sqrt(4.*np.pi*f**2.))*np.array([[1,0],[0,1]])
      vector = np.array([-1.*b , -1.*c])
      center = np.dot(np.linalg.inv(matrix) , vector)
      #center = (c*e - b*f)/(2.*d*f - 2.*e**2.) , (b*e - c*d)/(2.*d*f - 2.*e**2.)   
-  return np.array(cen) + np.array([.5,.5]) + center , X        #also returning the curvature matrix
+  return np.array(cen) + np.array([.5,.5]) + center , X
 
 if __name__ == "__main__":
     print 'spoly main'
