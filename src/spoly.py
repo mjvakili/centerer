@@ -1,64 +1,19 @@
+from __future__ import division
 import numpy as np
 import profile
 from scipy import signal , linalg
+from scipy.linalg import cho_factor, cho_solve
 
-def design(degree = 2):
-  
-  """This function evaluates the
-     entries of the 9by6 design
-     matrix used in 2nd order
-     polynomial centroiding"""
+x, y = np.meshgrid(range(-1, 2), range(-1, 2), indexing="ij")
+x, y = x.flatten(), y.flatten()
+AT = np.vstack((x*x, y*y, x*y, x, y, np.ones_like(x)))
+
+def cov(f=1.2):
 
   nx = np.array([-1. , 0. , 1.])
   ny = nx[:,np.newaxis]
   npix = 9
-  
-  #brightness = image.flatten()
-  
-  xv , yv =  np.meshgrid(np.array(nx) , np.array(ny))
-  xc , yc =  xv.flatten() , yv.flatten()
-  
-  A = np.zeros((npix , 6))
-  
-  A[:,0] = (xc**0.)*(yc**0.)
-  A[:,1] = (xc**1.)*(yc**0.)
-  A[:,2] = (xc**0.)*(yc**1.)
-  A[:,3] = (xc**2.)*(yc**0.)
-  A[:,4] = (xc**1.)*(yc**1.)    
-  A[:,5] = (xc**0.)*(yc**2.)
- 
-
-  return A
-
-
-def regression( A , C , obs):
-
-  co = np.linalg.inv(np.dot(A.T , np.dot(np.linalg.inv(C) , A)))
-  
-  X = np.dot(co , np.dot(A.T , np.dot(np.linalg.inv(C) , obs)))
-
-  return X
-
-def BP(data , f):
-
-  size = data.shape[0]
-  zero = size/2 + .5
-  kernel = profile.makeGaussian(size , f , 0 , np.array([zero,zero]))
-  smoothed_image = signal.convolve2d(data , kernel , mode = "same")
-  data = smoothed_image#/np.sum(smoothed_image)
-  
-  bp = np.where((data==data.max())) #brightest pixel in the smoothed image
-  cen = [bp[0][0] , bp[1][0]]
-
-  #kk = data[cen[0]-1:cen[0]+2,cen[1]-1:cen[1]+2]
-
-  return cen
-
-def cov(f , sigma):
-  """covariance matrix """
-  nx = np.array([-1. , 0. , 1.])
-  ny = nx[:,np.newaxis]
-  npix = 9
+  f = 1.2
   
   #brightness = image.flatten()
   
@@ -73,44 +28,42 @@ def cov(f , sigma):
       r2 = (xc[i] - xc[j])**2. + (yc[i] - yc[j])**2.   
 
       C[i,j] = np.exp(-1.*r2/(4.*f**2.))
-   
- 
-  return (C*sigma**2.)/(4.*np.pi*f**2.)
-   
+  return C
 
-def spoly_centroid(data , A , f , sigma):
+C = cov(1.2)
+ATA = np.dot(AT, np.dot(np.linalg.inv(C) , AT.T))
+factor = cho_factor(ATA, overwrite_a=True)
+#ATA = np.dot(AT, AT.T)
+#factor = cho_factor(ATA, overwrite_a=True)
+
+
+
+def fit_3x3(im , sigma):
+    #print C.shape
+    imgg = np.dot(AT , np.dot(np.linalg.inv(C) , im.flatten()))
+    a, b, c, d, e, f = cho_solve(factor, imgg)
+    #cho_solve(factor, np.dot(AT, img.flatten()))
+    m = 1. / (4 * a * b - c*c)
+    x = (c * e - 2 * b * d) * m
+    y = (c * d - 2 * a * e) * m
+    return x, y
+
+
+def find_centroid(data , f , sigma):
 
   size = data.shape[0]
   zero = size/2 + .5
   kernel = profile.makeGaussian(7, f , 0 , np.array([3.5,3.5]))
-  
-  image = signal.convolve2d(data , kernel , mode = "same")
-  
-  
-  
-  bp = np.where(image==image.max()) #brightest pixel in the smoothed image
-  cen = [bp[1][0] , bp[0][0]]
-  
-  k = image[cen[1]-1:cen[1]+2,cen[0]-1:cen[0]+2]
-     
-  if (k.shape!= (3,3)):
-     center = np.array([0.,0.])
-     X = np.arange(6)*0.
+  img = signal.convolve2d(data , kernel , mode = "same")
+  xi, yi = np.unravel_index(np.argmax(img), img.shape)
+    
+  if (xi >= 1 and xi < img.shape[0] - 1 and yi >= 1 and yi < img.shape[1] - 1):
+      ox, oy = fit_3x3(img[xi-1:xi+2, yi-1:yi+2] , sigma)
   else:
-     C = cov(f , sigma)
-     X = regression(A , C , k.flatten())
-  
-     a , b , c, d , e , f = X
-     matrix = np.array([[2.*d , e],[e , 2.*f]])
-     #matrix = matrix + (np.max(np.abs(matrix))/9.)*np.array([[1,0],[0,1]])
-     matrix = matrix + (sigma/np.sqrt(4.*np.pi*f**2.))*np.array([[1,0],[0,1]]) #add maximum per pixel variance
-                                                                               #of the smoothed image to the
-                                                                               # diagonal elements of the curvature
-                                                                               #matrix
-     vector = np.array([-1.*b , -1.*c])
-     center = np.dot(np.linalg.inv(matrix) , vector)
-     #center = (c*e - b*f)/(2.*d*f - 2.*e**2.) , (b*e - c*d)/(2.*d*f - 2.*e**2.)   
-  return np.array(cen) + np.array([.5,.5]) + center
+      ox , oy = 0. , 0.
+  return xi + ox + .5 , yi + ox + .5
+
+ 
 
 if __name__ == "__main__":
     print 'spoly main'
