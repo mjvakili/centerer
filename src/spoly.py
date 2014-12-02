@@ -107,7 +107,7 @@ def spoly_centroid(data , A , f , sigma):
      vector = np.array([-1.*b , -1.*c])
      center = np.dot(np.linalg.inv(matrix) , vector)
      #center = (c*e - b*f)/(2.*d*f - 2.*e**2.) , (b*e - c*d)/(2.*d*f - 2.*e**2.)   
-  return np.array(cen) + np.array([.5,.5]) + center , X
+  return np.array(cen) + np.array([.5,.5]) + center
 
 if __name__ == "__main__":
     print 'spoly main'
