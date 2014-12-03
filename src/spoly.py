@@ -42,6 +42,8 @@ def fit_3x3(im , sigma):
     #print C.shape
     imgg = np.dot(AT , np.dot(np.linalg.inv(C) , im.flatten()))
     a, b, c, d, e, f = cho_solve(factor, imgg)
+    a = a - (sigma)/8       #equivalent to adding sigma/4 to the diagonal elements of the curvature matrix!
+    b = b - (sigma)/8
     #cho_solve(factor, np.dot(AT, img.flatten()))
     m = 1. / (4 * a * b - c*c)
     x = (c * e - 2 * b * d) * m
