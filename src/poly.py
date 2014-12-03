@@ -13,7 +13,7 @@ factor = cho_factor(ATA, overwrite_a=True)
 def fit_3x3(img , sigma):
     a, b, c, d, e, f = cho_solve(factor, np.dot(AT, img.flatten()))
   
-    m = 1. / (4 * a * b - c*c + sigma /9.)
+    m = 1. / (4 * a * b - c*c + sigma**2. /9.)
     x = (c * e - 2 * b * d) * m
     y = (c * d - 2 * a * e) * m
     return x, y
