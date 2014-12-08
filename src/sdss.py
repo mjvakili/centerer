@@ -77,18 +77,21 @@ def lupton_2d(I , f , s):
 
 
   A_x = np.vstack((np.ones_like(mx_x), mx_x)).T
+  #C_x = np.identity(3)
   C_x = np.diag(yerr_x * yerr_x)
   cov_x = np.linalg.inv(np.dot(A_x.T, np.linalg.solve(C_x, A_x)))
   b_x, m_x = np.dot(cov_x, np.dot(A_x.T, np.linalg.solve(C_x, mx_y)))
 
   A_y = np.vstack((np.ones_like(my_y), my_y)).T
+  #C_y = np.identity(3)
   C_y = np.diag(yerr_y * yerr_y)
   cov_y = np.linalg.inv(np.dot(A_y.T, np.linalg.solve(C_y, A_y)))
   invb_y, invm_y = np.dot(cov_y, np.dot(A_y.T, np.linalg.solve(C_y, my_x)))
 
-  b_y , m_y = -invb_y/invm_y , invm_y**-1.
+  #b_y , m_y = -invb_y/invm_y , invm_y**-1.
 
-  xs = (b_x - b_y)/(m_y - m_x)
+  #xs = (b_x - b_y)/(m_y - m_x)
+  xs = (invm_y*b_x + invb_y)/(1-invm_y*m_x)
   ys = m_x*xs + b_x
   
 
