@@ -8,12 +8,12 @@ x, y = np.meshgrid(range(-1, 2), range(-1, 2), indexing="ij")
 x, y = x.flatten(), y.flatten()
 AT = np.vstack((x*x, y*y, x*y, x, y, np.ones_like(x)))
 
-def cov(f=1.2):
+def cov(f):
 
   nx = np.array([-1. , 0. , 1.])
   ny = nx[:,np.newaxis]
   npix = 9
-  f = 1.2
+  
   
   #brightness = image.flatten()
   
@@ -31,6 +31,7 @@ def cov(f=1.2):
   return C
 
 C = cov(1.2)
+#C = np.identity(9)
 ATA = np.dot(AT, np.dot(np.linalg.inv(C) , AT.T))
 factor = cho_factor(ATA, overwrite_a=True)
 #ATA = np.dot(AT, AT.T)
@@ -42,10 +43,9 @@ def fit_3x3(im , sigma):
     #print C.shape
     imgg = np.dot(AT , np.dot(np.linalg.inv(C) , im.flatten()))
     a, b, c, d, e, f = cho_solve(factor, imgg)
-    a = a - (sigma)/8       #equivalent to adding sigma/4 to the diagonal elements of the curvature matrix!
-    b = b - (sigma)/8
-    #cho_solve(factor, np.dot(AT, img.flatten()))
-    m = 1. / (4 * a * b - c*c)
+    #a = a - (sigma)/11
+    #b = b - (sigma)/11
+    m = 1. / (4 * a * b - c*c + sigma**2./16)
     x = (c * e - 2 * b * d) * m
     y = (c * d - 2 * a * e) * m
     return x, y
@@ -63,7 +63,7 @@ def find_centroid(data , f , sigma):
       ox, oy = fit_3x3(img[xi-1:xi+2, yi-1:yi+2] , sigma)
   else:
       ox , oy = 0. , 0.
-  return xi + ox + .5 , yi + ox + .5
+  return xi + ox + .5 , yi + oy + .5
 
  
 
