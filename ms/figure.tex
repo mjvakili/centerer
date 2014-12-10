@@ -32,7 +32,15 @@ citecolor=darkblue }
 
 \begin{abstract}
 
-We present a 3$\times$3 method for estimating the centroid of stars in astronomical images. After simulating a large number of stars in a wide range of scales, in signal-to-noise-ratio, and full width at half maxima, we compare the results of our method to those obtained from the fourth order approximation method implemented in SDSS photometric pipeline, as well as finding the centroid by fitting the exact PSF model used to generate the simulated data. Comparison of the median squared error in centroid measurement, resulting from the proposed techniques to the Cramer-Rao lower bound of centroid estimates, suggests that, the 3$\times$3 polynomial trick, once modified by smoothing the image with a Gaussian kernel, is able to deliver sufficiently accurate estimates of centroid over a wide range of values in the parameter space.
+We present a modification of the 3$\times$3 polynomial method for estimating the centroid 
+of stars in astronomical images. After simulating a large number of stars with relatively low 
+signal-to-noise-ratio, and in a wide range of full width at half maxima, we compare the results of our method
+to those obtained from the quartic approximation method used in SDSS photometric pipeline, 
+as well as finding the centroid by fitting the exact PSF model which was used to generate the 
+simulated data. Comparison of the root-mean-squared error in centroid measurement, resulting 
+from the these techniques to the Cramer-Rao lower bound of centroid estimates, 
+suggests that, the modified 3$\times$3 polynomial trick, though not as accurate as PSF fitting method
+, is able to deliver sufficiently accurate estimates comparable to those obtained from the quartic approximation.
 
 \end{abstract}
 
