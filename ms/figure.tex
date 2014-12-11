@@ -31,7 +31,7 @@ citecolor=darkblue }
 \altaffiltext{3}{Max-Planck-Institut f\"ur Astronomie}
 }
 
-\title{Towards fast and optimal centroiding of faint stars}
+\title{Fast and optimal centroiding of faint stars}
 
 \begin{abstract}
 
@@ -116,11 +116,18 @@ those obtained from centroiding methods discussed in \ref{sec:method}, and
 with the CRLB derived in \ref{sec:data}. Finally, we discuss and conclude
 in \ref{sec:discussion}.               
 
-\section{Model}\label{sec:model}
+\section{Methods}\label{sec:method}
 
-In order to find the centroid of a star, we fit a simple 2d polynomial $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ to the $3\times3$ patch centered on the brightest pixel of the
-image. We apply this method to star images in the sky-dominated regime. In this regime, the covariance matrix of pixel uncertianties is simply given by $\sigma^{2}\mathbf{I}$, where $\sigma^{2}$ is variance of the uncorrelated Gaussian noise, and $\mathbf{I}$ is a 9$\times$9 identity matrix. Upon constructing a universal 9$\times$6 design matrix
+\subsection{3$\times$3 polynomial method}
 
+In order to find the centroid of a star, 
+we fit a simple 2d polynomial $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ to the
+$3\times3$ patch centered on the brightest pixel of the
+image. We apply this method to star images in the sky-dominated regime.
+In this regime, the covariance matrix of pixel uncertianties is simply
+given by $\sigma^{2}\mathbf{I}$, where $\sigma^{2}$ is variance of the
+uncorrelated Gaussian noise, and $\mathbf{I}$ is a 9$\times$9 identity matrix.
+Upon constructing a universal 9$\times$6 design matrix
 \begin{equation}
     \mathbf{A} = 
     \begin{bmatrix}
@@ -131,12 +138,15 @@ image. We apply this method to star images in the sky-dominated regime. In this 
         1 & x_{9} & y_{9} & x_{9}^{2} & x_{9}y_{9} & y_{9}^{2}
     \end{bmatrix},
 \end{equation}
-the free parameters of the model $\{a,b,c,d,e,f\}$ (hereafter compactly denoted by $\mathbf{X}$) can be determined by 
+the free parameters of the model $\{a,b,c,d,e,f\}$
+(hereafter compactly denoted by $\mathbf{X}$) can be determined by 
 \beq
 \mathbf{X} = (\mathbf{A}^{T}\mathbf{A})^{-1}\mathbf{A}^{T}\mathbf{Z},
 \label{linearfit}
 \eeq
-where $\mathbf{Z}$ is given by $(I_{1},...,I_{9})^{T}$, with $I_{i}$, being the brightness of the $i-$th pixel of the 3$\times$3 patch. Afterwards, the best fit parameters can be used to compute the centroid coordinate
+where $\mathbf{Z}$ is given by $(z_{1},...,z_{9})^{T}$,
+with $z_{i}$, being the brightness of the $i-$th pixel of the 3$\times$3 patch.
+Afterwards, the best fit parameters can be used to compute the centroid coordinate
 
 \beq
   \begin{bmatrix}
@@ -154,21 +164,63 @@ where $\mathbf{Z}$ is given by $(I_{1},...,I_{9})^{T}$, with $I_{i}$, being the 
 \label{center}
 \eeq
 
-Now, we modify the simple polynomial method explained above, by smoothing the image of the star with a Gaussian kernel with a given width (2 pixels in this study). Then we apply the same polynomial method to the 3$\times$3 patch around the brightest pixel of the smoothed image. The important difference between the previous approach and the modified method is that, there are non-zero covariances among the uncertainties of the brightness of different pixels of the smoothed image. That is, the covariance matrix $\mathbf{C}$ is non-diagonal. It can be shown that after smoothing, elements of the covariance matrix are given by
+It is important to note that the algebraic operation in (\ref{center}) involves 
+inverting a 2$\times$2 curvature matrix
+\beq
+  D = 
+  \begin{bmatrix}
+      2d & e\\
+      e & 2f\\
+  \end{bmatrix}.
+\eeq
+When D has a zero (or very close to zero) deteminant,
+centroid estimated by (\ref{center}) gets arbitrarily 
+large in which case the centroiding method leads to a catastrophic 
+outlier. In order to tackle this issue, we add a small regularization term
+proportional to $\sigma$ to the diagonal elements of the curvature matrix.
+This soft regularization term prevents the determinant of the curvature matrix from
+getting zero, and removes the catastrophic outliers.
+
+\subsection{3$\times$3 modified polynomial method}
+Now, we modify the simple polynomial method explained above,
+by smoothing the image of the star with a Gaussian kernel
+\beq
+k(x) = \frac{1}{2\pi w^2}\exp(-\mathbf{x}^{2}/2w^{2}).
+\eeq
+Throughout this study, we keep the width of the Gaussian kernel $w$ constant.
+Then we apply the same polynomial method to the 3$\times$3 patch around the brightest
+pixel of the smoothed image. The important difference between the previous
+approach and the modified method is that, there are non-zero covariances
+among the uncertainties of the brightness of different pixels of the
+smoothed image. That is, the covariance matrix $\mathbf{C}$ is non-diagonal.
+It can be shown that after smoothing, elements of the covariance matrix are given by
 \begin{eqnarray}
 \mathbf{C}_{ij} &=& \frac{\sigma^{2}}{4\pi w^{2}} \exp(-\frac{r_{ij}^{2}}{4\pi w^{2}}),\\
 r_{ij}^{2} &=& (x_{i} - x_{j})^{2} + (y_{i} - y_{j})^{2},
 \label{nondiagonal}
 \end{eqnarray}
-where $w$ is width of the kernel, and $x_{i}$ , $y_{i}$ are the $x$, and $y$ coordinates of the $i$-th pixel respectively. In the presence of the non-diagonal covariance matrix $\mathbf{C}$, equation (\ref{linearfit}) needs to be modified in the following way
+where $w$ is width of the kernel, $\sigma$ is the per-pixel uncertainty, and $x_{i}$
+, $y_{i}$ are the $x$, and $y$ coordinates of the $i$-th pixel
+respectively. In the presence of the non-diagonal covariance matrix
+$\mathbf{C}$, equation (\ref{linearfit}) needs to be modified in the following way
 \beq
 \mathbf{X} = [\mathbf{A}^{T}\mathbf{C}^{-1}\mathbf{A}]^{-1}[\mathbf{A}^{T}\mathbf{C}^{-1}\mathbf{Z}].
 \label{linearfit2}
 \eeq
-
-Therefore, for a given star and a smoothing kernel, the outcome of equation (\ref{linearfit2}) can be plugged into equation (\ref{center}) to find the centroid estimate of the star. Hereafter, we call this method the modified polynomial method.
- 
-Now, let us give a brief overview of centroiding method implemented in SDSS photometric pipeline \citep{sdss}: Consider any row or column of the 3$\times$3 patch around the brightest pixel of the smooth image and let us denote the brightness of these three pixels by $\{I_{-},I_{0},I_{+}\}$. The fundamental assumption behind the technique is that these brightness values can be approximated by the function $P(x) = Q\exp((x-x_{c})^{2}/2\beta^{2})$ evaluated at $x=-1,0,+1$; with $x_{c}$ being the position of centroid. Knowing the value of $P$ at $\{-1,0,1\}$, expanding $P(x)$ up to fourth order in $x$ leads to
+Therefore, for a given star and a smoothing kernel,
+the outcome of equation (\ref{linearfit2}) can be
+plugged into equation (\ref{center}) to find the centroid estimate
+of the star.
+\subsection{3$\times$3 quartic approximation method}
+Consider any row or column of the 3$\times$3 patch around
+the brightest pixel of the smooth image and let us denote
+the brightness of these three pixels by $\{I_{-},I_{0},I_{+}\}$.
+The fundamental assumption behind the technique is that these
+brightness values can be approximated
+by the function $P(x) = Q\exp((x-x_{c})^{2}/2\beta^{2})$
+evaluated at $x=-1,0,+1$; with $x_{c}$ being the position of centroid
+of the three pixels. Knowing the value of $P$ at $\{-1,0,1\}$,
+expanding $P(x)$ up to fourth order in $x$ leads to
 \beq
 x = \frac{s}{t}(1+k\frac{t}{4Q}(1-(s/t)^{2})),
 \eeq
