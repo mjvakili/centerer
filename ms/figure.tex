@@ -302,7 +302,7 @@ changing SNR and size, and how close they get to saturating the CRLB.
 Given the PSF model that we have adopted for our simulations, We need 
 to derive an expression for the CRLB as a function of the size of of
 the stars, and SNR. We know that the CRLB is given by the inverse of 
-the Fisher information matrix \mathcal{F}. The closer an estimator is
+the Fisher information matrix $\mathcal{F}$. The closer an estimator is
 to saturating the CRLB, the more information about the quantity that we 
 need to estimate is preserved. A measure for closeness of an estimator to 
 saturating the CRLB is comparison of the root-mean-squared-error of that estimator 
@@ -310,78 +310,35 @@ with the CRLB.
 
 In order to find the CRLB, it is sufficient to find the Fisher matrix.
 Let us assume that we have $M$ observables $\{f_{1}, ... , f_{M}\}$, each
-related to $B$ model parameters $\theta_{1} , ... , \theta_{B}$. Assuming
-un-correlated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
+related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$. Assuming
+uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
 of the Fisher matrix $\mathcal{F}_{ij}$ are given by
 \beq
 \mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
-\ref{fisher}
+\label{fisher}
 \eeq
 
 In our case, the observables are Moffat PSF profile evaluated at different pixels, and  
-the model paramters are the centroid coordinates. Thus, \mathcal{F}
+the model paramters are the centroid coordinates. Thus, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
 
 \beq
-  \mathcal{F} = \sum_{\mathbf{p}}\frac{1}{\sigma_{p}^{2}}
+  \mathcal{F}_{ij} = \sum_{\mathbf{p}}\frac{1}{\sigma_{p}^{2}}
                 \frac{\partial f_{\mathbf{p}}}{\partial \theta_{i}}\frac{\partial f_{\mathbf{p}}}{\partial \theta_{j}},
+\ref{fish}
 \eeq
-where the summation is over pixels, $\theta={x_{c},y_{c}}$, $\sigma_{p}^{2}$ is variance
+where the summation is over pixels, $f_{\mathbf{p}}$ is the value of the Moffat profile at pixel $\mathbf{p}$,
+$\theta=\{x_{c},y_{c}\}$, $\sigma_{p}^{2}$ is variance
 of the uncorrelated Gaussian noise
 \begin{eqnarray}
-\langle n(\mathbf{x}) \rangle &=& 0, \\
+\langle n(\mathbf{x_{p}}) \rangle &=& 0, \\
 \langle n(\mathbf{x_{p}})n(\mathbf{x_{p^{\prime}}}) \rangle &=& \sigma^{2}\delta_{\mathbf{p}\mathbf{p}^{\prime}}. 
 \end{eqnarray}
 
-
-
-
-
-In the first experiment, we generate 100000 Moffat profiles centered randomly in the sub-pixel region inside the central pixel of a 17$\times$17 image, at four different full width at half maxima of 2, 2.8, 4, and 5.6 pixels with SNR ranging from 5 to 150. In the second experiment, we generate the same number of Moffat profiles with $\gamma$ ranging from 2 pixels to 6 pixels, with four different SNR values of 5, 50, 100, 150.
-In addition to the centroiding methods discussed in the previous sections, we compute the error from fitting the PSF model with the exact $\gamma$. That is, we find the best estimates of flux and centroid by optimizing the $\chi^{2}$. 
-
-In order to test the accuracy of each model, we need to compare
-the mean squared error to the Cramer-Rao lower bound (hereafter CRLB).
-That is, after finding the centroid error for each model, we
-compute the mean in bins of $S/N$ (bins of $\gamma$ in the second experiment).
-The closer the mean bias is to the CRLB, the more accurate the centroid estimate is.
-
-In practice however, instead of mean squared error, we work with the median squared error.
-The reason is that, at the faint end of our simulations (SNR $\leq$ 10),
-the unmodified polynomial method leads to some catastrophic failures which
-could skew the mean squared centroid error of the sample.
-Thus, we use median squared error as a less biased representative
-of the performance of different centroiding techniques. 
- 
-In statistics, CRLB sets a lower bound for the variance of the point estimator of a variable. Let us assume that the data is generated from the analytic model $f(\mathbf{x}, \{\theta\})$, where the vector $\mathbf{x}$ denotes coordinate, and $\{\theta\}$ represents parameters of the model. CRLB of the  estimator of the parameter $\theta_{i}$ can be computed from the inverse of the Fisher information information matrix  
+Given the analytic expression for the Moffat PSF model (\ref{mof}), and choice of $\beta=2.5$, 
+the inverse of the Fisher matrix is given by
 \beq
-\text{CRLB}[\hat{\theta}_{i}] = (F^{-1})_{ii}, 
-\label{crlb}
-\eeq
-where the elements of the Fisher matrix can be computed according to
-\beq
-F_{ij} = \left \langle -\frac{\partial^{2} \ln \mathcal{L}}{\partial \theta_{i}\partial \theta_{j}} \right \rangle,   
-\label{fisher}
-\eeq
-where $\ln \mathcal{L}$ is the log-likelihood function (or Log probability density function of the observations) and is given by $-\chi^{2}/2$: 
-\beq
-\chi^{2} = \sigma^{-2}\sum_{\mathbf{p}}\big [ f(\mathbf{x}_{\mathbf{p}},\{\theta_{t}\})+ n(\mathbf{x}_\mathbf{p}) - f(\mathbf{x}_{\mathbf{p}},\{\theta\}) \big ]^{2},
-\label{lik}
-\eeq
-in which summation is over all pixels, ${\theta_{t}}$ represents the set of parameters used to generate the data, and $n(\mathbf{x}_{\mathbf{p}})$ is uncorrelated Gaussian noise map
-\begin{eqnarray}
-\langle n(\mathbf{x}) \rangle &=& 0, \\
-\langle n(\mathbf{x_{p}})n(\mathbf{x_{p^{\prime}}}) \rangle &=& \sigma^{2}\delta_{\mathbf{p}\mathbf{p}^{\prime}}. 
-\end{eqnarray}
-  
-Combining (\ref{fisher}) and (\ref{lik}) yields
-\beq
-F_{ij} = \sigma^{-2}\sum_{\mathbf{p}}\frac{\partial f(\mathbf_{x}_{\mathbf{p}} , \{\theta_{t}\})}{\partial \theta_{i}}\frac{\partial f(\mathbf_{x}_{\mathbf{p}} , \{\theta_{t}\})}{\partial \theta_{j}}.
-\eeq 
-
-Assuming the model (\ref{mof}) with $\beta = 2.5$, it can be shown that the inverse of the Fisher matrix is given by
-\beq
-  F^{-1} \simeq 0.6846 \frac{\gamma}{\text{SNR}} 
+  \mathcal{F}^{-1} \simeq 0.6846 \frac{\gamma}{\text{SNR}} 
   \begin{pmatrix}
       1 & 0\\
       0 & 1\\
@@ -389,21 +346,54 @@ Assuming the model (\ref{mof}) with $\beta = 2.5$, it can be shown that the inve
 \label{crlbmoffat}
 \eeq
 
-Equation (\ref{crlbmoffat}) implies that for different noise realizations of a moffat PSF at a given SNR and $\gamma$, an optimal centroiding technique delivers estimates whose mean (in this study, median) squared error along each axis is less than or equal to $0.6846 \gamma/\text{SNR}$.
+Equation (\ref{crlbmoffat}) implies that at given SNR and $\gamma$
+CRLB for each component of centroid is given by $.6846\gamma/\text{SNR}$,
+and that a good centroiding technique delivers centroids with
+root-mean-squared-error (hereafter RMSE) of each component close to
+this number. 
 
-Moreover, it is worth investigating cases where we do not know the exact PSF model, or the model we use to find the centroid is slightly wrong. For instance, let us consider a set of images of stars generated from elliptical Moffat profile
-\beq
-P(r) = \frac{F(\beta - 1)}{\pi a_{1}a_{2}}\Big[1+\Big(\frac{x}{a_{1}}\Big)^{2}+\Big(\frac{y}{a_{2}}\Big)^{2}\Big]^{-\beta},
-\eeq    
-where $a_{1}$ is the major axis, $a_{2}$ is the minor axis, and for simplicity we have assumed that the major axis is along the $x$ axis. In this case, the CRLB associated with  the $x$ component of centroid is given by $0.6846 a_{1}/\text{SNR}$, and the CRLB associated with the $y$ component is given by $0.6846 a_{2}/\text{SNR}$. 
+We perform two sets of simulations. In the first set, we choose four values of
+2, 2.8, 4, and 5.6 pixels for $\gamma$. For each $\gamma$, we generate 100,000 
+17 $\times$ 17 postage-stamps of Moffat profiles with centroids randomly drawn
+within the central pixel of the 17 $\times$ 17 postage-stamps. Moreover, Gaussian
+is noise added to each postage-stamp such that the stars are uniformly distributed
+in log-SNR between SNR = 5 to SNR = 150.
 
-We also generate a set of elliptical Moffat profiles with $e=0.2$, and $a_{1} = 2.8$ pixels, with signal-to-noise ratios ranging from 5 to 150. In addition to the exact (elliptical) PSF model, we use circular PSF model with $\gamma = \sqrt{a_{1}a_{2}}$ to find the centroid of these stars.
+In the second set, we generate 100,000 17$\times$17 postage-stamps
+of Moffat profile, with values of $\gamma$ randomly distributed 
+between 2 pixels and 6 pixels, and with centroids drawn randomly within 
+the central pixel. we choose four values for SNR: 5, 10, 20, and 40. 
+For each SNR, and for each postage-stamp with a given $\gamma$, 
+Gaussian noise, with variance corresponding to SNR and $\gamma$ through equation 
+(\ref{snr2}), is added to the each postage-stamp.
 
- 
- 
+In the first experiment, we study how centroiding error behaves with changing
+SNR, while $\gamma$ is being held constant. In the second experiment, we study 
+how centroiding error behaves with changing $\gamma$ while SNR is being held constant.
 
+In addition to the centroiding methods discussed in the previous sections,
+we compute the error from fitting the Moffat PSF model with the exact $\gamma$ to
+the data. That is, we find the best estimates of flux and centroid by
+optimizing the $\chi^{2}$. Furthermore, we computeth error from fitting a
+wrong PSF model (Gaussian profile) with the exact $\gamma$ to the data.
+In all cases in both experiments, we expect the PSF fitting method to saturate 
+the CRLB. 
 
 \section{Results}\label{sec:results}
+
+
+In order to test the accuracy of each model, we need to compare
+the mean squared error to the Cramer-Rao lower bound (hereafter CRLB).
+That is, after finding the centroid error for each model, we
+compute the mean in bins of $S/N$ (bins of $\gamma$ in the second experiment).
+
+In practice however, instead of mean squared error, we work with the median squared error.
+The reason is that, at the faint end of our simulations (SNR $\leq$ 10),
+the unmodified polynomial method leads to some catastrophic failures which
+could skew the mean squared centroid error of the sample.
+Thus, we use median squared error as a less biased representative
+of the performance of different centroiding techniques. 
+
 
 \subsection{Experiment 1}
    
