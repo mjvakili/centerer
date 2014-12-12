@@ -233,24 +233,46 @@ Q &=& I_{0} +s^{2}/2t.
 \label{def}
 \end{eqnarray}
 
-If we apply this method to every column and row of the 3$\times$3 patch around the brightest pixel of the smoothed image, we will find three local maxima for three rows $\{(x_{-},-1)$, $(x_{0},0)$, $(x_{+},1)\}$, and three local maxima for three columns $\{(-1,y_{-})$, $(0,y_{0})$, $(1,y_{+})\}$. It is important to note that, since the image has been smoothed, the covariance matrix between different pixels is not zero. Therefore, there is an uncertianty associated with any of these local maxima. The centroid is then estimated by finding the intersection of two curves, one fitted to three maxima corresponding to rows, and the other fitted to three maxima corresponding to columns.
+If we apply this procedure to every column and row of the 3$\times$3 patch
+around the brightest pixel of the smoothed image, we will find three local
+maxima for three rows $\{(x_{-},-1)$, $(x_{0},0)$, $(x_{+},1)\}$, and three
+local maxima for three columns $\{(-1,y_{-})$, $(0,y_{0})$, $(1,y_{+})\}$.
+The centroid is then estimated by finding the intersection of two curves,
+one fitted to three maxima corresponding to rows, and the other fitted
+to three maxima corresponding to columns.
+
 \section{Simulations and Tests}\label{sec:data}
 
-In order to test the accuracy of the two models and compare them against each other, we need to simulate a large set of stars for which we know the exact position of centroids. Furthermore, we uniformly draw the centroids within sub-pixel regions. 
-
-We use the Moffat profile \citep{moffat} for our simulations. Moffat profile is an analytic model for stellar PSFs. It has broader wings than a simple Gaussian model. The surface brightness of the Moffat profile is given by
+In order to test the accuracy of the method mentioned so far, and to ompare them against each other,
+and we need to simulate a large set of stars for which we know the exact position of centroids.
+Furthermore, we uniformly draw the centroids within sub-pixel regions. 
+We use the Moffat profile \citep{moffat} for our PSF simulations. 
+Moffat profile is an analytic model for stellar PSFs. It has broader wings than
+a simple Gaussian model. The surface brightness of the Moffat profile is given by
 \beq
 I(r) = \frac{F(\beta -1)}{\pi \alpha^{2}}[1+(r/\alpha)^{2}]^{-\beta},
 \label{mof}
 \eeq
-where $F$ is the total flux, $\beta$ is a dimensionless paramter, and $\alpha$ is the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$) being $2\alpha\sqrt{2^{1/\beta}-1}$. 
-We want to investigate the performance of the two models introduced in section \ref{sec:model} for different background noise levels, and also different values of $\gamma$. For further simplicity, we set the flux of all stars in our simulations to unity. Per pixel uncertainties are assumed to be uncorrelated Gaussian, and we only study the sky dominated regime.
+where $F$ is the total flux, $\beta$ is a dimensionless paramter, and $\alpha$ is
+the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$)
+being $2\alpha\sqrt{2^{1/\beta}-1}$. 
+We want to investigate the performance of centroiding methods introduced
+in section \ref{sec:model} for different background noise levels, and also different
+values of $\gamma$. For further simplicity, we set the flux of all stars in our
+simulations to unity. Per pixel uncertainties are assumed to be uncorrelated Gaussian,
+and we only study the sky-dominated regime.
 
-Moreover, it is more convenient to work with the signal-to-noise ratio (hereafter denoted by SNR) instead of the variance of the Gaussian noise. This is due to the fact that at the same noise level, simulated stars with different values of $\gamma$ have different SNRs. 
+Moreover, it is more convenient to work with the signal-to-noise ratio
+(hereafter denoted by SNR) instead of the variance of the Gaussian noise.
+We define SNR as the ratio of the mean and variance of the distribution
+which the flux estimator is drawn from. Assume that the total flux from
+the point source is $f$, and that the PSF at the $i$-th pixel is given
+by $P_{i}$. Therefore the brightness of the $i$-th pixel is drawn from
+a Gaussian distribution $p(I_{i}) = \mathcal{N}(fP_{i},\sigma^{2})$. 
 
-First, let us find an analytic expression for SNR. We define SNR as the ratio of the mean and variance of the distribution which the flux estimator is drawn from. Assume that the total flux from the point source is $f$, and that the PSF at the $i$-th pixel is given by $P_{i}$. Therefore the brightness of the $i$-th pixel is drawn from a Gaussian distribution $p(I_{i}) = \mathcal{N}(fP_{i},\sigma^{2})$. 
-
-The optimal estimator of flux (an estimator which saturates Cramer-Rao bound), is the weighted average $\tilde{f}=\sum_{i}I_{i}P_{i}$. Knowing the distribution of $I_{i}$, it can be shown that 
+The optimal estimator of flux (one which saturates Cramer-Rao bound),
+is the weighted average $\tilde{f}=\sum_{i}I_{i}P_{i}$. Knowing the
+distribution of $I_{i}$, it can be shown that 
 \beq
 p(\tilde{f}) = \mathcal{N}(f , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
 \eeq  
@@ -262,20 +284,74 @@ which leads us to
 \label{snr}
 \eeq
 
-Note that (\ref{snr}) is valid in the limit of sky-dominated images, and that is the limit we are interested in. In the case of our simulations, the expression (\ref{snr}) can be analytically expressed in terms of $\sigma$, $\gamma$, and also $\beta$. We fix $\beta$ at the fiducial value of 2.5. In this case we have
+Note that (\ref{snr}) is valid in the limit of sky-dominated regimes,
+and that is the limit we are interested in. In the case of our simulations,
+SNR given in (\ref{snr}) can be analytically expressed in terms of the per pixel uncertainty
+$\sigma$, FWHM $\gamma$, and also $\beta$. We fix $\beta$ at the fiducial value of 2.5.
+In this case we have
 \beq
 \text{SNR} = \frac{0.478}{\sigma \gamma}.
 \label{snr2}
 \eeq
 
-Equation (\ref{snr2}) implies that for stars with the same flux $f$ and background noise level $\sigma$, those with bigger effective size have lower SNR.
-In this work, we study the relation between error in centroid measurement and $\gamma$ at fixed SNR, and vice versa. In the first experiment, we generate 100000 Moffat profiles centered randomly in the sub-pixel region inside the central pixel of a 17$\times$17 image, at four different full width at half maxima of 2, 2.8, 4, and 5.6 pixels with SNR ranging from 5 to 150. In the second experiment, we generate the same number of Moffat profiles with $\gamma$ ranging from 2 pixels to 6 pixels, with four different SNR values of 5, 50, 100, 150.
+Equation (\ref{snr2}) implies that for stars with the same flux $f$ and background
+noise level $\sigma$, those with radius have lower SNR.
 
+We aim to study how centroiding errors from different methods behave with
+changing SNR and size, and how close they get to saturating the CRLB. 
+Given the PSF model that we have adopted for our simulations, We need 
+to derive an expression for the CRLB as a function of the size of of
+the stars, and SNR. We know that the CRLB is given by the inverse of 
+the Fisher information matrix \mathcal{F}. The closer an estimator is
+to saturating the CRLB, the more information about the quantity that we 
+need to estimate is preserved. A measure for closeness of an estimator to 
+saturating the CRLB is comparison of the root-mean-squared-error of that estimator 
+with the CRLB.
+
+In order to find the CRLB, it is sufficient to find the Fisher matrix.
+Let us assume that we have $M$ observables $\{f_{1}, ... , f_{M}\}$, each
+related to $B$ model parameters $\theta_{1} , ... , \theta_{B}$. Assuming
+un-correlated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
+of the Fisher matrix $\mathcal{F}_{ij}$ are given by
+\beq
+\mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
+\ref{fisher}
+\eeq
+
+In our case, the observables are Moffat PSF profile evaluated at different pixels, and  
+the model paramters are the centroid coordinates. Thus, \mathcal{F}
+is a 2$\times$2 matrix whose elements are given by
+
+\beq
+  \mathcal{F} = \sum_{\mathbf{p}}\frac{1}{\sigma_{p}^{2}}
+                \frac{\partial f_{\mathbf{p}}}{\partial \theta_{i}}\frac{\partial f_{\mathbf{p}}}{\partial \theta_{j}},
+\eeq
+where the summation is over pixels, $\theta={x_{c},y_{c}}$, $\sigma_{p}^{2}$ is variance
+of the uncorrelated Gaussian noise
+\begin{eqnarray}
+\langle n(\mathbf{x}) \rangle &=& 0, \\
+\langle n(\mathbf{x_{p}})n(\mathbf{x_{p^{\prime}}}) \rangle &=& \sigma^{2}\delta_{\mathbf{p}\mathbf{p}^{\prime}}. 
+\end{eqnarray}
+
+
+
+
+
+In the first experiment, we generate 100000 Moffat profiles centered randomly in the sub-pixel region inside the central pixel of a 17$\times$17 image, at four different full width at half maxima of 2, 2.8, 4, and 5.6 pixels with SNR ranging from 5 to 150. In the second experiment, we generate the same number of Moffat profiles with $\gamma$ ranging from 2 pixels to 6 pixels, with four different SNR values of 5, 50, 100, 150.
 In addition to the centroiding methods discussed in the previous sections, we compute the error from fitting the PSF model with the exact $\gamma$. That is, we find the best estimates of flux and centroid by optimizing the $\chi^{2}$. 
 
-In order to test the accuracy of each model, we need to compare the mean squared error to the Cramer-Rao lower bound (hereafter CRLB). That is, after finding the centroid error for each model, we compute the mean in bins of $S/N$ (bins of $\gamma$ in the second experiment). The closer the mean bias is to the CRLB, the more accurate the centroid estimate is.
+In order to test the accuracy of each model, we need to compare
+the mean squared error to the Cramer-Rao lower bound (hereafter CRLB).
+That is, after finding the centroid error for each model, we
+compute the mean in bins of $S/N$ (bins of $\gamma$ in the second experiment).
+The closer the mean bias is to the CRLB, the more accurate the centroid estimate is.
 
-In practice however, instead of mean squared error, we work with the median squared error. The reason is that, at the faint end of our simulations (SNR $\leq$ 10), the unmodified polynomial method leads to some catastrophic failures which could skew the mean squared centroid error of the sample. Thus, we use median squared error as a less biased representative of the performance of different centroiding techniques. 
+In practice however, instead of mean squared error, we work with the median squared error.
+The reason is that, at the faint end of our simulations (SNR $\leq$ 10),
+the unmodified polynomial method leads to some catastrophic failures which
+could skew the mean squared centroid error of the sample.
+Thus, we use median squared error as a less biased representative
+of the performance of different centroiding techniques. 
  
 In statistics, CRLB sets a lower bound for the variance of the point estimator of a variable. Let us assume that the data is generated from the analytic model $f(\mathbf{x}, \{\theta\})$, where the vector $\mathbf{x}$ denotes coordinate, and $\{\theta\}$ represents parameters of the model. CRLB of the  estimator of the parameter $\theta_{i}$ can be computed from the inverse of the Fisher information information matrix  
 \beq
