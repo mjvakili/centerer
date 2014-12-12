@@ -257,7 +257,7 @@ where $F$ is the total flux, $\beta$ is a dimensionless paramter, and $\alpha$ i
 the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$)
 being $2\alpha\sqrt{2^{1/\beta}-1}$. 
 We want to investigate the performance of centroiding methods introduced
-in section \ref{sec:model} for different background noise levels, and also different
+in section \ref{sec:method} for different background noise levels, and also different
 values of $\gamma$. For further simplicity, we set the flux of all stars in our
 simulations to unity. Per pixel uncertainties are assumed to be uncorrelated Gaussian,
 and we only study the sky-dominated regime.
@@ -323,13 +323,13 @@ the model paramters are the centroid coordinates. Thus, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
 
 \beq
-  \mathcal{F}_{ij} = \sum_{\mathbf{p}}\frac{1}{\sigma_{p}^{2}}
+  \mathcal{F}_{ij} = \sum_{\mathbf{p}}\frac{1}{\sigma_{\mathbf{p}}^{2}}
                 \frac{\partial f_{\mathbf{p}}}{\partial \theta_{i}}\frac{\partial f_{\mathbf{p}}}{\partial \theta_{j}},
-\ref{fish}
+\label{fish}
 \eeq
 where the summation is over pixels, $f_{\mathbf{p}}$ is the value of the Moffat profile at pixel $\mathbf{p}$,
-$\theta=\{x_{c},y_{c}\}$, $\sigma_{p}^{2}$ is variance
-of the uncorrelated Gaussian noise
+$\theta=\{x_{c},y_{c}\}$, $\sigma_{\mathbf{p}}^{2}$ is variance
+of the uncorrelated Gaussian noise map $n(\mathbf{x_{p}})$
 \begin{eqnarray}
 \langle n(\mathbf{x_{p}}) \rangle &=& 0, \\
 \langle n(\mathbf{x_{p}})n(\mathbf{x_{p^{\prime}}}) \rangle &=& \sigma^{2}\delta_{\mathbf{p}\mathbf{p}^{\prime}}. 
@@ -347,7 +347,7 @@ the inverse of the Fisher matrix is given by
 \eeq
 
 Equation (\ref{crlbmoffat}) implies that at given SNR and $\gamma$
-CRLB for each component of centroid is given by $.6846\gamma/\text{SNR}$,
+CRLB for each component of centroid is given by $0.6846\gamma/\text{SNR}$,
 and that a good centroiding technique delivers centroids with
 root-mean-squared-error (hereafter RMSE) of each component close to
 this number. 
@@ -381,25 +381,26 @@ the CRLB.
 
 \section{Results}\label{sec:results}
 
-
-In order to test the accuracy of each model, we need to compare
-the mean squared error to the Cramer-Rao lower bound (hereafter CRLB).
-That is, after finding the centroid error for each model, we
-compute the mean in bins of $S/N$ (bins of $\gamma$ in the second experiment).
-
-In practice however, instead of mean squared error, we work with the median squared error.
-The reason is that, at the faint end of our simulations (SNR $\leq$ 10),
-the unmodified polynomial method leads to some catastrophic failures which
-could skew the mean squared centroid error of the sample.
-Thus, we use median squared error as a less biased representative
-of the performance of different centroiding techniques. 
-
-
 \subsection{Experiment 1}
    
-Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}], [\ref{3}], [\ref{4}]. As we expected, for all methods, median squared error becomes larger for fainter stars, and for stars with larger $\gamma$. As it can be seen in figure [\ref{1}], centroid estimate obtained from the polynomial method does not saturate the CRLB unless at smaller values of SNR. 
+After finding the centroiding error for each method, we
+compute the RMSE in bins of SNR.
+Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}], [\ref{3}], [\ref{4}].
+As we expected, for all methods, median squared error becomes larger for fainter stars,
+and for stars with larger $\gamma$. As it can be seen in figure [\ref{1}],
+centroid estimate obtained from the polynomial method does not saturate
+the CRLB unless at smaller values of SNR. 
 
-The modified polynomial centroiding however, is able to deliver median squared error arbitrarily close to the CRLB in all ranges of SNR. At $\gamma = 2$ the modified centroiding estimate does not saturates the CRLB, but as $\gamma$ gets larger, centroid estimates of this techniques saturate and eventually, get lower than the CRLB. The median error from the SDSS method shows similar behaviour to that of modified polynomial method. See figures [\ref{2}], [\ref{3}]. And finally, the centroid estimates from the exact fitting the exact PSF model give rise to a median error that is always below the CRLB [\ref{4}].
+The modified polynomial centroiding however, is able to deliver
+median squared error arbitrarily close to the CRLB in all ranges
+of SNR. At $\gamma = 2$ the modified centroiding estimate does not
+saturates the CRLB, but as $\gamma$ gets larger,
+centroid estimates of this techniques saturate and eventually,
+get lower than the CRLB. The median error from the SDSS method
+shows similar behaviour to that of modified polynomial method.
+See figures [\ref{2}], [\ref{3}].
+And finally, the centroid estimates from the exact fitting the exact PSF
+model give rise to a median error that is always below the CRLB [\ref{4}].
 
 \subsection{Experiment 2}
 
