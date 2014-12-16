@@ -40,15 +40,15 @@ The upcoming large scale astronomical surveys are going to take images of billio
 including many faint stars, in short exposure times. Thus, real-time accurate estimation of the
 centroid of stars is crucial for further analysis of the photometric data such as PSF estimation,
 and infering the proper motion of stars. In this work, we aim to compare the performances of
-fast and profile-fitting centroiding methods when applied to relatively low signal-to-noise ratio
-stars in a wide range of full width at half maxima.
-Besides, in order to see how information preserving these techniques are, we compare
-the root-mean-squared-error arising from these centroiding techniques with the Cramer-Rao
+fast and slow profile-fitting centroiding methods against each other, when they are applied
+to relatively low signal-to-noise ratio stars in a wide range of full width at half maxima.
+Furthermore, in order to investigate how information-preserving these techniques are, we compare
+the root-mean-squared-error arising from these centroiding methods with the Cramer-Rao
 lower bound. The methods we discuss in this paper are: the naive 3$\times$3 polynomial centroiding,
 a modification of this method, 3$\times$3 quartic approximation, and PSF profile fitting.
-We find that 3$\times$3 modified polynomial cetroiding leads to
-significant improvement in comparison with the naive polynomial centroiding, and gives rise
-to centroiding errors comparable to those of 3$\times$3 quartic approximation method.
+We find that in comparison with the naive polynomial centroiding, the modified polynomial
+cetroiding leads to significant improvements, and gives rise to centroiding errors comparable
+to those of the 3$\times$3 quartic approximation method.
 Moreover, our findings suggest that the 3$\times$3 modified polynomial, and the 3$\times$3
 quartic approximation techniques, though not as accurate as PSF profile fitting methods,
 are able to deliver results sufficiently close to saturating the Cramer-Rao lower bound in a range 
