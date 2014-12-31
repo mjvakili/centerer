@@ -396,44 +396,123 @@ the CRLB.
    
 In this experiment, after finding the centroiding error for each method,
 we compute the RMSE in bins of SNR in order to compare it to the CRLB. 
-Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}], [\ref{3}], [\ref{4}], [\ref{5}]. All methods deliver results with RMSE larger for fainter stars.
-In case of 3$\times$3 polynomial centroiding [\ref{1}], RMSE becomes very large as we move towards the fainter stars in our simulation. Moreover, we observe a kink in the plot of RMSE against SNR. For stars with larger $\gamma$, this kink moves toward higher values of SNR. As it can be seen in figure [\ref{1}], centroid estimate from the polynomial method do not even get close to saturating the CRLB. By increasing $\gamma$, RMSE moves further away from the CRLB.
+Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}],
+[\ref{3}], [\ref{4}], [\ref{5}], [\ref{6}]. All methods deliver results
+with RMSE larger for fainter stars.
+In case of 3$\times$3 polynomial centroiding [\ref{1}], RMSE becomes
+very large as we move towards the fainter stars in our simulation.
+Moreover, we observe a kink in the plot of RMSE against SNR.
+For stars with larger $\gamma$, this kink moves toward higher values of SNR.
+As it can be seen in figure [\ref{1}], centroid estimate from the polynomial
+method do not even get close to saturating the CRLB. By increasing $\gamma$,
+RMSE moves further away from the CRLB.
 
-However, RMSE from the modified centroiding method [\ref{2}], and RMSE from the quartic approximation [\ref{3}] method are very close to the CRLB. As we increase $\gamma$ from 2 pixels to 2.8 pixels, RMSE gets closer to the CRLB. This implies that as stars get undersampled, the performance of these two models get slightly worse. But if we increase $\gamma$ to 4 and 5.6 pixels, RMSE gets farther from the CRLB. This is quite predictable since these two models only use the information contained in a 3$\times$ 3 patch. It is also important to note that the rate at which the RMSE from these two method drops eventually becomes smaller than the constant rate at which the CRLB decreases with increaing SNR.
+However, RMSE from the modified centroiding method [\ref{2}],
+and RMSE from the quartic approximation [\ref{3}] method are very
+close to the CRLB except at the very small values of SNR (SNR $<$ 10).
+As we increase $\gamma$ from 2 pixels to 2.8 pixels, RMSE gets closer
+to the CRLB. This implies that as stars get undersampled, the performance
+of these two models get slightly worse. But if we increase $\gamma$ to
+4 and 5.6 pixels, RMSE gets farther from the CRLB.
+This effect is quite predictable since these two models only use the
+information contained in a 3$\times$ 3 patch. It is also important to
+note that the rate at which the RMSE from these two method drops
+eventually becomes smaller than the constant rate at which the CRLB
+decreases with increaing SNR. Also the results from 7$\times$7 weighted moment
+method [\ref{4}] suggest that this method does worse than the qurtic approximation, and
+the modified polynomial method, and at low values of SNR the centroiding RMSE from
+this method moves significantly away from the CRLB.
 
-As we expected, the RMSE from centroiding by fitting the exact PSF model [\ref{4}] lies on the CRLB. Thus, centroid estimates from fitting the exact PSF model always saturate the CRLB. As it can be seen in figure [\ref{5}], even the centroid estimates found by fitting a wrong PSF model (Gaussian PSF) to the simulated stars saturate the CRLB.
+As we expected, the RMSE from centroiding by fitting the exact PSF model [\ref{5}]
+lies on the CRLB except at values of SNR below 10 where the RMSE gets slightly pulled away
+from the CRLB because of the presence of a few outliers.
+Thus, centroid estimates from fitting the exact PSF model always
+saturate the CRLB. As it can be seen in figure [\ref{6}],
+even the centroid estimates found by fitting a wrong PSF model (Gaussian PSF)
+to the simulated stars saturate the CRLB.
 
 \subsection{Experiment 2}
-In this experiment, after finding the centroiding error for each method, we compute the RMSE in bins of $\gamma$ in order to compare it to the CRLB. 
-Behavior of error as a function of $\gamma$ for different values of SNR, is shown in figures [\ref{6}], [\ref{7}], and [\ref{8}], [\ref{9}], and [\ref{10}]. 
+In this experiment, after finding the centroiding error for each method, we
+compute the RMSE in bins of $\gamma$ in order to compare it to the CRLB. 
+Behavior of error as a function of $\gamma$ for different values of SNR,
+is shown in figures [\ref{7}], [\ref{8}], and [\ref{9}], [\ref{10}], [\ref{11}], and [\ref{12}]. 
  
-The centroid estimates obtained from the 3$\times$3 polynomial method [\ref{6}] result in RMSE much larger than the CRLB in all ranges of FWHM and for all four values of SNR in this experiment. In the case of extremely faint stars (SNR = 5), the polynomial method is not able to deliver any reliable estimate, and completely fails.
+The centroid estimates obtained from the 3$\times$3 polynomial method [\ref{7}]
+result in RMSE much larger than the CRLB in all ranges of FWHM and for all four
+values of SNR in this experiment. In the case of extremely faint stars (SNR = 5),
+the polynomial method is not able to deliver any reliable estimate, and completely fails.
 
-The 3$\times$3 modified polynomial method [\ref{7}], and the 3$\times$3 quartic approximation [\ref{8}] result in RMSE very close to the CRLB. For al four values of SNR, as we increase $\gamma$ from 2 pixels to 3 pixels, RMSE gets slightly closer to the CRLB since these two models start to work slightly worse as we decrease $\gamma$ and move towards undersampled stars. After approximately 3 pixels, increasing $\gamma$ deviate RMSE of these methods from the CRLB. This is inherent characteristic of all 
-3$\times$3 methos. Furthermore, increasing SNR from 5 to 40 makes the RMSE (as a function of $\gamma$) closer to the CRLB.
+The 3$\times$3 modified polynomial method [\ref{8}], and the 3$\times$3
+quartic approximation [\ref{9}] result in RMSE very close to the CRLB.
+For al four values of SNR, as we increase $\gamma$ from 2 pixels to 3 pixels,
+RMSE gets slightly closer to the CRLB since these two models start to work
+slightly worse as we decrease $\gamma$ and move towards undersampled stars.
+After approximately 3 pixels, increasing $\gamma$ deviate RMSE of these methods from the CRLB.
+This is inherent characteristic of all 3$\times$3 methos. 
+Furthermore, increasing SNR from 5 to 40 makes the RMSE (as a function of $\gamma$) get
+closer to the CRLB. Also we observe that in the case of 7$\times$7 weighted moment 
+centroiding, deviation of the centroiding RMSE from the CRLB is significantly higher
+than those of 3$\times$3 quartic approximation, and 3$\times$3 modified polynomial.
 
-Again The RMSE from centroiding by fitting the exact PSF model as a function of FWHM perfectly lies on the CRLB [\ref{9}]. Thus, centroid estimates from fitting the exact PSF model always saturate the CRLB. Once again, we observe that the centroid estimates found by fitting a Gaussian PSF to the simulated stars also saturate the CRLB in all ranges of $\gamma$ [\ref{10}].
-
+Again The RMSE from centroiding by fitting the exact PSF model as a function of FWHM
+perfectly lies on the CRLB [\ref{11}] except at SNR = 5 where the RMSE slightly deviates
+from the CRLB due tp the presence of outliers. Thus, centroid estimates from fitting
+the exact PSF model always saturate the CRLB. Once again, we observe that the centroid
+estimates found by fitting a Gaussian PSF to the simulated stars also saturate
+-- except in the case of SNR = 5-- the CRLB in all ranges of $\gamma$ [\ref{12}].
 
 \section{Discussion}\label{sec:discussion}
 
-In this work, we proposed a method for centroiding stars based on fitting a low order polynomial to a 3$\times$3 patch of star images smoothed by a Gaussian kernel. 
-Furthermore, we compared the performance of this method with the naive 3$\times$3 polynomial centroiding, 3$\times$3 quartic approximation, and PSF fitting.
-In order to make this comparison, we performed some tests on a large number of simulated data, and investigated to see if these estimators can saturate the Cramer-Rao lower bound, or how close to they get to saturating the bound. 
+In this work, we proposed a method for centroiding stars based on fitting a low order
+polynomial to a 3$\times$3 patch of star images smoothed by a Gaussian kernel. 
+Furthermore, we compared the performance of this method with the naive 3$\times$3 polynomial
+centroiding, 3$\times$3 quartic approximation, and PSF fitting.
+In order to make this comparison, we performed some tests on a large number of
+simulated data, and investigated to see if these estimators can saturate the Cramer-Rao
+lower bound, or how close to they get to saturating the bound. 
 
-Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns centroid estimates that saturate the CRLB. We found that the estimates found by 3$\times$3 polynomial method are far away from saturating the CRLB. On the other hand, the RMSE of centroid estimates of our proposed 3$\times$3 modified polynomial method, and that of the 3$\times$3 quartic approximation, are much closer to the CRLB. The performance of these two methods however, is limited by two important factors: \emph{(i)} signal-to-noise ratio, and \emph{(ii)} size of the stars.
+Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns 
+centroid estimates that saturate the CRLB. We found that the estimates found by 3$\times$3
+polynomial method are far away from saturating the CRLB. On the other hand, the RMSE of
+centroid estimates of our proposed 3$\times$3 modified polynomial method, and that of the
+3$\times$3 quartic approximation, are much closer to the CRLB. The performance of these two
+methods however, is limited by two important factors: \emph{(i)} signal-to-noise ratio,
+and \emph{(ii)} size of the stars.
 
-These two techniques only take advantage of the information contained in a 3$\times$3 patch around the brighest pixel of the smoothed image. Thus, when we apply 
-these methods to find the centroid of stars with larger FWHM, a certain amount of information (encoded in the Cramer-Rao lower bound) is lost, and therefore, the RMSE of these methods deviates from the CRLB. This deviation gets even larger at lower signal-to-noise ratios. Besides, the performance of these methods slightly degrades in the case of undersampled stars. Presence of noise is another limitting factor. Although these methods are able to get close to saturating the CRLB in a wide range of signal-to-noise ratios, they are not as reliable in the extremely faint stars (SNR less than 10). This is mostly due to the fact that presence of noise could move the true brightest pixel of image. 
+These two techniques only take advantage of the information contained in a 3$\times$3
+patch around the brighest pixel of the smoothed image. Thus, when we apply 
+these methods to find the centroid of stars with larger FWHM, a certain amount of
+information (encoded in the Cramer-Rao lower bound) is lost, and therefore, the RMSE
+of these methods deviates from the CRLB. This deviation gets even larger at lower
+signal-to-noise ratios. Besides, the performance of these methods slightly degrades
+in the case of undersampled stars. Presence of noise is another limitting factor.
+Although these methods are able to get close to saturating the CRLB in a wide range of
+signal-to-noise ratios, they are not as reliable in the extremely faint stars
+(SNR less than 10). This is mostly due to the fact that presence of noise could
+move the true brightest pixel of image. 
 
-In this investigation we showed that PSF fitting is always better at centroiding stars. In practice however, we do no know the the exact PSF. Besides finding the centroid by PSF fitting is computationally expensive whereas by employing tht 3$\times$3 modified polynomial technique into large scale astronomical surveys can considerably reduce the computational cost of initial astrometry of these surveys. The advantage of this method becomes more pronounced in PSF estimation in which we need to know the centroid of stars accurately, but at the same time, with fewer number of algebraic operations. This method can roughly be thousand times faster than centroiding by model fitting, and requires fewer operations than the 3$\times$3 quartic approximation mehod.
+In this investigation we showed that PSF fitting is always better at centroiding stars.
+In practice however, we do no know the the exact PSF. Besides finding the centroid by PSF
+fitting is computationally expensive whereas by employing tht 3$\times$3 modified polynomial
+technique into large scale astronomical surveys can considerably reduce the computational cost
+of initial astrometry of these surveys. The advantage of this method becomes more pronounced
+in PSF estimation in which we need to know the centroid of stars accurately, but at the
+same time, with fewer number of algebraic operations. This method can roughly be thousand
+times faster than centroiding by model fitting, and requires fewer operations than the
+3$\times$3 quartic approximation mehod.
      
-Having a reasonable PSF model should always deliver better centroid estimates, but over a certain range of low signal-to-noise ratios, one can achieve sensibly accurate results by employing this simple 3$\times$3 method without making any assumption about the PSF model.
+Having a reasonable PSF model should always deliver better centroid estimates, but
+over a certain range of low signal-to-noise ratios, one can achieve sensibly accurate
+results by employing this simple 3$\times$3 method without making any assumption about
+the PSF model.
 
-In this investigation we narrowed our focus on a set of data simulated from a very specific model. Although there are various cases where Moffat profiles provide reasonable representation of point spread function, these models are not generic enough to let us reach a more general conclusion. Another important, and untapped, area of study would be devising a model that infers the centroid of stars and point spread function (in its full extent, not at the catalog level) across an astronomical image simultaneously. This is beyond the scope of this study. 
-
-
-
+In this investigation we narrowed our focus on a set of data simulated from a very specific
+model. Although there are various cases where Moffat profiles provide reasonable
+representation of point spread function, these models are not generic enough to let us
+reach a more general conclusion. Another important, and untapped, area of study
+would be devising a model that infers the centroid of stars and point spread function
+(in its full extent, not at the catalog level) across an astronomical image simultaneously.
+This is beyond the scope of this study. 
 
 \begin{thebibliography}{70}
 
