@@ -245,6 +245,13 @@ The centroid is then estimated by finding the intersection of two curves,
 one fitted to three maxima corresponding to rows, and the other fitted
 to three maxima corresponding to columns.
 
+\subsection{7$\times$7 weighted moments}
+
+In addition to the methods mentioned above, we examine weighted moment method which
+requires taking a 7$\times$7 patch of image around the brightest pixel,
+weighting the pixels by the intensity, and computing the first moments (or center
+of mass) of the weighted 7$\times$7 patch thereafter. 
+
 \section{Simulations and Tests}\label{sec:data}
 
 In order to test the accuracy of the method mentioned so far, and to ompare them against each other,
@@ -387,7 +394,8 @@ the CRLB.
 
 \subsection{Experiment 1}
    
-In this experiment, after finding the centroiding error for each method, we compute the RMSE in bins of SNR in order to compare it to the CRLB. 
+In this experiment, after finding the centroiding error for each method,
+we compute the RMSE in bins of SNR in order to compare it to the CRLB. 
 Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}], [\ref{3}], [\ref{4}], [\ref{5}]. All methods deliver results with RMSE larger for fainter stars.
 In case of 3$\times$3 polynomial centroiding [\ref{1}], RMSE becomes very large as we move towards the fainter stars in our simulation. Moreover, we observe a kink in the plot of RMSE against SNR. For stars with larger $\gamma$, this kink moves toward higher values of SNR. As it can be seen in figure [\ref{1}], centroid estimate from the polynomial method do not even get close to saturating the CRLB. By increasing $\gamma$, RMSE moves further away from the CRLB.
 
@@ -463,51 +471,98 @@ In this investigation we narrowed our focus on a set of data simulated from a ve
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
+  \includegraphics[width=\linewidth]{snr_moment.png}
+\endminipage
+\caption{Scatter plots showing the relation between error in centroid measurement
+from the 7$\times$7 weighted moment method and the signal-to-noise ratio of stars,
+with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right)
+pixels. In each scatter plot, the blue line represents the running median of data points,
+and the green line represents CRLB.}\label{4}
+\end{figure}
+
+\begin{figure}[!htb]
+\minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{snr_psf.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from fitting the exact PSF model to the stars and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{4}
+\caption{Scatter plots showing the relation between error in centroid measurement
+from fitting the exact PSF model to the stars and the signal-to-noise ratio of stars,
+with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right)
+pixels. In each scatter plot, the blue line represents the running median of data points,
+and the green line represents CRLB.}\label{5}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{snr_wrongpsf.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from fitting a Gaussian PSF model to the stars and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{5}
+\caption{Scatter plots showing the relation between error in centroid
+measurement from fitting a Gaussian PSF model to the stars and the signal-to-noise
+ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left),
+and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the
+running median of data points, and the green line represents CRLB.}\label{6}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{fwhm_poly.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from the 3$\times$3 polynomial method and FWHM of stars, with SNR  of : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{6}
+\caption{Scatter plots showing the relation between error in centroid measurement
+from the 3$\times$3 polynomial method and FWHM of stars, with SNR  of : 5 (upper left),
+10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue
+line represents the running median of data points, and the green line represents CRLB.}\label{7}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{fwhm_spoly.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from the 3$\times$3 modified polynomial method and FWHM of stars, with SNR  of : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{7}
+\caption{Scatter plots showing the relation between error in centroid measurement
+from the 3$\times$3 modified polynomial method and FWHM of stars, with SNR  of 
+: 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right). In each
+scatter plot, the blue line represents the running median of data points, and the
+green line represents CRLB.}\label{8}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{fwhm_sdss.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from the 3$\times$3 quartic approximation method and FWHM of stars, with SNR  of : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{8}
+\caption{Scatter plots showing the relation between error in centroid measurement from
+the 3$\times$3 quartic approximation method and FWHM of stars, with SNR  of : 5 (upper left),
+10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue line
+represents the running median of data points, and the green line represents CRLB.}\label{9}
+\end{figure}
+
+\begin{figure}[!htb]
+\minipage{.8\textwidth}
+  \includegraphics[width=\linewidth]{fwhm_moment.png}
+\endminipage
+\caption{Scatter plots showing the relation between error in centroid
+measurement from the 7$\times$7 weighted moment method and FWHM of stars,
+with SNR  of : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right).
+In each scatter plot, the blue line represents the running median of data points,
+and the green line represents CRLB.}\label{10}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{fwhm_psf.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from fitting the exact PSF model and FWHM of stars, with SNR  of : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{9}
+\caption{Scatter plots showing the relation between error in centroid measurement
+from fitting the exact PSF model and FWHM of stars, with SNR  of : 5 (upper left),
+10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot,
+the blue line represents the running median of data points, and the
+green line represents CRLB.}\label{11}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{fwhm_wrongpsf.png}
 \endminipage
-\captionScatter plots showing the relation between error in centroid measurement from fitting a Gaussian PSF model and FWHM of stars, with SNR  of : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{10}
+\captionScatter plots showing the relation between error in centroid measurement
+from fitting a Gaussian PSF model and FWHM of stars, with SNR  of : 5 (upper left),
+10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the
+blue line represents the running median of data points, and the green line represents CRLB.}\label{12}
 \end{figure}
 
 \end{document}
