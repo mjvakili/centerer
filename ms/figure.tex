@@ -482,9 +482,7 @@ lower bound, or how close to they get to saturating the bound.
 Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns 
 centroid estimates that saturate the CRLB; with the exception of SNR being less than 10, 
 in which a few centroiding ouliers caused the RMSE to slightly, but not significantly, deviate
-from the CRLB. 
-
-We found that the estimates found by 3$\times$3 polynomial method are far away from
+from the CRLB. We found that the estimates found by 3$\times$3 polynomial method are far away from
 saturating the CRLB. On the other hand, the RMSE of centroid estimates of our proposed
 3$\times$3 modified polynomial method, and that of the 3$\times$3 quartic approximation,
 are much closer to the CRLB. The performance of these two methods however, is limited by
@@ -499,19 +497,36 @@ signal-to-noise ratios. Besides, the performance of these methods slightly degra
 in the case of undersampled stars. Presence of noise is another limitting factor.
 Although these methods are able to get close to saturating the CRLB in a wide range of
 signal-to-noise ratios, they are not as reliable in the extremely faint stars
-(SNR less than 10). This is mostly due to the fact that presence of noise could
-move the true brightest pixel of image. 
+(SNR less than 10). This is mostly due to the fact that in the presence of noise, 
+the brightest pixel of image, does not necessarily contain the centroid of stars. 
 
 In this investigation we showed that PSF fitting is always better at centroiding stars.
 In practice however, we do no know the the exact PSF. Besides finding the centroid by PSF
 fitting is computationally expensive whereas by employing tht 3$\times$3 modified polynomial
 technique into large scale astronomical surveys can considerably reduce the computational cost
-of initial astrometry of these surveys. The advantage of this method becomes more pronounced
+of initial astrometry of these surveys.
+
+It is important to note that the PSF fitting method can be made faster by only keeping the 
+term proportional to the product of the PSF model and the image in $\chi^2$. This is because 
+the other terms are not sensitive to the position of centroid. However, this only allows
+us to vary the poition of centroid, and not the flux, while fitting the PSF model
+to the star. 
+
+Modifying the $\chi^2$ such that it contains the product of the PSF and image, 
+provides a nice interpretation for the PSF fitting method. It corresponds to oversampling
+of the image with the correct PSF, and finding the centroid in the oversampled image afterwards.
+On the other hand, one can think of the initial smoothing step in 3$\times$3 methods
+such as modified polynomial and quartic approximation methods, as oversampling of the 
+image with an approximate Gaussian PSF. The fitting and approximate methods are different 
+in that after upsamlping, in the approximate methods, our knowledge is limited to the 3$\times$3 
+patch around the brightest pixel and as a result, we loose some information.
+
+The advantage of this method becomes more pronounced
 in PSF estimation in which we need to know the centroid of stars accurately, but at the
 same time, with fewer number of algebraic operations. This method can roughly be thousand
 times faster than centroiding by model fitting, and requires fewer operations than the
 3$\times$3 quartic approximation mehod.
-     
+
 Having a reasonable PSF model should always deliver better centroid estimates, but
 over a certain range of low signal-to-noise ratios, one can achieve sensibly accurate
 results by employing this simple 3$\times$3 method without making any assumption about
@@ -524,6 +539,7 @@ reach a more general conclusion. Another important, and untapped, area of study
 would be devising a model that infers the centroid of stars and point spread function
 (in its full extent, not at the catalog level) across an astronomical image simultaneously.
 This is beyond the scope of this study. 
+
 
 \begin{thebibliography}{70}
 
