@@ -463,21 +463,32 @@ estimates found by fitting a Gaussian PSF to the simulated stars also saturate
 
 \section{Discussion}\label{sec:discussion}
 
-In this work, we proposed a method for centroiding stars based on fitting a low order
+An optimal stellar centroiding algorithm must always saturate the Cramer-Rao lower 
+bound. That is, in all ranges of background noise level, size, radial light profile,
+and shape, it must preserve information about the centroid of stars. In practice however,
+that is only achievable when we know the exact PSF. Since, we do not know the exact PSF
+profile, we make use of various approximate centroiding algorithms. In this work, we
+studied how different methods get close to saturating the CRLB for relatively low SNR
+stars.
+ 
+We also proposed a method for centroiding stars based on fitting a low order
 polynomial to a 3$\times$3 patch of star images smoothed by a Gaussian kernel. 
 Furthermore, we compared the performance of this method with the naive 3$\times$3 polynomial
-centroiding, 3$\times$3 quartic approximation, and PSF fitting.
+centroiding, 3$\times$3 quartic approximation, moment-based method, and PSF fitting.
 In order to make this comparison, we performed some tests on a large number of
 simulated data, and investigated to see if these estimators can saturate the Cramer-Rao
 lower bound, or how close to they get to saturating the bound. 
 
 Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns 
-centroid estimates that saturate the CRLB. We found that the estimates found by 3$\times$3
-polynomial method are far away from saturating the CRLB. On the other hand, the RMSE of
-centroid estimates of our proposed 3$\times$3 modified polynomial method, and that of the
-3$\times$3 quartic approximation, are much closer to the CRLB. The performance of these two
-methods however, is limited by two important factors: \emph{(i)} signal-to-noise ratio,
-and \emph{(ii)} size of the stars.
+centroid estimates that saturate the CRLB; with the exception of SNR being less than 10, 
+in which a few centroiding ouliers caused the RMSE to slightly, but not significantly, deviate
+from the CRLB. 
+
+We found that the estimates found by 3$\times$3 polynomial method are far away from
+saturating the CRLB. On the other hand, the RMSE of centroid estimates of our proposed
+3$\times$3 modified polynomial method, and that of the 3$\times$3 quartic approximation,
+are much closer to the CRLB. The performance of these two methods however, is limited by
+two important factors: \emph{(i)} signal-to-noise ratio, and \emph{(ii)} size of the stars.
 
 These two techniques only take advantage of the information contained in a 3$\times$3
 patch around the brighest pixel of the smoothed image. Thus, when we apply 
