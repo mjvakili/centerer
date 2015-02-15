@@ -34,8 +34,8 @@ citecolor=darkblue }
 \title{Fast and optimal centroiding of faint stars}
 
 \begin{abstract}
-One of the most demanding tasks in astronomical image processing---in terms of precision---is
-the centroiding of stars. Upcoming large surveys are going to take images of billions of point sources, 
+One of the most demanding tasks in astronomical image processing---in terms of precision---is the centroiding of stars. 
+Upcoming large surveys are going to take images of billions of point sources, 
 including many faint stars, with short exposure times. Real-time estimation of the
 centroid of stars is crucial for real-time PSF estimation, and precision is required
 for measurements of proper motion. In this work, we aim to compare the performance of
@@ -43,7 +43,13 @@ fast and slow centroiding methods, when they are applied
 to relatively low signal-to-noise ratio stars in a wide range of psf sizes.
 In order to investigate how information-preserving these techniques are, we compare
 the root-mean-squared-error arising from these centroiding methods with the fundamental Cramer-Rao
-lower bound.
+lower bound. We discuss two general circumstances in centroiding of faint stars: (i) when we have a good estimate
+of the PSF, (ii) when we do not know the PSF. In the case that we know the PSF, we show that a fast
+ polynomial centroiding after smoothing the image by the PSF can be 
+as accurate as PSF profile fitting with a good PSF estimate. In the case that we do not
+know the PSF, we demonstrate that although a particular form of polynomial centroiding method is not as
+accurate as PSF profile fitting, it comes close to saturating the Cramer-Rao lower bound
+in a wide range of conditions.    
 
 %include weighted moments, naive 3$\times$3 polynomial centroiding,
 %the 3$\times$3 quartic approximation used in the \textsl{Sloan Digital Sky Surveys}, and PSF profile fitting
