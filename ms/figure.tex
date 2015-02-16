@@ -95,30 +95,37 @@ coordinates being free parameters of these models.
 DAOPHOT (DoPHOT) finds the centroid by fitting a Gaussian (power law) PSF to
 the light profile of stars.
 
-In this paper, we propose to find the centroid of stars by smoothing the image
-of stars by a Gaussian kernel, and fitting a second order polynomial to
-the $3\times$3 pixels around the brightest pixel of smoothed image.
-We compare the accuracy of this method with, the naive 3$\times$3 second-order 
-polynomial method, the 3$\times$3 quartic approximation
-method used in SDSS photometric pipeline, and fitting a PSF model to the 
-star.
-
-In order to do so, we apply these methods to a large number of simulated
-stars with different signal-to-noise ratio and size realizations. 
-Error from star centroiding methods, will always have 
+In this paper, we study how optimal various techniques are at centroiding 
+faint stars. That is, we apply a number of centroiding methods 
+to a large number of simulated stars with different signal-to-noise ratio and
+ size realizations. Error from star centroiding methods, will always have 
 a theoretically-set lower bound, known as the Cramer-Rao lower bound
 (hereafter denoted by CRLB) which has an inverse relation with the
 signal-to-noise-ratio of stars.
 
 Given the analytic model for the PSF,
-we derive an expression for CRLB on the centroiding error as
-a function of the parameters of the PSF model (\eg FWHM),
+we derive an expression for the fundamental lower bound on the centroiding error as
+a function of the parameters of the PSF model (\eg size),
 and signal-to-noise-ratio of stars. We create two sets of simulations for which we 
 know the CRLB, one with variable (constant) signal-to-noise ratio (FWHM), and one 
 with variable (constant) FWHM (signal-to-noise ratio). After applying
 different centroiding methods to the simulations,
 we investigate how close these methods can get to saturating the CRLB for
 various ranges of background noise and FWHM.
+
+In this work, we focus on three centroiding methods. The first method finds
+ the centroid of stars by smoothing the image of
+ stars by a Gaussian kernel of a fixed size, and fitting a second order
+ polynomial to the $3\times$3 patch around the brightest pixel of smoothed
+ image. This method is fast and does not require any knowledge of the 
+PSF. In the second method, we apply the same polynomial centroiding to the
+ $3\times$3 patch around the brightest pixel of the image of star convolved 
+with the full PSF postage stamp. The last method that we consider, is fitting 
+a PSF profile, assuming that we have a good PSF estimate, to the star.
+%We compare the accuracy of this method with, the naive 3$\times$3 second-order 
+%polynomial method, the 3$\times$3 quartic approximation
+%method used in SDSS photometric pipeline, and fitting a PSF model to the 
+%star.
 
 This paper is structured as follows. In section \ref{sec:method},
 we give a brief overview of the centroiding methods used in our investigation.
@@ -130,15 +137,14 @@ in \ref{sec:discussion}.
 
 \section{Methods}\label{sec:method}
 
-\subsection{3$\times$3 polynomial method}
+\subsection{Non PSF-based methods}
+
+\item {\bf 3$\times$3 polynomial centroiding}\quad
 
 In order to find the centroid of a star, 
 we fit a simple 2d polynomial $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ to the
 $3\times3$ patch centered on the brightest pixel of the
 image. We apply this method to star images in the sky-dominated regime.
-In this regime, the covariance matrix of pixel uncertianties is simply
-given by $\sigma^{2}\mathbf{I}$, where $\sigma^{2}$ is variance of the
-uncorrelated Gaussian noise, and $\mathbf{I}$ is a 9$\times$9 identity matrix.
 Upon constructing a universal 9$\times$6 design matrix
 \begin{equation}
     \mathbf{A} = 
@@ -185,89 +191,62 @@ inverting a 2$\times$2 curvature matrix
       e & 2f\\
   \end{bmatrix}.
 \eeq
-When D has a zero (or very close to zero) deteminant,
+When $D$ has a zero (or very close to zero) deteminant,
 centroid estimated by (\ref{center}) gets arbitrarily 
 large in which case the centroiding method leads to a catastrophic 
-outlier. In order to tackle this issue, we add a small regularization term
-proportional to $\sigma$ to the diagonal elements of the curvature matrix.
-This soft regularization term prevents the determinant of the curvature matrix from
-getting zero, and removes the catastrophic outliers.
+outlier. In order to tackle this issue, we add a soft regularization term
+proportional to $\sigma^{2}$ to the determinant of $D$.
 
-\subsection{3$\times$3 modified polynomial method}
+\item {\bf 3$\times$3 modified polynomial method I}\quad
+
 Now, we modify the simple polynomial method explained above,
 by smoothing the image of the star with a Gaussian kernel
 \beq
 k(\mathbf{x}) = \frac{1}{2\pi w^2}\exp(-\mathbf{x}^{2}/2w^{2}).
 \eeq
-Throughout this study, we keep the width of the Gaussian kernel $w$ constant.
+Throughout this study, we keep the width of the Gaussian kernel $w$ constant and equal to
+1.2 pixels (corresponding to FWHM = 2.8 pixels).
 Then we apply the same polynomial method to the 3$\times$3 patch around the brightest
-pixel of the smoothed image. The important difference between the previous
-approach and the modified method is that, there are non-zero covariances
-among the uncertainties of the brightness of different pixels of the
-smoothed image. That is, the covariance matrix $\mathbf{C}$ is non-diagonal.
-It can be shown that after smoothing, elements of the covariance matrix are given by
-\begin{eqnarray}
-\mathbf{C}_{ij} &=& \frac{\sigma^{2}}{4\pi w^{2}} \exp(-\frac{r_{ij}^{2}}{4\pi w^{2}}),\\
-r_{ij}^{2} &=& (x_{i} - x_{j})^{2} + (y_{i} - y_{j})^{2},
-\label{nondiagonal}
-\end{eqnarray}
-where $w$ is width of the kernel, $\sigma$ is the per-pixel uncertainty, and $x_{i}$
-, $y_{i}$ are the $x$, and $y$ coordinates of the $i$-th pixel
-respectively. In the presence of the non-diagonal covariance matrix
-$\mathbf{C}$, equation (\ref{linearfit}) needs to be modified in the following way
-\beq
-\mathbf{X} = [\mathbf{A}^{T}\mathbf{C}^{-1}\mathbf{A}]^{-1}[\mathbf{A}^{T}\mathbf{C}^{-1}\mathbf{Z}].
-\label{linearfit2}
-\eeq
-Therefore, for a given star and a smoothing kernel,
-the outcome of equation (\ref{linearfit2}) can be
+pixel of the smoothed image. Therefore, for a given star and a smoothing kernel,
+the outcome of equation (\ref{linearfit}) can be
 plugged into equation (\ref{center}) to find the centroid estimate
-of the star.
-\subsection{3$\times$3 quartic approximation method}
-Consider any row or column of the 3$\times$3 patch around
-the brightest pixel of the smooth image and let us denote
-the brightness of these three pixels by $\{I_{-},I_{0},I_{+}\}$.
-The fundamental assumption behind the technique is that these
-brightness values can be approximated
-by the function $P(x) = Q\exp((x-x_{c})^{2}/2\beta^{2})$
-evaluated at $x=-1,0,+1$; with $x_{c}$ being the position of centroid
-of the three pixels. Knowing the value of $P$ at $\{-1,0,1\}$,
-expanding $P(x)$ up to fourth order in $x$ leads to
-\beq
-x = \frac{s}{t}(1+k\frac{t}{4Q}(1-(s/t)^{2})),
-\eeq
-where k = 1.33, and
+of the star. 
 
-\begin{eqnarray}
-s&=&(I_{+}-I_{-})/2, \\
-t &=&2I_{0} - (I_{+}+I_{-}), \\
-Q &=& I_{0} +s^{2}/2t.
-\label{def}
-\end{eqnarray}
+\subsection{PSF-based methods}
 
-If we apply this procedure to every column and row of the 3$\times$3 patch
-around the brightest pixel of the smoothed image, we will find three local
-maxima for three rows $\{(x_{-},-1)$, $(x_{0},0)$, $(x_{+},1)\}$, and three
-local maxima for three columns $\{(-1,y_{-})$, $(0,y_{0})$, $(1,y_{+})\}$.
-The centroid is then estimated by finding the intersection of two curves,
-one fitted to three maxima corresponding to rows, and the other fitted
-to three maxima corresponding to columns.
+\item {\bf 3$\times$3 modified polynomial method II}\quad
 
-\subsection{7$\times$7 weighted moments}
+Consider the case that we have a good estimate of the PSF at
+the position of the faint star under consideration. Therefore, we 
+can modify the smoothing step in the following way. Instead of smoothing
+with a Gaussian kernel with a fixed size, we convolve the image of star
+with the full postage stamp of the PSF. Then, we apply the same polynomial
+fitting to the 3$\times$3 patch around the brightest pixel of the convolved image.
 
-In addition to the methods mentioned above, we examine weighted moment method which
-requires taking a 7$\times$7 patch of image around the brightest pixel,
-weighting the pixels by the intensity, and computing the first moments (or center
-of mass) of the weighted 7$\times$7 patch thereafter. 
+The procedure of convolving the image of star with the PSF results in a
+more well-sampled, which eventually, leads to having more
+information regarding the centroid of stars in the 3$\times$3 patch around the
+brightest pixel. In addition, a simple 2d polynomial will provides a better fit 
+since convolution with the PSF makes the variation of the image across the 3 pixels
+very smooth.
 
-\section{Simulations and Tests}\label{sec:data}
+\item {\bf psf profile fitting}\quad
 
-In order to test the accuracy of the method mentioned so far, and to ompare them against each other,
-and we need to simulate a large set of stars for which we know the exact position of centroids.
-Furthermore, we uniformly draw the centroids within sub-pixel regions. 
+In addition to the methods mentioned so far, we examine fitting stars with the exact
+ PSF profile. That is, in our Cramer-Rao bound saturation tests, That is, we find the best
+ estimates of flux and centroid by
+optimizing the $\chi^{2}$. We expect this method to perform better in determing the centroid
+ of stars. In theory, it always saturates the CRLB. 
+ 
+\section{Simulations and Cramer-Rao saturation tests}\label{sec:data}
+
+In order to test the accuracy of the method mentioned in section \ref{sec:method},
+ and to compare their performance at saturating the Cramer-Rao bound against each other, 
+we need to simulate a large set of stars for which we know the exact position of centroids.
+Furthermore, we uniformly draw the centroids of these simulated stars within sub-pixel regions. 
 We use the Moffat profile \citep{moffat} for our PSF simulations. 
 Moffat profile is an analytic model for stellar PSFs. It has broader wings than
-a simple Gaussian model. The surface brightness of the Moffat profile is given by
+a simple Gaussian profile. The surface brightness of the Moffat profile is given by
 \beq
 I(r) = \frac{F(\beta -1)}{\pi \alpha^{2}}[1+(r/\alpha)^{2}]^{-\beta},
 \label{mof}
@@ -275,7 +254,7 @@ I(r) = \frac{F(\beta -1)}{\pi \alpha^{2}}[1+(r/\alpha)^{2}]^{-\beta},
 where $F$ is the total flux, $\beta$ is a dimensionless paramter, and $\alpha$ is
 the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$)
 being $2\alpha\sqrt{2^{1/\beta}-1}$. 
-We want to investigate the performance of centroiding methods introduced
+We aim to investigate the performance of centroiding methods introduced
 in section \ref{sec:method} for different background noise levels, and also different
 values of $\gamma$. For further simplicity, we set the flux of all stars in our
 simulations to unity. Per pixel uncertainties are assumed to be uncorrelated Gaussian,
@@ -285,15 +264,15 @@ Moreover, it is more convenient to work with the signal-to-noise ratio
 (hereafter denoted by SNR) instead of the variance of the Gaussian noise.
 We define SNR as the ratio of the mean and variance of the distribution
 which the flux estimator is drawn from. Assume that the total flux from
-the point source is $f$, and that the PSF at the $i$-th pixel is given
+the point source is $F$, and that the PSF at the $i$-th pixel is given
 by $P_{i}$. Therefore the brightness of the $i$-th pixel is drawn from
-a Gaussian distribution $p(I_{i}) = \mathcal{N}(fP_{i},\sigma^{2})$. 
+a Gaussian distribution $p(I_{i}) = \mathcal{N}(FP_{i},\sigma^{2})$. 
 
 The optimal estimator of flux (one which saturates Cramer-Rao bound),
-is the weighted average $\tilde{f}=\sum_{i}I_{i}P_{i}$. Knowing the
+is the weighted average $\tilde{F}=\sum_{i}I_{i}P_{i}$. Knowing the
 distribution of $I_{i}$, it can be shown that 
 \beq
-p(\tilde{f}) = \mathcal{N}(f , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
+p(\tilde{F}) = \mathcal{N}(F , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
 \eeq  
 which leads us to
 \beq
@@ -304,8 +283,9 @@ which leads us to
 \eeq
 
 Note that (\ref{snr}) is valid in the limit of sky-dominated regimes,
-and that is the limit we are interested in. In the case of our simulations,
-SNR given in (\ref{snr}) can be analytically expressed in terms of the per pixel uncertainty
+and that is the limit we are interested in throughout our investigation.
+ In the case of our simulations, SNR given in (\ref{snr}) can be analytically
+ expressed in terms of the per pixel uncertainty
 $\sigma$, FWHM $\gamma$, and also $\beta$. We fix $\beta$ at the fiducial value of 2.5.
 In this case we have
 \beq
@@ -313,21 +293,23 @@ In this case we have
 \label{snr2}
 \eeq
 
-Equation (\ref{snr2}) implies that for stars with the same flux $f$ and background
-noise level $\sigma$, those with radius have lower SNR.
+Equation (\ref{snr2}) implies that for stars with the same flux $F$,
+ and background
+noise level $\sigma$, those with higher size have lower SNR.
 
 We aim to study how centroiding errors from different methods behave with
 changing SNR and size, and how close they get to saturating the CRLB. 
-Given the PSF model that we have adopted for our simulations, We need 
-to derive an expression for the CRLB as a function of the size of of
-the stars, and SNR. We know that the CRLB is given by the inverse of 
-the Fisher information matrix $\mathcal{F}$. The closer an estimator is
-to saturating the CRLB, the more information about the quantity that we 
+The closer an estimator is to saturating the CRLB, the more information
+ about the quantity that we 
 need to estimate is preserved. A measure for closeness of an estimator to 
 saturating the CRLB is comparison of the root-mean-squared-error of that estimator 
 with the CRLB.
 
-In order to find the CRLB, it is sufficient to find the Fisher matrix.
+Given the PSF model that we have adopted for our simulations, we need 
+to derive an expression for the CRLB as a function of the size, and SNR of stars.
+ We know that the CRLB is given by the inverse of 
+the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
+ it is sufficient to compute the Fisher matrix.
 Let us assume that we have $M$ observables $\{f_{1}, ... , f_{M}\}$, each
 related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$. Assuming
 uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
@@ -365,7 +347,7 @@ the inverse of the Fisher matrix is given by
 \label{crlbmoffat}
 \eeq
 
-Equation (\ref{crlbmoffat}) implies that at given SNR and $\gamma$
+Equation (\ref{crlbmoffat}) implies that at given SNR and $\gamma$,
 CRLB for each component of centroid is given by $0.6846\gamma/\text{SNR}$,
 and that a good centroiding technique delivers centroids with
 root-mean-squared-error (hereafter RMSE) of each component close to
@@ -375,28 +357,21 @@ We perform two sets of simulations. In the first set, we choose four values of
 2, 2.8, 4, and 5.6 pixels for $\gamma$. For each $\gamma$, we generate 100,000 
 17 $\times$ 17 postage-stamps of Moffat profiles with centroids randomly drawn
 within the central pixel of the 17 $\times$ 17 postage-stamps. Moreover, Gaussian
-is noise added to each postage-stamp such that the stars are uniformly distributed
-in log-SNR between SNR = 5 to SNR = 100.
+noise is added to each postage-stamp such that the simulated stars are uniformly
+ distributed in log-SNR between SNR = 5 to SNR = 100.
 
 In the second set, we generate 100,000 17$\times$17 postage-stamps
 of Moffat profile, with values of $\gamma$ randomly distributed 
 between 2 pixels and 6 pixels, and with centroids drawn randomly within 
-the central pixel. we choose four values for SNR: 5, 10, 20, and 40. 
+the central pixel. We choose four values for SNR: 5, 10, 20, and 40. 
 For each SNR, and for each postage-stamp with a given $\gamma$, 
 Gaussian noise, with variance corresponding to SNR and $\gamma$ through equation 
 (\ref{snr2}), is added to the each postage-stamp.
 
 In the first experiment, we study how centroiding error behaves with changing
-SNR, while $\gamma$ is being held constant. In the second experiment, we study 
-how centroiding error behaves with changing $\gamma$ while SNR is being held constant.
+SNR, while $\gamma$ is held constant. In the second experiment, we study 
+how centroiding error behaves with changing $\gamma$ while SNR is held constant.
 
-In addition to the centroiding methods discussed in the previous sections,
-we compute the error from fitting the Moffat PSF model with the exact $\gamma$ to
-the data. That is, we find the best estimates of flux and centroid by
-optimizing the $\chi^{2}$. Furthermore, we computeth error from fitting a
-wrong PSF model (Gaussian profile) with the exact $\gamma$ to the data.
-In all cases in both experiments, we expect the PSF fitting method to saturate 
-the CRLB. 
 
 \section{Results}\label{sec:results}
 
@@ -405,116 +380,142 @@ the CRLB.
 In this experiment, after finding the centroiding error for each method,
 we compute the RMSE in bins of SNR in order to compare it to the CRLB. 
 Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}],
-[\ref{3}], [\ref{4}], [\ref{5}], [\ref{6}]. All methods deliver results
+[\ref{3}], [\ref{4}]. All methods deliver results
 with RMSE larger for fainter stars.
 In case of 3$\times$3 polynomial centroiding [\ref{1}], RMSE becomes
-very large as we move towards the fainter stars in our simulation.
-Moreover, we observe a kink in the plot of RMSE against SNR.
-For stars with larger $\gamma$, this kink moves toward higher values of SNR.
-As it can be seen in figure [\ref{1}], centroid estimate from the polynomial
-method do not even get close to saturating the CRLB. By increasing $\gamma$,
-RMSE moves further away from the CRLB.
+quite large as we move towards fainter stars in our simulation.
+For stars with larger $\gamma$, centroid estimate from the naive polynomial
+method show large deviation from the CRLB. By increasing $\gamma$,
+RMSE deviates further away from the CRLB.
 
-However, RMSE from the modified centroiding method [\ref{2}],
-and RMSE from the quartic approximation [\ref{3}] method are very
-close to the CRLB except at the very small values of SNR (SNR $<$ 10).
+However, RMSE from the modified centroiding method I [\ref{2}],
+is very close to the CRLB except at the very small values of SNR (SNR $<$ 10).
 As we increase $\gamma$ from 2 pixels to 2.8 pixels, RMSE gets closer
-to the CRLB. This implies that as stars get undersampled, the performance
-of these two models get slightly worse. But if we increase $\gamma$ to
-4 and 5.6 pixels, RMSE gets farther from the CRLB.
-This effect is quite predictable since these two models only use the
-information contained in a 3$\times$ 3 patch. It is also important to
-note that the rate at which the RMSE from these two method drops
+to the CRLB. Besides, Also, when we increase $\gamma$ to
+4 and 5.6 pixels, RMSE gets farther from the CRLB. For stars with $\gamma$ = 2 pixels, 
+the rate at which the RMSE from this method drops
 eventually becomes smaller than the constant rate at which the CRLB
-decreases with increaing SNR. Also the results from 7$\times$7 weighted moment
-method [\ref{4}] suggest that this method does worse than the qurtic approximation, and
-the modified polynomial method, and at low values of SNR the centroiding RMSE from
-this method moves significantly away from the CRLB.
+decreases with increaing SNR. The reason for this is that even after smoothing
+the with a Gaussian kernel, the image is still not well-sampled, and smooth enough
+for a 2d polynomial fitting to provide highly accurate centroiding estimates.
+For stars with $\gamma=2.8$ pixels, since the FWHM of the Gaussian kernel matches that 
+of the underlying simulations, the smooth images are well-sampled and therefore, 
+the method is able to deliver estimates very close to saturating the CRLB. As $\gamma$
+gets higher for the simulations, the convolved images are not as well-sampled as those 
+whose $\gamma$ matches the FWHM of the smoothing kernel and as a result, we loose
+some information by fitting a polynomial to only a 3$\times$3 patch. That is the 
+reason for why we observe slight deviation from the CRLB for stas with $\gamma$ = 4 pixels, and 
+slightly more deviations as we increase $\gamma$ to 5.6 pixels.   
+ 
+As we expected, the RMSE from centroiding by fitting the exact PSF model [\ref{4}]
+lies on the CRLB except for simulations with SNR = 5 where the RMSE gets slightly pulled away
+from the CRLB due to presence of a few outliers. Figure [\ref{3}] demonstrates that even the modified centroiding
+ method II is able deliver centroiding estimates as accurate as PSF profile fitting, with the exception
+of simulated stars with $\gamma$ = 2 pixels. For stars with $\gamma$ = 2 pixels, the 3$\times$3 polynomial
+fitting fails to saturate the CRLB since the PSF is undersampled. For simulated images higher $\gamma$, convolving the
+data with the PSF result in images that are well-sampled around the brightest pixel. This allows the 
+polynomial centroiding to deliver highly accurate results that can saturate the CRLB for simulated
+data with SNR $\ga$ 10.      
 
-As we expected, the RMSE from centroiding by fitting the exact PSF model [\ref{5}]
-lies on the CRLB except at values of SNR below 10 where the RMSE gets slightly pulled away
-from the CRLB because of the presence of a few outliers.
-Thus, centroid estimates from fitting the exact PSF model always
-saturate the CRLB. As it can be seen in figure [\ref{6}],
-even the centroid estimates found by fitting a wrong PSF model (Gaussian PSF)
-to the simulated stars saturate the CRLB.
 
 \subsection{Experiment 2}
+
 In this experiment, after finding the centroiding error for each method, we
 compute the RMSE in bins of $\gamma$ in order to compare it to the CRLB. 
 Behavior of error as a function of $\gamma$ for different values of SNR,
-is shown in figures [\ref{7}], [\ref{8}], and [\ref{9}], [\ref{10}], [\ref{11}], and [\ref{12}]. 
+is shown in figures [\ref{5}], [\ref{6}], and [\ref{7}], and [\ref{8}]. 
  
-The centroid estimates obtained from the 3$\times$3 polynomial method [\ref{7}]
+The centroid estimates obtained from the naive 3$\times$3 polynomial method [\ref{5}]
 result in RMSE much larger than the CRLB in all ranges of FWHM and for all four
 values of SNR in this experiment. In the case of extremely faint stars (SNR = 5),
 the polynomial method is not able to deliver any reliable estimate, and completely fails.
 
-The 3$\times$3 modified polynomial method [\ref{8}], and the 3$\times$3
-quartic approximation [\ref{9}] result in RMSE very close to the CRLB.
-For al four values of SNR, as we increase $\gamma$ from 2 pixels to 3 pixels,
-RMSE gets slightly closer to the CRLB since these two models start to work
-slightly worse as we decrease $\gamma$ and move towards undersampled stars.
-After approximately 3 pixels, increasing $\gamma$ deviate RMSE of these methods from the CRLB.
-This is inherent characteristic of all 3$\times$3 methos. 
-Furthermore, increasing SNR from 5 to 40 makes the RMSE (as a function of $\gamma$) get
-closer to the CRLB. Also we observe that in the case of 7$\times$7 weighted moment 
-centroiding, deviation of the centroiding RMSE from the CRLB is significantly higher
-than those of 3$\times$3 quartic approximation, and 3$\times$3 modified polynomial.
+The 3$\times$3 modified polynomial method I [\ref{6}], results in RMSE very close to the CRLB.
+For all four values of SNR, as we increase $\gamma$ from 2 pixels to 3 pixels,
+RMSE gets slightly closer to the CRLB since the method starts to perform
+slightly better as we move away from undersampled stars, and as the FWHM of the smoothing kernel
+gets closer to that of simulated images.
+After approximately 3 pixels, increasing $\gamma$ result in deviation of RMSE of the method from the CRLB.
+This is a characteristic of 3$\times$3 method as we apply it to a smoothed image which is still not sufficiently
+well sampled.  Furthermore, increasing SNR from 5 to 40 makes the RMSE (as a function of $\gamma$) get
+closer to the CRLB.
 
 Again The RMSE from centroiding by fitting the exact PSF model as a function of FWHM
-perfectly lies on the CRLB [\ref{11}] except at SNR = 5 where the RMSE slightly deviates
-from the CRLB due tp the presence of outliers. Thus, centroid estimates from fitting
+perfectly lies on the CRLB [\ref{8}] except at SNR = 5 where the RMSE slightly deviates
+from the CRLB due to presence of a few outliers. Thus, centroid estimates from fitting
 the exact PSF model always saturate the CRLB. Once again, we observe that the centroid
-estimates found by fitting a Gaussian PSF to the simulated stars also saturate
--- except in the case of SNR = 5-- the CRLB in all ranges of $\gamma$ [\ref{12}].
+estimates found by the 3$\times$3 modified polynomial method II saturate the CRLB with the
+exception of simulated stars with SNR = 5, or $\gamma$ very close to 2 pixels. [\ref{7}].
 
 \section{Discussion}\label{sec:discussion}
 
-An optimal stellar centroiding algorithm must always saturate the Cramer-Rao lower 
+A perfectly optimal stellar centroiding algorithm must saturate the fundamental Cramer-Rao lower 
 bound. That is, in all ranges of background noise level, size, radial light profile,
 and shape, it must preserve information about the centroid of stars. In practice however,
-that is only achievable when we know the exact PSF. Since, we do not know the exact PSF
-profile, we make use of various approximate centroiding algorithms. In this work, we
-studied how different methods get close to saturating the CRLB for relatively low SNR
+that is only achievable when we have a very good estimate of the PSF. Since, we do not always 
+know the exact PSF profile, we make use of various approximate centroiding algorithms. In this work, we
+studied how different methods get close to saturating the CRLB for relatively low signal-to-noise ratio
 stars.
  
-We also proposed a method for centroiding stars based on fitting a low order
-polynomial to a 3$\times$3 patch of star images smoothed by a Gaussian kernel. 
-Furthermore, we compared the performance of this method with the naive 3$\times$3 polynomial
-centroiding, 3$\times$3 quartic approximation, moment-based method, and PSF fitting.
-In order to make this comparison, we performed some tests on a large number of
-simulated data, and investigated to see if these estimators can saturate the Cramer-Rao
-lower bound, or how close to they get to saturating the bound. 
+We focused on examples from two classes of centroiding algorithms. The first class contains fast and approximate
+methods that do not require any knowledge of the PSF at the poistion of stars. Of methods that belong to this class
+we consider a simple method for centroiding stars based on fitting a low order
+polynomial to a 3$\times$3 patch of star images, once smoothed by a Gaussian kernel of fixed width, and once without any smoothing step. 
+The second class of centroiding algorithms contains methods which require knowledge of the PSF (or having a good estimate
+of the PSF) at the position of stars. We considered two examples from this class. The first example
+was the 3\times3 polynomial centroiding applied to the image of the star convolved with the PSF, and the
+second example is the PSF profile fitting. In terms of saturating the Cramer-Rao bound we compared 
+the performances of these mthods against each other. We call the 3$\times$3 polynomial method applied 
+to the image convolved with a fixed Gaussian kernel (the PSF), 3$\times$3 polynomial method I (II).
 
+%Furthermore, we compared the performance of these methods with the naive 3$\times$3 polynomial
+%centroiding, 3$\times$3 quartic approximation, moment-based method, and PSF fitting.
+%In order to make this comparison, we performed some tests on a large number of
+%simulated data, and investigated to see if these estimators can saturate the Cramer-Rao
+%lower bound, or how close to they get to saturating the bound. 
 Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns 
 centroid estimates that saturate the CRLB; with the exception of SNR being less than 10, 
 in which a few centroiding ouliers caused the RMSE to slightly, but not significantly, deviate
 from the CRLB. We found that the estimates found by 3$\times$3 polynomial method are far away from
-saturating the CRLB. On the other hand, the RMSE of centroid estimates of our proposed
-3$\times$3 modified polynomial method, and that of the 3$\times$3 quartic approximation,
-are much closer to the CRLB. The performance of these two methods however, is limited by
+saturating the CRLB. On the other hand, the RMSE of centroid estimates of 
+3$\times$3 modified polynomial method I are much closer to saturating the CRLB.
+The performance of this two method however, is limited by
 two important factors: \emph{(i)} signal-to-noise ratio, and \emph{(ii)} size of the stars.
 
-These two techniques only take advantage of the information contained in a 3$\times$3
-patch around the brighest pixel of the smoothed image. Thus, when we apply 
+The 3$\times$3 modified polynomial method I technique only takes advantage of the information contained in a 3$\times$3
+patch around the brighest pixel of the smoothed image which is only well-sampled when the FWHM of the simulated star
+ matches that of the smoothing kernel. Thus, when we apply 
 these methods to find the centroid of stars with larger FWHM, a certain amount of
 information (encoded in the Cramer-Rao lower bound) is lost, and therefore, the RMSE
 of these methods deviates from the CRLB. This deviation gets even larger at lower
-signal-to-noise ratios. Besides, the performance of these methods slightly degrades
-in the case of undersampled stars. Presence of noise is another limitting factor.
-Although these methods are able to get close to saturating the CRLB in a wide range of
-signal-to-noise ratios, they are not as reliable in the extremely faint stars
+signal-to-noise ratios. Besides, the performance of this method slightly degrades
+in the case of undersampled stars (with FWHM close two 2 pixels). 
+Presence of noise is another limitting factor.
+Although this method is able to get close to saturating the CRLB in a wide range of
+signal-to-noise ratios, It is not reliable in the case of extremely faint stars
 (SNR less than 10). This is mostly due to the fact that in the presence of noise, 
-the brightest pixel of image, does not necessarily contain the centroid of stars. 
+the brightest pixel of image, does not necessarily contain the centroid of stars even after smoothing 
+the image.
+
+Once we modify the polynomial method even further by smoothing the image with the full postage stamp
+of the PSF, we obtain results that saturate the CRLB in a wide range of PSF sizes and noise levels.  
+This is due to the fact that once the images are convolved with the right PSF, they become so well-sampled and smooth
+that fitting a 2d polynomial to the 3$\times$3 patch around the brightest pixel of the smooth image can deliver
+results as accurate as results obtained from fitting a PSF profile. The only exception where we observed deviaiotn from
+saturating the CRLB occured in the case of extremely faint star (SNR $\la$ 10), and undersampled PSF (FWHM \sim 2 pixels).
+One advantage of this method over PSF fitting method is that it is fast, and that it is able to saturate the CRLB in 
+a wide range of conditions. Although this method is more accurate than 3$\times$3 modified polynomial I, but it is
+slightly slower because it requires convolution of the image with the full potage stamp of the PSF. 
 
 In this investigation we showed that PSF fitting is always better at centroiding stars.
-In practice however, we do no know the the exact PSF. Besides finding the centroid by PSF
-fitting is computationally expensive whereas by employing tht 3$\times$3 modified polynomial
+However, this method has its own disadvantegouses since we do not always know the the exact PSF, and 
+finding the centroid by PSF fitting is computationally expensive whereas by employing the 3$\times$3 modified polynomial I
 technique into large scale astronomical surveys can considerably reduce the computational cost
-of initial astrometry of these surveys.
+of initial astrometry of these surveys. This method can roughly be thousand
+times faster than centroiding by model fitting. Even in the case that we have a good estimate of the PSF, the 
+3$\times$3 modified polynomial II is a much faster algorithm.
 
-It is important to note that the PSF fitting method can be made faster by only keeping the 
+Moreover, it is important to note that the PSF fitting method can be made faster by only keeping the 
 term proportional to the product of the PSF model and the image in $\chi^2$. This is because 
 the other terms are not sensitive to the position of centroid. However, this only allows
 us to vary the poition of centroid, and not the flux, while fitting the PSF model
@@ -526,14 +527,8 @@ of the image with the correct PSF, and finding the centroid in the oversampled i
 On the other hand, one can think of the initial smoothing step in 3$\times$3 methods
 such as modified polynomial and quartic approximation methods, as oversampling of the 
 image with an approximate Gaussian PSF. The fitting and approximate methods are different 
-in that after upsamlping, in the approximate methods, our knowledge is limited to the 3$\times$3 
+in that after upsamlping, in approximate methods, our knowledge is limited to the 3$\times$3 
 patch around the brightest pixel and as a result, we loose some information.
-
-The advantage of this method becomes more pronounced
-in PSF estimation in which we need to know the centroid of stars accurately, but at the
-same time, with fewer number of algebraic operations. This method can roughly be thousand
-times faster than centroiding by model fitting, and requires fewer operations than the
-3$\times$3 quartic approximation mehod.
 
 Having a reasonable PSF model should always deliver better centroid estimates, but
 over a certain range of low signal-to-noise ratios, one can achieve sensibly accurate
@@ -566,55 +561,36 @@ This is beyond the scope of this study.
 \minipage{.8\textwidth}
   \includegraphics[width=\linewidth]{snr_poly.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from the 3$\times$3 polynomial method and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{1}
+\caption{Scatter plots showing the relation between error in centroid measurement from the 3$\times$3 polynomial method and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue solid line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{1}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{snr_spoly.png}
+  \includegraphics[width=\linewidth]{snr_psfpix28poly.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from the 3$\times$3 modified polynomial method and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{2}
+\caption{Scatter plots showing the relation between error in centroid measurement from the  and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue solid line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{2}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{snr_sdss.png}
+  \includegraphics[width=\linewidth]{snr_psfpoly.png}
 \endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from the 3$\times$3 quartic aproximation method and the signal-to-noise ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the running median of data points, and the green line represents CRLB.}\label{3}
+\caption{Scatter plots showing the relation between error in centroid
+measurement from 3$\times$3 modified polynomial method II and the signal-to-noise
+ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left),
+and 5.6 (lower right) pixels. In each scatter plot, the blue solid line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{3}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{snr_moment.png}
-\endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement
-from the 7$\times$7 weighted moment method and the signal-to-noise ratio of stars,
-with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right)
-pixels. In each scatter plot, the blue line represents the running median of data points,
-and the green line represents CRLB.}\label{4}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{snr_psf.png}
+  \includegraphics[width=\linewidth]{snr_psffitting.png}
 \endminipage
 \caption{Scatter plots showing the relation between error in centroid measurement
 from fitting the exact PSF model to the stars and the signal-to-noise ratio of stars,
 with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left), and 5.6 (lower right)
-pixels. In each scatter plot, the blue line represents the running median of data points,
-and the green line represents CRLB.}\label{5}
+pixels. In each scatter plot, the blue solid line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{4}
 \end{figure}
 
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{snr_wrongpsf.png}
-\endminipage
-\caption{Scatter plots showing the relation between error in centroid
-measurement from fitting a Gaussian PSF model to the stars and the signal-to-noise
-ratio of stars, with FWHM of : 2 (upper left), 2.8 (upper right), 4 (lower left),
-and 5.6 (lower right) pixels. In each scatter plot, the blue line represents the
-running median of data points, and the green line represents CRLB.}\label{6}
-\end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
@@ -622,41 +598,22 @@ running median of data points, and the green line represents CRLB.}\label{6}
 \endminipage
 \caption{Scatter plots showing the relation between error in centroid measurement
 from the 3$\times$3 polynomial method and FWHM of stars, with SNR  of : 5 (upper left),
-10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue
-line represents the running median of data points, and the green line represents CRLB.}\label{7}
+10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, 
+the blue solid
+ line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{5}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{fwhm_spoly.png}
+  \includegraphics[width=\linewidth]{fwhm_psfpix28poly.png}
 \endminipage
 \caption{Scatter plots showing the relation between error in centroid measurement
-from the 3$\times$3 modified polynomial method and FWHM of stars, with SNR  of 
+from the 3$\times$3 modified polynomial method I and FWHM of stars, with SNR  of 
 : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right). In each
-scatter plot, the blue line represents the running median of data points, and the
-green line represents CRLB.}\label{8}
+scatter plot, the blue solid
+ line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{6}
 \end{figure}
 
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{fwhm_sdss.png}
-\endminipage
-\caption{Scatter plots showing the relation between error in centroid measurement from
-the 3$\times$3 quartic approximation method and FWHM of stars, with SNR  of : 5 (upper left),
-10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue line
-represents the running median of data points, and the green line represents CRLB.}\label{9}
-\end{figure}
-
-\begin{figure}[!htb]
-\minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{fwhm_moment.png}
-\endminipage
-\caption{Scatter plots showing the relation between error in centroid
-measurement from the 7$\times$7 weighted moment method and FWHM of stars,
-with SNR  of : 5 (upper left), 10 (upper right), 20 (lower left), and 40 (lower right).
-In each scatter plot, the blue line represents the running median of data points,
-and the green line represents CRLB.}\label{10}
-\end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
@@ -665,18 +622,18 @@ and the green line represents CRLB.}\label{10}
 \caption{Scatter plots showing the relation between error in centroid measurement
 from fitting the exact PSF model and FWHM of stars, with SNR  of : 5 (upper left),
 10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot,
-the blue line represents the running median of data points, and the
-green line represents CRLB.}\label{11}
+the blue solid
+ line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{7}
 \end{figure}
 
 \begin{figure}[!htb]
 \minipage{.8\textwidth}
-  \includegraphics[width=\linewidth]{fwhm_wrongpsf.png}
+  \includegraphics[width=\linewidth]{fwhm_psfpoly.png}
 \endminipage
-\captionScatter plots showing the relation between error in centroid measurement
-from fitting a Gaussian PSF model and FWHM of stars, with SNR  of : 5 (upper left),
-10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the
-blue line represents the running median of data points, and the green line represents CRLB.}\label{12}
+\caption{Scatter plots showing the relation between error in centroid measurement
+from the 3$\times$3 modified polynomial method II and FWHM of stars, with SNR  of : 5 (upper left),
+10 (upper right), 20 (lower left), and 40 (lower right). In each scatter plot, the blue solid
+ line represents the root-mean-squared-error, and the green dashed line represents CRLB.}\label{8}
 \end{figure}
 
 \end{document}
