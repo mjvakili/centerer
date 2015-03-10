@@ -22,20 +22,22 @@ citecolor=darkblue }
 \newcommand{\eeq}{\end{equation}}
 
 \begin{document}
+\title{Fast and optimal centroiding of faint stars}
 
 \author{
   Mohammadjavad~Vakili\altaffilmark{1},
-  David~W.~Hogg\altaffilmark{1,2,3}
-\altaffiltext{1}{Center for Cosmology and Particle Physics, New York University}
-\altaffiltext{2}{Center for Data Science, New York University}
-\altaffiltext{3}{Max-Planck-Institut f\"ur Astronomie}
-}
+  David~W.~Hogg\altaffilmark{1,2,3}}
+\altaffiltext{1}{Center for Cosmology and Particle Physics, Department of Phyics,
+             New York University, 4 Washington Pl., room 424, New York, NY, 10003, USA}
+\altaffiltext{2}{Center for Data Science, New York University, 726 Broadway, 7th Floor, New York, NY 10003, USA}
+\altaffiltext{3}{Max-Planck-Institut f\"ur Astronomie, K\"onigstuhl 17, D-69117 Heidelberg, Germany}
+\email{mjvakili@nyu.edu}
 
-\title{Fast and optimal centroiding of faint stars}
 
 \begin{abstract}
-One of the most demanding tasks in astronomical image processing---in terms of precision---is the centroiding of stars. 
-Upcoming large surveys are going to take images of billions of point sources, 
+One of the most demanding tasks in astronomical image processing---in terms of precision---is measurement
+of the positions of stars. 
+Upcoming ground-based surveys are going to take images of billions of point sources, 
 including many faint stars, with short exposure times. Real-time estimation of the
 centroids of stars is crucial for real-time PSF estimation, and maximal precision is required
 for measurements of proper motion. In this work, we aim to compare the performance of
@@ -43,30 +45,23 @@ various centroiding methods, when they are applied
 to relatively low signal-to-noise ratio unsaturated stars.
 In order to investigate how information-preserving these techniques are, we compare
 the root-mean-squared-error with the fundamental Cramer-Rao
-lower bound. We discuss two general circumstances in centroiding of faint stars: (i) when we have a good estimate
-of the PSF, (ii) when we do not know the PSF. In the case that we know the PSF, we show that a fast
+bound on precision. We discuss the case in which we have a good estimate
+of the PSF, and the case in which we don't. In the first case, we show that a fast
  polynomial centroiding after smoothing the image by the PSF can be 
-as accurate as full PSF profile fitting. In the case that we do not
-know the PSF, we demonstrate that although polynomial centroiding is not as
-accurate as PSF profile fitting, it comes close to saturating the Cramer-Rao lower bound
-in a wide range of conditions. We also show that the center-of-light never comes close to 
-saturating the bound, and thus it does not deliver reliable estimates of centroids.    
-
-%include weighted moments, naive 3$\times$3 polynomial centroiding,
-%the 3$\times$3 quartic approximation used in the \textsl{Sloan Digital Sky Surveys}, and PSF profile fitting
-%(with both the correct and the incorrect PSF).
-%We recommend a particular form of polynomial cetroiding; it is very fast.
-%Although it is not as accurate as PSF profile fitting with a good PSF estimate,
-%it comes close to saturating the Cramer-Rao lower bound in a wide range of conditions.
+as accurate as full PSF profile fitting. In the second case, we demonstrate 
+that although polynomial centroiding is not as
+accurate as PSF profile fitting, it comes close to saturating the Cramer-Rao bound
+in a wide range of conditions. We also show that the center-of-light (or the taking of moments) 
+never comes close to saturating the bound.
 \end{abstract}
 
 \section{Introduction}
 
-A common practice in astronomy is taking imaging data, and then finding the coordinates
-of various light sources across the sky. Finding accuarate estimates of the centers of point
-sources, convolved with telescope point spread function (and atmospheric PSF in case of
-ground based telescopes), and also pixel response function, is crucial to further steps of
-astronomical image processing. For instance, proper measurement of the shapes of galaxies
+When we take imaging---and we take prodigious amounts of imaging---we ususally have to find the coordinates
+of the stars in that imaging. Finding accuarate estimates of the centers of point
+sources, convolved with telescope point spread function (and atmospheric PSF in the case of
+ground-based telescopes), and also pixel response function, is usually crucial to all further steps in the 
+image processing pipeline. For instance, proper measurement of the shapes of galaxies
 requires interpolating the PSF from the positions of sparsely located stars across the
 image to the positions of galaxies. The accuracy of the PSF estimation therefore,
 relies on how accurately we know the centroids of stars. 
@@ -74,35 +69,35 @@ relies on how accurately we know the centroids of stars.
 Ideally, we want a centroiding procedure that provides measurements as accurate as possible,
 without putting a huge computational burden on the photometric pipeline.
 Reducing the computational cost becomes even more important in large surveys,
-where we want to estimate the centroids of thousands of point sources detected
-on the telescope's focal plane. 
+where we want to estimate the centroids of many thousands of point sources detected
+on the telescope's focal plane in real time. 
 
-Reaching the optimal measurement of the centroids of stars however, is limited
-by the lack of knowledge about the exact shape of the PSF, and also presence of noise;
-both sky noise and CCD readout noise. Thus, of particular interest is devising a fast method that returns
+Measurement of the centroids of stars however, is limited
+by lack of knowledge about the exact shape of the PSF, and also the presence of noise;
+both sky noise and CCD readout noise. Thus, it is of particular interest to devise a fast method that returns
 optimal estimates of centroids in a realistic range of signal-to-noise ratios.
 
-To date, a number of softwares have been designed for the purpose of extracting astronomical
-sources and making catalogs. One of these softwares is SExtractor \citep{sex},
+To date, a number of software packages have been designed for the purpose of extracting astronomical
+sources and making catalogs. One of these softwares is \textsl{SExtractor} \citep{sex},
 whose centroiding method involves first, finding the zeroth moment of the object
 as a first-order estimate, and then iteratively correcting the centroid by computing
 the zeroth order moment of the object weighted by a Gaussian window function,
 until the correction falls below a particular threshold value.
-The width of the Gaussian window function is set by the object's half light radius.
+The width of the Gaussian window function is set by the object's half-light radius.
 
-Another examples are DAOPHOT \citep{daophot}, and DOPHOT \citep{dophot}
+Other examples are DAOPHOT \citep{daophot}, and DOPHOT \citep{dophot}
 which both assume analytic models for the stellar PSF profiles with centroid
 coordinates being free parameters of these models.
-DAOPHOT (DoPHOT) finds the centroids by fitting a Gaussian (a truncated power series for a Gaussian) PSF to
+DAOPHOT (DoPHOT) finds the centroids by fitting a Gaussian (truncated power series for a Gaussian) PSF to
 the light profile of stars.
 
-In this paper, we study how optimal various techniques are at centroiding 
+In this paper, we compare various techniques for centroiding 
 faint unsaturated stars. That is, we apply a number of centroiding methods 
 to a large number of simulated faint stars with different signal-to-noise ratio and
- size realizations. Error from star centroiding methods, will always have 
+ size realizations. Uncertainties from star centroiding methods will always have 
 a theoretically-set lower bound, known as the Cramer-Rao lower bound
-(hereafter denoted by CRLB) which has an inverse relation with the
-signal-to-noise-ratio of stars.
+(hereafter denoted by CRLB), which has an inverse relation with the
+signal-to-noise-ratio of stars (see section \ref{sec:CRLB}).
 
 Given the analytic expression for the PSF model,
 we derive an expression for the fundamental lower bound on the centroiding error as
@@ -113,18 +108,18 @@ with variable (constant) FWHM (signal-to-noise ratio). After applying
 different centroiding methods to the simulations,
 we investigate how close these methods can get to saturating the CRLB for
 various ranges of background noise level and PSF FWHM.
-
+%%%%%%%%%%%%%%%%%%%% FIXED%%%%%%%%%%%%%%%%%%%
 In this work, we focus on four centroiding methods. The first method
 involves fitting a PSF profile, assuming that we have a good PSF estimate, to the star. 
-The second method estimates the centroid of a star by fitting a 2d polynomial to
- the 3$\times$3 patch around the brightest pixel of the image convolved with the PSF. 
-The third method centroids stars by
- smoothing the image of stars by a Gaussian kernel of a fixed size,
- and then applying the same 3$\times$3 polynomial trick to the smooth
+The second method estimates the centroid of a star by convolving the image with the PSF 
+and then fitting a 2d second-order polynomial to
+ the 3$\times$3 patch around the brightest pixel. The third method centroids stars by
+ smoothing the image of stars with a Gaussian kernel of a fixed size,
+ and then applying the same 3$\times$3 polynomial fit to the smooth
  image. This method is fast and does not require any knowledge of the 
-PSF. The last method we consider, is the center of light centroiding applied to the
- 7$\times$7 patch around the brightest pixel of the image.
-
+PSF. The last method we consider, the center of light centroiding, involves computing moments in the
+ 7$\times$7 patch centered at the brightest pixel of the image.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 This paper is structured as follows. In section \ref{sec:CRLB},
 we discuss the Cramer-Rao lower bound, and we derive
 an analytic expression for the lower bound on centroiding error
