@@ -136,11 +136,24 @@ discussed in \ref{sec:method}, with the CRLB derived in \ref{sec:data}. Finally,
 \section{Cramer-Rao lower bound on centroiding error}\label{sec:CRLB}
 
 In order to test the accuracy of various centroiding methods, we need to to compare their 
-performances against each other at saturating the Cramer-Rao lower bound. The closer an estimator is to saturating 
+performances against each other at saturating the Cramer-Rao lower bound on centroiding error. 
+The closer an estimator is to saturating 
 the CRLB, the more information about the quantity that we 
 need to estimate is preserved. A measure for closeness of an estimator to 
 saturating the CRLB is comparison of the root-mean-squared-error of that estimator 
 with the CRLB. 
+
+The CRLB is given by the inverse of 
+the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
+ it is sufficient to compute the Fisher matrix.
+Let us assume that we have $M$ observables $\{f_{1}, ... , f_{M}\}$, each
+related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$. Assuming
+uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
+of the Fisher matrix $\mathcal{F}_{ij}$ are given by
+\beq
+\mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
+\label{fisher}
+\eeq
 
 This requires simulation of a large set of stars for which we know the exact position of centroids
 and the corresponding lower bound for each star, and comparing the centroiding error with the lower bound.
@@ -209,18 +222,7 @@ noise level $\sigma$, those with higher size have lower SNR.
 
 Given the PSF model that we have adopted for our simulations, we can derive
  an expression for the CRLB as a function of the size, and SNR of stars.
- We know that the CRLB is given by the inverse of 
-the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
- it is sufficient to compute the Fisher matrix.
-Let us assume that we have $M$ observables $\{f_{1}, ... , f_{M}\}$, each
-related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$. Assuming
-uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
-of the Fisher matrix $\mathcal{F}_{ij}$ are given by
-\beq
-\mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
-\label{fisher}
-\eeq
-
+ 
 In our case, the observables are Moffat PSF profile evaluated at different pixels, and  
 the model paramters are the centroid coordinates. Thus, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
