@@ -146,8 +146,13 @@ with the CRLB.
 The CRLB is given by the inverse of 
 the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
  it is sufficient to compute the Fisher matrix.
-Let us assume that we have $M$ observables $\{f_{1}, ... , f_{M}\}$, each
-related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$. Assuming
+ 
+Let us assume that there are $M$ observables $\{f_{1}, ... , f_{M}\}$, each
+related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$
+\beq
+f_{m} = f_{m}(\theta_{1} , ... , \theta_{B}) \,\, m=1,...,M
+\eeq
+Assuming
 uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
 of the Fisher matrix $\mathcal{F}_{ij}$ are given by
 \beq
@@ -192,7 +197,7 @@ by $P_{i}$. Therefore the brightness of the $i$-th pixel is drawn from
 a Gaussian distribution $p(I_{i}) = \mathcal{N}(FP_{i},\sigma^{2})$. 
 
 The optimal estimator of flux (one that saturates Cramer-Rao bound),
-is the weighted average $\tilde{F}=\sum_{i}I_{i}P_{i}$. Knowing the
+is the weighted average $\tilde{F}=\sum_{i}y_{i}P_{i}$. Knowing the
 distribution of $I_{i}$, it can be shown that 
 \beq
 p(\tilde{F}) = \mathcal{N}(F , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
