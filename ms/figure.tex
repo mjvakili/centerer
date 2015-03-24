@@ -52,12 +52,6 @@ accurate as PSF profile fitting, it comes close to saturating the Cramer-Rao low
 in a wide range of conditions. We also show that the center-of-light never comes close to 
 saturating the bound, and thus it does not deliver reliable estimates of centroids.    
 
-%include weighted moments, naive 3$\times$3 polynomial centroiding,
-%the 3$\times$3 quartic approximation used in the \textsl{Sloan Digital Sky Surveys}, and PSF profile fitting
-%(with both the correct and the incorrect PSF).
-%We recommend a particular form of polynomial cetroiding; it is very fast.
-%Although it is not as accurate as PSF profile fitting with a good PSF estimate,
-%it comes close to saturating the Cramer-Rao lower bound in a wide range of conditions.
 \end{abstract}
 
 \section{Introduction}
@@ -275,7 +269,6 @@ $r/\gamma$, CRLB has the same functional form, in that it is proportional to the
 For PSF profiles with shorter tails (\eg Gaussian), the prefactor of 0.685 in (\ref{crlbmoffat}) becomes smaller. 
 In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SAY SOMETHING MAARRRR%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 We examine fitting an exact
  PSF profile to the stars. That is, in our Cramer-Rao bound saturation tests, we find the best
  estimates of flux and centroid by optimizing the $\chi^{2}$.
@@ -399,14 +392,8 @@ In terms of saturating the Cramer-Rao lower bound, we expect this simple
 center of light centroiding to perform worse than all other methods mentioned in 
 this section. Hereafter, we call this method $7\times7$ moment centroiding.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%THIS METHOD SUCKS BALLS%%%%%%%%%%%%%%%%%%%%%%%
-
 \section{Tests}\label{sec:data}
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% THIS GOES TO TESTS%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Furthermore, we uniformly draw the centroids of these simulated stars within sub-pixel regions. 
-%We aim to study how centroiding errors from different methods behave with
-%changing SNR and size, and how close they get to saturating the CRLB. 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 We perform two sets of simulations. In the first set, we choose four values of
 2, 2.8, 4, and 5.6 pixels for $\gamma$. For each $\gamma$, we generate 100,000 
 17 $\times$ 17 postage-stamps of Moffat profiles with centroids randomly drawn
