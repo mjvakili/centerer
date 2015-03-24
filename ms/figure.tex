@@ -161,8 +161,7 @@ related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$
 f_{m} = f_{m}(\theta_{1} , ... , \theta_{B}).
 \eeq
 
-Assuming
-uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
+Assuming uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
 of the $B\times B$ Fisher matrix $\mathcal{F}_{ij}$ are given by
 \beq
 \mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
@@ -170,7 +169,7 @@ of the $B\times B$ Fisher matrix $\mathcal{F}_{ij}$ are given by
 \eeq
 
 In this investigation, the observables are the PSF profile evaluated at different pixel locations, and  
-the model paramters are the centroid coordinates. Therfore, $\mathcal{F}$
+the model paramters are the centroid coordinates. Therefore, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
 
 \beq
@@ -273,7 +272,7 @@ root-mean-squared-error (hereafter RMSE) close to this.
 
 It is worth noting that for any PSF model whose radial light profile is some function of 
 $r/\gamma$, CRLB has the same functional form, in that it is proportional to the ratio between $\gamma$ and SNR. 
-For PSF profiles with shorter tails, the prefactor of 0.685 in (\ref{crlbmoffat}) becomes smaller. 
+For PSF profiles with shorter tails (\eg Gaussian), the prefactor of 0.685 in (\ref{crlbmoffat}) becomes smaller. 
 In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SAY SOMETHING MAARRRR%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -297,7 +296,7 @@ where $\mathcal{P}$ is the PSF postage stamp, $Y$ is the image of the star, and 
 
 Then, we fit a simple 2d second-order polynomial 
 $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ 
-to the 3$\times$3 patch around the brightest pixel of the convolved image $Y^{s}$.
+to the 3$\times$3 patch centered on the brightest pixel of the convolved image $Y^{s}$.
 Upon constructing a universal 9$\times$6 design matrix
 \begin{equation}
     \mathbf{A} = 
@@ -359,7 +358,7 @@ since convolution with the PSF makes the variation of the brightness of the imag
  across the 3$\times$3 patch very smooth.
  
 \item{\bf Default polynomial centroiding}\quad In the case that 
-we do not have know the PSF at the position of star, we change 
+we do not know the PSF at the position of star, we change 
 the smoothing step in the following way. Instead of smoothing the image 
 by convolving it with the PSF, smoothing is done by convolving the image 
 with a Gaussian kernel of a fixed size 
@@ -367,7 +366,7 @@ with a Gaussian kernel of a fixed size
 k(\mathbf{x}) = \frac{1}{2\pi w^2}\exp(-\mathbf{x}^{2}/2w^{2}),
 \eeq
 where throughout this study, the full-width at half-maximum of the Gaussian kernel is held at
-a fixed value of 2.8 pixels (corresponding to w $\simeq$ 1.2 pixels). Convolution is done as follows
+a fixed value of 2.8 pixels (corresponding to w $\simeq$ 1.2 pixels). Smoothing step is done as follows
 \begin{eqnarray}
 Y^{(s)} &=& Y \star \mathcal{K}, \\
 Y^{(s)}_{[i,j]} &=& \sum_{k,l}Y_{[i-k,j-l]}\mathcal{K}_{[k,l]},
