@@ -118,7 +118,7 @@ various ranges of background noise level and PSF FWHM.
 
 In this work, we focus on four centroiding methods. The first method
 involves fitting a PSF profile, assuming that we have a good PSF estimate, to the star. 
-The second method estimates the centroid of a star by fitting a 2d polynomial to
+The second method estimates the centroid of a star by fitting a 2d second-order polynomial to
  the 3$\times$3 patch around the brightest pixel of the image convolved with the PSF. 
 The third method centroids stars by
  smoothing the image of stars by a Gaussian kernel of a fixed size,
@@ -295,7 +295,7 @@ Y^{(s)}_{[i,j]} &=& \sum_{k,l}Y_{[i-k,j-l]}\mathcal{P}_{[k,l]},
 \end{eqnarray}
 where $\mathcal{P}$ is the PSF postage stamp, $Y$ is the image of the star, and $Y^{(s)}$ is the smooth image.
 
-Then, we fit a simple 2d polynomial 
+Then, we fit a simple 2d second-order polynomial 
 $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ 
 to the 3$\times$3 patch around the brightest pixel of the convolved image $Y^{s}$.
 Upon constructing a universal 9$\times$6 design matrix
@@ -354,7 +354,7 @@ proportional to $\sigma^{2}$ to the determinant of $D$.
 The procedure of convolving the image of star with the PSF results in a
 more well-sampled image, which eventually, leads to having more
 information regarding the centroids of stars in the 3$\times$3 patch around the
-brightest pixel. In addition, a simple 2d polynomial will provide a better fit 
+brightest pixel. In addition, a simple second-order polynomial will provide a better fit 
 since convolution with the PSF makes the variation of the brightness of the image
  across the 3$\times$3 patch very smooth.
  
@@ -377,7 +377,7 @@ array whose elements are given by the Gaussian kernel
 \beq
 \mathcal{K}_{[k,l]} = k(x_{k},y_{l}).
 \eeq 
-Then we apply the same 2d polynomial method to the 3$\times$3 patch centered on the brightest
+Then we apply the same 2d second-order polynomial method to the 3$\times$3 patch centered on the brightest
 pixel of the smooth image $Y^{(s)}$. Therefore, for a given star and a smoothing kernel,
 the outcome of equation (\ref{linearfit}) can be
 plugged into equation (\ref{center}) to find the centroid estimate
