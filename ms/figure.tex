@@ -155,8 +155,7 @@ with the CRLB.
 
 The CRLB is given by square-root of the inverse of 
 the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
- it is sufficient to compute the Fisher matrix. Consider the following log-likelihood 
-function. Let us assume that there are $M$ observables $\{f_{1}, ... , f_{M}\}$, each
+ it is sufficient to compute the Fisher matrix. Let us assume that there are $M$ observables $\{f_{1}, ... , f_{M}\}$, each
 related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$
 \beq
 f_{m} = f_{m}(\theta_{1} , ... , \theta_{B}).
@@ -164,7 +163,7 @@ f_{m} = f_{m}(\theta_{1} , ... , \theta_{B}).
 
 Assuming
 uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
-of the Fisher matrix $\mathcal{F}_{ij}$ are given by
+of the $B\times B$Fisher matrix $\mathcal{F}_{ij}$ are given by
 \beq
 \mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
 \label{fisher}
@@ -221,7 +220,7 @@ a Gaussian distribution
 p(y_{i}) = \mathcal{N}(FP_{i},\sigma^{2}). 
 \eeq
 
-The optimal estimator of flux---one that saturates Cramer-Rao bound---is 
+The optimal estimator of flux is 
 the matched filter $\tilde{F}=\sum_{i}y_{i}P_{i}$. It can be shown that 
 \beq
 p(\tilde{F}) = \mathcal{N}(F , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
@@ -273,8 +272,8 @@ and that a good centroiding technique delivers centroids with
 root-mean-squared-error (hereafter RMSE) close to this. 
 
 It is worth noting that for any PSF model whose radial light profile is some function of 
-$r/\gamma$, CRLB remains proportional to the ratio between $\gamma$ and SNR. For PSF profiles with 
-shorter tails, the prefactor of 0.685 in (\ref{crlbmoffat}) becomes smaller. 
+$r/\gamma$, CRLB has the same functional form, in that it is proportional to the ratio between $\gamma$ and SNR. 
+For PSF profiles with shorter tails, the prefactor of 0.685 in (\ref{crlbmoffat}) becomes smaller. 
 In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%SAY SOMETHING MAARRRR%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -359,7 +358,7 @@ brightest pixel. In addition, a simple 2d polynomial will provide a better fit
 since convolution with the PSF makes the variation of the brightness of the image
  across the 3$\times$3 patch very smooth.
  
-\item{\bf 3$\times$3 polynomial centroiding}\quad In the case that 
+\item{\bf Default polynomial centroiding}\quad In the case that 
 we do not have know the PSF at the position of star, we change 
 the smoothing step in the following way. Instead of smoothing the image 
 by convolving it with the PSF, smoothing is done by convolving the image 
@@ -440,15 +439,15 @@ for fainter stars.
 
 As we expected, the RMSE from centroiding by fitting the exact PSF model [\ref{1}]
 lies on the CRLB except for simulations with SNR $\la$ 10 where the RMSE gets slightly pulled away
-from the CRLB due to presence of a few outliers. Figure [\ref{2}] demonstrates that even the PSF-based 3$\times$3 polynomial 
+from the CRLB due to presence of a few outliers. Figure [\ref{2}] demonstrates that even the matched-filter polynomial 
 centroiding is able deliver centroiding estimates as accurate as PSF profile fitting, with the exception
-of simulated stars with $\gamma$ = 2 pixels. For stars with $\gamma$ = 2 pixels, although the 3$\times$3 polynomial
+of simulated stars with $\gamma$ = 2 pixels. For stars with $\gamma$ = 2 pixels, although second-order polynomial
 fitting gets close to saturating the CRLB, it fails to saturate the CRLB since the PSF is undersampled. For simulated images with higher $\gamma$, convolving the
 data with the PSF result in images that are well-sampled around the brightest pixel. This allows the 
 polynomial centroiding to deliver highly accurate results that can saturate the CRLB for simulated
 data with SNR $\ga$ 10.
 
-RMSE from the 3$\times$3 polynomial centroiding [\ref{3}],
+RMSE from the default polynomial centroiding [\ref{3}],
 is very close to the CRLB except at the very small values of SNR (SNR $\la$ 10).
 As we increase $\gamma$ from 2 pixels to 2.8 pixels, RMSE gets closer
 to the CRLB. When we increase $\gamma$ to
@@ -457,13 +456,13 @@ the rate at which the RMSE from this method drops
 eventually becomes smaller than the constant rate at which the CRLB
 decreases with increaing SNR. The reason for this is that even after smoothing
 the with a Gaussian kernel, the image is still relatively undersampled, and not smooth enough
-for a 2d polynomial fitting to provide highly accurate centroiding estimates.
+for a second-order polynomial fitting to provide highly accurate centroiding estimates.
 For stars with $\gamma=2.8$ pixels, since the FWHM of the Gaussian kernel matches that 
 of the PSF of underlying simulations, the smooth images are well-sampled and therefore, 
 the method is able to deliver estimates extremely close to saturating the CRLB. As $\gamma$
 gets higher for the simulations, the convolved images are not as well-sampled as those 
 whose $\gamma$ matches the FWHM of the smoothing kernel and as a result, we loose
-some information by fitting a polynomial to a 3$\times$3 patch. Therefore,
+some information by fitting a second-order polynomial to a 3$\times$3 patch. Therefore,
  we observe slight deviation from the CRLB for stars with $\gamma$ = 4 pixels, and 
 slightly more deviation as we increase $\gamma$ to 5.6 pixels.
 
@@ -485,23 +484,23 @@ perfectly lies on the CRLB except at SNR = 5 where the RMSE slightly deviates
 from the CRLB due to presence of a few outliers [\ref{5}]. 
 Thus, centroid estimates from fitting
 the exact PSF model always saturate the CRLB. Once again, we observe that the centroid
-estimates found by the PSF-based 3$\times$3 polynomial centroiding saturate the CRLB with the
+estimates found by matched-filter polynomial centroiding saturate the CRLB with the
 exception of simulated stars with SNR = 5, or $\gamma$ very close to 2 pixels [\ref{6}].
 
-The 3$\times$3 polynomial method [\ref{7}], results in RMSE very close to the CRLB.
+The default polynomial method [\ref{7}], results in RMSE very close to the CRLB.
 For all four values of SNR, as we increase $\gamma$ from 2 pixels to 3 pixels,
 RMSE gets slightly closer to the CRLB since the method starts to perform
 slightly better as we move away from undersampled stars, and as the FWHM of the smoothing kernel
 gets closer to that of the simulated images.
-After approximately 3 pixels, increasing $\gamma$ result in deviation of RMSE of the method from the CRLB.
-This is a characteristic of 3$\times$3 method as we apply it to a smoothed image which is still not sufficiently
+After approximately 3 pixels, increasing $\gamma$ results in deviation of RMSE of the method from the CRLB.
+This is a characteristic of polynomial method as we apply it to a smooth image which is still not sufficiently
 well-sampled.  Furthermore, increasing SNR from 5 to 40 makes the RMSE (as a function of $\gamma$) become
-closer to the CRLB.
+closer to the CRLB. In the case of extremely faint stars (SNR = 5),
+default polynomial centroiding is not able to deliver any reliable estimate, and it fails.
 
 The centroid estimates obtained from the naive 7$\times$7 moment method [\ref{8}]
 result in RMSE much larger than the CRLB in all ranges of FWHM and for all four
-values of SNR in this experiment. In the case of extremely faint stars (SNR = 5),
-the polynomial method is not able to deliver any reliable estimate, and completely fails.
+values of SNR in this experiment. 
 
 \section{Discussion}\label{sec:discussion}
 
