@@ -514,66 +514,60 @@ unsaturated stars.
  
 We focused on examples from two classes of centroiding algorithms. The first class contains fast and approximate
 methods that do not require any knowledge of the PSF at the positions of stars. Of methods that belong to this class,
-we consider centroiding stars based on fitting a low order
+we consider centroiding stars based on fitting a second-order
 polynomial to a 3$\times$3 patch of star images smoothed by a Gaussian kernel of fixed width, and finding the center of light 
 of a 7$\times$7 patch around the brightest pixel of the star.
 The second class of centroiding algorithms contains methods that require knowledge of the PSF (or having a good estimate
 of the PSF) at the positions of stars. We considered two examples from this class. The first example
-is the 3$\times$3 polynomial centroiding applied to the image of the star convolved with the PSF, and the
+is the matched-filter polynomial centroiding, and the
 second example is the full PSF profile fitting. In terms of saturating the Cramer-Rao bound, we compared 
 the performances of these methods against each other.
 
-%Furthermore, we compared the performance of these methods with the naive 3$\times$3 polynomial
-%centroiding, 3$\times$3 quartic approximation, moment-based method, and PSF fitting.
-%In order to make this comparison, we performed some tests on a large number of
-%simulated data, and investigated to see if these estimators can saturate the Cramer-Rao
-%lower bound, or how close to they get to saturating the bound.
- 
 Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns 
 centroid estimates that saturate the CRLB; with the exception of SNR being less than 10, 
 in which case a few centroiding ouliers caused the RMSE to slightly, but not significantly, deviate
 from the CRLB. We found that the estimates found by 7$\times$7 moment method, except in the case of
 very high SNR values and very small ranges of $\gamma$, do not come close to
 saturating the CRLB. In a considerable range of PSF sizes and background noise levels, 
-this method completely fails to deliver any reliable centroiding estimates.
+this method fails to deliver any reliable centroiding estimates.
  
 On the other hand, the RMSE of centroid estimates of 
-3$\times$3 polynomial centroiding are much closer to saturating the CRLB in all ranges of signal-to-noise ratio.
+default polynomial centroiding are much closer to saturating the CRLB in all ranges of signal-to-noise ratio.
 The performance of this method however, is limited by
 two important factors: \emph{(i)} signal-to-noise ratio, and \emph{(ii)} PSF size.
-The 3$\times$3 polynomial centroiding technique only takes advantage of the information
- contained in a 3$\times$3 patch around the brighest pixel of the smoothed image which is only
+The default polynomial centroiding technique only takes advantage of the information
+ contained in a 3$\times$3 patch centered on the brighest pixel of the smoothed image which is only
  well-sampled when the FWHM of the simulated image of star
  matches that of the smoothing kernel. Thus, when we apply 
-this method to find the centroid of stars with larger FWHM, certain amount of
+this method to find the centroids of stars with larger FWHM, certain amount of
 information (encoded in the Cramer-Rao lower bound) is lost, and therefore, the RMSE
 of these methods deviates from the CRLB. This deviation becomes even larger at lower
 signal-to-noise ratios. Besides, the performance of this method slightly degrades
 in the case of undersampled stars (with FWHM close two 2 pixels). 
 Presence of noise is another limitting factor.
 Although this method is able to get very close to saturating the CRLB in a wide range of
-signal-to-noise ratios, it is not reliable in the case of extremely faint stars.
+signal-to-noise ratios, it is not reliable in the case of centroiding extremely faint stars.
  This is partly due to the fact that in the presence of noise, 
 the brightest pixel of image does not necessarily contain the centroid of stars even after smoothing 
 the image.
 
-Once we modify the polynomial method further by smoothing the image with the full postage stamp
+Once we modify the polynomial method further by convolving the image with the full postage stamp
 of the PSF, we obtain results that saturate the CRLB in a wide range of PSF sizes and noise levels.  
-This is due to the fact that once the images are convolved with the correct PSF, they become so well-sampled and smooth
-that fitting a 2d polynomial to the 3$\times$3 patch around the brightest pixel of the smooth image is sufficient for us to obtain
+This is due to the fact that once the images of stars are convolved with the correct PSF, they become so well-sampled and smooth
+that fitting a second-order polynomial to the 3$\times$3 patch centered on the brightest pixel of the smooth image is sufficient for us to obtain
 results as accurate as those from fitting a PSF profile. The only conditions in which slight deviation from
-saturating the CRLB occures are very low signal-to-noise ratios (SNR $\la$ 10), and undersampled PSF (FWHM $\sim$ 2 pixels).
+saturating the CRLB occurs are very low signal-to-noise ratios (SNR $\la$ 10), and undersampled PSF (FWHM $\sim$ 2 pixels).
 One advantage of this method over PSF fitting method is that it is fast, and that it is able to saturate the CRLB in 
 a wide range of conditions. In the case that we have a good estimate of the PSF, the 
-PSF-based 3$\times$3 polynomial centroiding is a significantly much faster algorithm. 
-Although this method is more accurate than 3$\times$3 polynomial centroiding, it is
+matched-filter polynomial centroiding is a significantly much faster algorithm. 
+Although this method is more accurate than default polynomial centroiding, it is
 slightly slower because it requires convolution of the image with the full potage stamp of the PSF. 
 
-In this investigation we showed that PSF fitting is always better at centroiding stars.
+In this investigation we showed that PSF fitting always performs better---in terms of saturating the CRLB---at centroiding stars.
 However, this method has its own disadvantages. First, we do not always know the the exact PSF. Second, finding
- the centroid by profile fitting is computationally expensive, whereas by employing any of the 3$\times$3 polynomial techniques 
-considered in this study into large scale astronomical surveys can considerably reduce the computational cost
-of initial astrometry of the point sources detected by these surveys. 
+ the centroid by profile fitting is computationally expensive, whereas employing any of the 3$\times$3 polynomial techniques 
+considered in this study in large scale astronomical surveys reduces the computational cost
+of initial astrometry of the point sources considerably. 
 
 Moreover, it is important to note that the PSF fitting method can be made faster by only keeping the 
 term proportional to the dot product of the PSF model and the image in $\chi^2$. This is because 
@@ -584,23 +578,23 @@ to the star.
 Modifying the $\chi^2$ such that it contains the dot product of the PSF and image, 
 provides a nice interpretation for the PSF fitting method. It corresponds to searching for the 
 centroid in a very high resolution grid which the dot product of the image and the PSF model is
-sensitive to. On the other hand, one can think of the initial smoothing step in the 3$\times$3 polynomial method 
-as upsampling of the image around the center through convolving it with an approximate Gaussian PSF. 
-The PSF profile fitting and the 3$\times$3 polynomial centroiding are different in that when there is mismatch between the
-widths of the smoothing kernel and the that of the PSF, we loose some information by employing a 3$\times$3 polynomial trick.
-When we have the advantage of knowing the PSF, this issue can be resolved by employing the PSF-based polynomial method.
+sensitive to. On the other hand, one can think of the initial smoothing step in the default polynomial method 
+as upsampling of the image around the center by convolving it with an approximate Gaussian PSF. 
+The default polynomial centroiding is different from PSF-fitting method in that, when there is mismatch between the
+widths of the smoothing kernel and the that of the PSF, we loose some information by employing a 3$\times$3 polynomial fitting.
+When we have the advantage of knowing the PSF, this issue can be resolved by employing the matched-filter polynomial method.
 
 Having a reasonable PSF model always helps us obtain more reliable centroid estimates, but
 over a certain range of low signal-to-noise ratios and PSF sizes, one can achieve sensibly
  accurate results by employing a simple 3$\times$3 method after smooting the image with
- a Gaussian kernel of fixed width, and without making any assumption about the PSF model.
+ a Gaussian kernel of a fixed width, and without making any assumption about the PSF model at the positions of stars.
 
 In this investigation we narrowed our focus on a set of data simulated from a particular
 PSF profile. Although there are various cases where Moffat profiles provide reasonable
-representations of point spread function, these profiles are not generic enough to let us
+representations of the point spread function, these profiles are not generic enough to let us
 reach a more general conclusion. Another important, and untapped, area of study
 would be devising a model that infers the centroids of stars and point spread function
-(in its full extent, not at the catalog level) across an astronomical image simultaneously.
+---in its full extent, not at the catalog level---across an astronomical image simultaneously.
 This is beyond the scope of this study. 
 
 
