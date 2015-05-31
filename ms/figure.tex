@@ -279,9 +279,9 @@ We examine fitting an exact
  of stars, and deliver RMSE very close to Cramer-Rao bound. In the next section,
  we briefly discuss the centroiding methods used in our Cramer-Rao bound saturating tests.
  
-\section{Approximate methods}\label{sec:method}
+\section{Centroiding methods}\label{sec:method}
 
-\item{\bf  Matched-filter polynomial centroiding}\quad Let us consider the case 
+\item{\bf  Matched filter polynomial centroiding}\quad Let us consider the case 
 in which we have a good estimate of the pixel-convolved PSF at
 the position of the faint star under consideration. 
 We can smooth the image of the star, by correlating it with the 
@@ -290,8 +290,11 @@ full PSF $\mathcal{P}$ at the position of the star.
 Y^{(s)} &=& Y \star \mathcal{P}, \\
 Y^{(s)}_{[i,j]} &=& \sum_{k,l}Y_{[i-k,j-l]}\mathcal{P}_{[k,l]},
 \end{eqnarray}
-where $Y$ is the image of the star, and $Y^{(s)}$ is the smooth image which 
-is called matched-filter image.
+where $Y$ is the image of the star, and $Y^{(s)}$ is called matched filter. 
+Matched filter is a model where the data $Y$ is correlated (convolved in the 
+case of symmetrical PSF) with the PSF $\mathcal{P}$. It provides an optimal an 
+optimal detection map where the peak of the map is the likely position of the 
+point source (Lang \emph{et al.}, in preparation).
 
 Then, we fit a simple 2d second-order polynomial 
 $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ 
@@ -383,7 +386,7 @@ plugged into equation (\ref{center}) to find the centroid estimate
 of the star. This is inspired by the 3$\times$3 quartic approximation 
 used in the \textsl{Sloan Digital Sky Surveys} photometric pipeline \citep{sdss}.
 
-\item {\bf Center of light centroiding}\quad In addition to the methods 
+\item {\bf Center-of-light centroiding}\quad In addition to the methods 
 mentioned so far, we examine centroiding stars by computing their first moments
 in a 7$\times$7 patch around the brightest pixel of the image.
 
