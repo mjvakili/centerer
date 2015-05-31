@@ -284,17 +284,19 @@ We examine fitting an exact
 \item{\bf  Matched-filter polynomial centroiding}\quad Let us consider the case 
 in which we have a good estimate of the pixel-convolved PSF at
 the position of the faint star under consideration. 
-We can smooth the image of the star, by convolving it with the 
-full PSF $\mathcal{P}$
+We can smooth the image of the star, by correlating it with the 
+full PSF $\mathcal{P}$ at the position of the star.
 \begin{eqnarray}
 Y^{(s)} &=& Y \star \mathcal{P}, \\
 Y^{(s)}_{[i,j]} &=& \sum_{k,l}Y_{[i-k,j-l]}\mathcal{P}_{[k,l]},
 \end{eqnarray}
-where $Y$ is the image of the star, and $Y^{(s)}$ is the smooth image.
+where $Y$ is the image of the star, and $Y^{(s)}$ is the smooth image which 
+is called matched-filter image.
 
 Then, we fit a simple 2d second-order polynomial 
 $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ 
-to the 3$\times$3 patch centered on the brightest pixel of the convolved image $Y^{s}$.
+to the 3$\times$3 patch centered on the brightest pixel of the
+mathched-filter image $Y^{s}$.
 Upon constructing a universal 9$\times$6 design matrix
 \begin{equation}
     \mathbf{A} = 
@@ -342,10 +344,10 @@ inverting a 2$\times$2 curvature matrix
   \end{bmatrix}.
 \eeq
 
-When $D$ has a zero (or very close to zero) deteminant,
-centroid estimated by (\ref{center}) gets arbitrarily 
-large in which case the centroiding method leads to a catastrophic 
-outlier. In order to tackle this issue, we add a soft regularization term
+When the curvature matrix $D$ has a zero (or very close to zero) deteminant,
+centroid estimates obtained from equation (\ref{center}) can become arbitrarily 
+large which leads to catastrophic outliers. 
+In order to tackle this issue, we add a soft regularization term
 proportional to $\sigma^{2}$ to the determinant of $D$.
 
 The procedure of convolving the image of star with the PSF results in a
