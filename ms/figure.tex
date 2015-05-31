@@ -156,15 +156,15 @@ related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$
 f_{m} = f_{m}(\theta_{1} , ... , \theta_{B}).
 \eeq
 
-Assuming uncorrelated Gaussian error $\sigma_{m}$ for each observable $f_{m}$, elements
+Assuming uncorrelated Gaussian error with variance $\sigma^{2}_{m}$ for each observable $f_{m}$, elements
 of the $B\times B$ Fisher matrix $\mathcal{F}_{ij}$ are given by
 \beq
 \mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
 \label{fisher}
 \eeq
 
-In this investigation, the observables are the PSF profile evaluated at different pixel locations, and  
-the model paramters are the centroid coordinates. Therefore, $\mathcal{F}$
+In this investigation, the observables are the pixel-convolved PSF (PSF profile evaluated at different pixel locations), and  
+the model paramters under consideration are the centroid coordinates. Therefore, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
 
 \beq
@@ -172,7 +172,7 @@ is a 2$\times$2 matrix whose elements are given by
                 \frac{\partial f_{\mathbf{p}}}{\partial \theta_{i}}\frac{\partial f_{\mathbf{p}}}{\partial \theta_{j}},
 \label{fish}
 \eeq
-where the summation is over pixels, $f_{\mathbf{p}}$ is the value of the PSF profile at pixel location $\mathbf{p}$,
+where the summation is over pixels, $f_{\mathbf{p}}$ is the value of the PSF at pixel location $\mathbf{p}$,
 $\theta=\{x_{c},y_{c}\}$, $\sigma^{2}$ is variance of the uncorrelated Gaussian noise map $n(\mathbf{x_{p}})$
 \begin{eqnarray}
 \langle n(\mathbf{x_{p}}) \rangle &=& 0, \\
@@ -190,12 +190,12 @@ I(r) = \frac{F(\beta -1)}{\pi \alpha^{2}}[1+(r/\alpha)^{2}]^{-\beta},
 where $F$ is the total flux, $\beta$ is a dimensionless parameter, and $\alpha$ is
 the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$)
 being $2\alpha\sqrt{2^{1/\beta}-1}$. At a fixed $\gamma$, Moffat profiles with lower values
-of $\beta$ have broader tails. It is also important to note that for a sufficiently large $\beta$, 
-the Moffat PSF becomes arbitrarily close to a simple Gaussian PSF. 
+of $\beta$ have broader tails. It is also important to note that for sufficiently large values of the 
+parameter $\beta$, the Moffat PSF becomes arbitrarily close to a simple Gaussian PSF. 
  
 In order to investigate the performance of centroiding methods for
  different background noise levels and different
-values of $\gamma$, simulation of a large number of stars---for which the exact positions of centroids
+values of the parameter $\gamma$, simulation of a large number of images of stars---for which the exact positions of centroids
 and their corresponding lower bounds are known---is required.
 
 Given the PSF model (\ref{mof}), an expression for the CRLB as a function of the size, and SNR of stars can be 
@@ -215,7 +215,7 @@ p(y_{i}) = \mathcal{N}(FP_{i},\sigma^{2}).
 \eeq
 
 The optimal estimator of flux is 
-the matched filter $\tilde{F}=\sum_{i}y_{i}P_{i}$. It can be shown that 
+the matched filter flux estimator $\tilde{F}=\sum_{i}y_{i}P_{i}$. It can be shown that 
 \beq
 p(\tilde{F}) = \mathcal{N}(F , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
 \eeq  
@@ -236,12 +236,13 @@ $\sigma$, FWHM $\gamma$, and also $\beta$
 \label{snr2}
 \eeq
 
-Equation (\ref{snr2}) implies that at a fixed $\gamma$ and background noise level $\sigma$, 
-stars with broader tails (lower $\beta$) have lower SNR. On the other hand, stars
-with higher value of $\beta$ have higher SNR. For sufficiently large $\beta$---where the PSF can be
+Equation (\ref{snr2}) implies that at a fixed $\gamma$ and background Gaussian noise 
+with variance $\sigma^{2}$, stars with broader tails (lower $\beta$) have lower SNR.
+On the other hand, stars with higher value of $\beta$ have higher SNR. 
+For sufficiently large $\beta$---where the PSF can be
 approximated by Gaussian profile---SNR is approximately given by $0.664}/(\sigma\gamma)$.
-Furthermore, at a fixed $\beta$ and background noise level $\sigma$, those with higher $\gamma$ 
-have lower SNR.  
+Furthermore, at a fixed $\beta$ and variance of the background noise $\sigma^{2}$,
+observed stars with higher $\gamma$ have lower SNR.  
 
 Throughout this investigation, $\beta$ is held fixed at the fiducial value of 2.5, where SNR
 is given by the following expression
@@ -266,27 +267,30 @@ and that a good centroiding technique delivers centroids with
 root-mean-squared-error (hereafter RMSE) close to this. 
 
 It is worth noting that for any PSF model whose radial light profile is some function of 
-$r/\gamma$, CRLB has the same functional form, in that it is proportional to the ratio between $\gamma$ and SNR. 
-For PSF profiles with shorter tails (\eg Gaussian), the prefactor of 0.685 in (\ref{crlbmoffat}) becomes smaller. 
-In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
+$r/\gamma$, CRLB has the same functional form, in that it is proportional to the ratio
+between $\gamma$ and SNR. 
+For PSF profiles with shorter tails (\eg Gaussian), the prefactor of 0.685 in (\ref{crlbmoffat})
+becomes smaller. In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
 We examine fitting an exact
  PSF profile to the stars. That is, in our Cramer-Rao bound saturation tests, we find the best
  estimates of flux and centroid by optimizing the $\chi^{2}$.
  We expect this method to perform better in determing the centroids
- of stars. In theory, this method should always saturate the CRLB.
+ of stars, and deliver RMSE very close to Cramer-Rao bound. In the next section,
+ we briefly discuss the centroiding methods used in our Cramer-Rao bound saturating tests.
+ 
 \section{Approximate methods}\label{sec:method}
 
 \item{\bf  Matched-filter polynomial centroiding}\quad Let us consider the case 
-in which we have a good estimate of the PSF at
+in which we have a good estimate of the pixel-convolved PSF at
 the position of the faint star under consideration. 
 We can smooth the image of the star, by convolving it with the 
-full postage stamp of the PSF
+full PSF $\mathcal{P}$
 \begin{eqnarray}
 Y^{(s)} &=& Y \star \mathcal{P}, \\
 Y^{(s)}_{[i,j]} &=& \sum_{k,l}Y_{[i-k,j-l]}\mathcal{P}_{[k,l]},
 \end{eqnarray}
-where $\mathcal{P}$ is the PSF postage stamp, $Y$ is the image of the star, and $Y^{(s)}$ is the smooth image.
+where $Y$ is the image of the star, and $Y^{(s)}$ is the smooth image.
 
 Then, we fit a simple 2d second-order polynomial 
 $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ 
