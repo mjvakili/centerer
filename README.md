@@ -1,7 +1,7 @@
 centerer
 ========
 
-Provides: Study of bias from different algorithms for centroiding stars. 
+Efficiency of stellar centroiding algorithms with respect to Cramer-Rao bound. 
 
 
 Installation:
