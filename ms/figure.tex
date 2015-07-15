@@ -206,7 +206,7 @@ Moreover, it is more convenient to work with the signal-to-noise ratio
 (hereafter denoted by SNR) instead of the variance of the Gaussian noise.
 We use the definition of SNR according to which, SNR is given by the ratio
  of the mean and variance of the distribution
-which the flux estimator is drawn from. Assume that the total flux from
+which the flux estimator is drawn from. Assuming that the total flux from
 the point source is $F$, and that the sub-pixel shifted PSF at the $i$-th pixel is given
 by $P_{i}$. Therefore the brightness of the $i$-th pixel $y_{i}$ is drawn from
 a Gaussian distribution 
@@ -214,8 +214,8 @@ a Gaussian distribution
 p(y_{i}) = \mathcal{N}(FP_{i},\sigma^{2}). 
 \eeq
 
-The optimal estimator of flux is 
-the matched filter flux estimator $\tilde{F}=\sum_{i}y_{i}P_{i}$. It can be shown that 
+The optimal estimator of flux is the matched-filter flux estimator 
+$\tilde{F}=\sum_{i}y_{i}P_{i}$. It can be shown that 
 \beq
 p(\tilde{F}) = \mathcal{N}(F , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
 \eeq  
@@ -407,17 +407,17 @@ this section. Hereafter, we call this method $7\times7$ moment centroiding.
 We perform two sets of simulations. In the first set, we choose four values of
 2, 2.8, 4, and 5.6 pixels for $\gamma$. For each $\gamma$, we generate 100,000 
 17 $\times$ 17 postage-stamps of Moffat profiles with centroids randomly drawn
-within the central pixel of the 17 $\times$ 17 postage-stamps. Moreover, Gaussian
-noise is added to each postage-stamp such that the simulated stars are uniformly
- distributed in log-SNR between SNR = 5 to SNR = 100.
+within the central pixel of the 17 $\times$ 17 postage-stamps. Moreover, zero-mean 
+uncorrelated Gaussian noise is added to each postage-stamp such that the simulated 
+stars are uniformly distributed in log-SNR between SNR = 5 to SNR = 100.
 
 In the second set, we generate 100,000 17$\times$17 postage-stamps
 of Moffat profile, with values of $\gamma$ uniformly distributed 
 between 2 and 6 pixels, and with centroids drawn randomly within 
 the central pixel. We choose four values for SNR: 5, 10, 20, and 40. 
 For each SNR, and for each postage-stamp with a given $\gamma$, 
-Gaussian noise, with variance corresponding to SNR and $\gamma$ through equation 
-(\ref{snr2}), is added to each postage-stamp.
+zero-mean uncorrelated Gaussian noise, with standard deviation corresponding 
+to SNR and $\gamma$ through equation (\ref{snr2}), is added to each postage-stamp.
 
 In the first experiment, we study how centroiding error behaves with changing
 SNR, while $\gamma$ is held constant. In the second experiment, we study 
