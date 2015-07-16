@@ -43,13 +43,13 @@ for measurements of proper motion. In this work, we aim to compare the performan
 various centroiding methods, when they are applied
 to relatively low signal-to-noise ratio unsaturated stars.
 In order to investigate how information-preserving these techniques are, we compare
-the root-mean-squared-error with the fundamental Cramer-Rao
+the root-mean-squared-error with the fundamental Cram\'{e}r-Rao
 lower bound assuming zero-mean constant Gaussian noise. We discuss two general circumstances in centroiding of faint stars: (i) when we have a good estimate
 of the PSF, (ii) when we do not know the PSF. In the case that we know the PSF, 
 we show that a fast polynomial centroiding after smoothing the image by the PSF can be 
 as accurate as full PSF profile fitting. In the case that we do not
 know the PSF, we demonstrate that although polynomial centroiding is not as
-accurate as PSF profile fitting, it comes close to saturating the Cramer-Rao lower bound
+accurate as PSF profile fitting, it comes close to saturating the Cram\'{e}r-Rao lower bound
 in a wide range of conditions. We also show that the center-of-light never comes close to 
 saturating the bound, and thus it does not deliver reliable estimates of centroids.    
 
@@ -95,11 +95,11 @@ the light profile of stars.
 
 In this paper, we study how optimal various techniques are at centroiding 
 faint unsaturated stars. That is, we apply a number of centroiding methods 
-to a large number of simulated faint stars with different signal-to-noise ratio and
- size realizations. Error from star centroiding methods, will always have 
-a theoretically-set lower bound, known as the Cramer-Rao lower bound
-(hereafter denoted by CRLB) which has an inverse relation with the
-signal-to-noise-ratio of stars.
+to a large number of simulated faint stars, assuming uncorrelated Gaussian noise, 
+with different signal-to-noise ratio and size realizations. Error from star 
+centroiding methods, will always have a theoretically-set lower bound, 
+known as the Cram\'{e}r-Rao lower bound (hereafter denoted by CRLB) which 
+has an inverse relation with the signal-to-noise-ratio of stars.
 
 Given the analytic expression for the PSF model,
 we derive an expression for the fundamental lower bound on the centroiding error as
@@ -123,29 +123,29 @@ PSF. The last method we consider, is the center of light centroiding applied to 
  7$\times$7 patch around the brightest pixel of the image.
 
 This paper is structured as follows. In section \ref{sec:CRLB},
-we discuss the Cramer-Rao lower bound, and we derive
+we discuss the Cram\'{e}r-Rao lower bound, and we derive
 an analytic expression for the lower bound on centroiding error
 of the simulated data, and also PSF profile fitting. 
 In section \ref{sec:method} we give a brief overview of approximate 
 centroiding methods used in our investigation.
-In section \ref{sec:data} we discuss the Cramer-Rao lower bound satuaration
+In section \ref{sec:data} we discuss the Cram\'{e}r-Rao lower bound satuaration
 tests and their corresponding simulated data.
 In section \ref{sec:result}, we compare the performances of the methods
 discussed in \ref{sec:method}, with the CRLB derived in \ref{sec:data}. Finally,
  we discuss and conclude in \ref{sec:discussion}.               
-%%%%%%%%%%%%%%%%%%%%Cramer-Rao lower Bound %%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%Cram\'{e}r-Rao lower Bound %%%%%%%%%%%%%%
 
-\section{Cramer-Rao lower bound on centroiding error}\label{sec:CRLB}
+\section{Cram\'{e}r-Rao lower bound on centroiding error}\label{sec:CRLB}
 
 In order to test the accuracy of various centroiding methods, we need to to compare their 
-performances against each other at saturating the Cramer-Rao lower bound on centroiding error. 
-The closer an estimator is to saturating 
-the CRLB, the more information about the quantity that we 
+performances against each other at saturating the Cram\'{e}r-Rao lower bound on centroiding error. 
+The closer an estimator is to saturating the CRLB, the more information about the quantity that we 
 need to estimate is preserved. A measure for closeness of an estimator to 
-saturating the CRLB is comparison of the root-mean-squared-error of that estimator 
+saturating the CRLB is comparison of the root-mean-squared error of that estimator 
 with the CRLB. 
 
-The CRLB is given by square-root of the inverse of 
+The Cram\'{e}r-Rao inequality \citep{cramer} sets a lower bound on the 
+root-mean-squared error of unbiased estimators. The CRLB is given by square-root of the inverse of 
 the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
  it is sufficient to compute the Fisher matrix. Let us assume that there are $M$ observables $\{f_{1}, ... , f_{M}\}$, each
 related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$
@@ -270,11 +270,11 @@ For PSF profiles with shorter tails (\eg Gaussian), the prefactor of 0.685 in (\
 becomes smaller. In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
 We examine fitting an exact
- PSF profile to the stars. That is, in our Cramer-Rao bound saturation tests, we find the best
+ PSF profile to the stars. That is, in our Cram\'{e}r-Rao bound saturation tests, we find the best
  estimates of flux and centroid by optimizing the $\chi^{2}$.
  We expect this method to perform better in determing the centroids
- of stars, and deliver RMSE very close to Cramer-Rao bound. In the next section,
- we briefly discuss the centroiding methods used in our Cramer-Rao bound saturating tests.
+ of stars, and deliver RMSE very close to Cram\'{e}r-Rao bound. In the next section,
+ we briefly discuss the centroiding methods used in our Cram\'{e}r-Rao bound saturating tests.
  
 \section{Centroiding methods}\label{sec:method}
 
@@ -395,7 +395,7 @@ where the summation is done over all the pixels of the 7$\times$7 patch, and $x_
 $y_{\mathbf{p}}$, and $Y_{\mathbf{p}}$, are the $x$ coordinate, $y$ coordinate, and the brightness
 of pixel $\mathbf{p}$ respectively.
 
-In terms of saturating the Cramer-Rao lower bound, we expect this simple 
+In terms of saturating the Cram\'{e}r-Rao lower bound, we expect this simple 
 center of light centroiding to perform worse than all other methods mentioned in 
 this section. Hereafter, we call this method $7\times7$ moment centroiding.
 
@@ -497,7 +497,7 @@ values of SNR in this experiment.
 
 \section{Discussion}\label{sec:discussion}
 
-An optimal stellar centroiding algorithm must saturate the fundamental Cramer-Rao lower 
+An optimal stellar centroiding algorithm must saturate the fundamental Cram\'{e}r-Rao lower 
 bound. That is, in all ranges of background noise level, size, radial light profile,
 and shape, it must preserve information about the centroids of stars. In practice however,
 this is only achievable when we have a reasonably good estimate of the PSF. Since, we do not always 
@@ -513,7 +513,7 @@ of a 7$\times$7 patch around the brightest pixel of the star.
 The second class of centroiding algorithms contains methods that require knowledge of the PSF (or having a good estimate
 of the PSF) at the positions of stars. We considered two examples from this class. The first example
 is the matched-filter polynomial centroiding, and the
-second example is the full PSF profile fitting. In terms of saturating the Cramer-Rao bound, we compared 
+second example is the full PSF profile fitting. In terms of saturating the Cram\'{e}r-Rao bound, we compared 
 the performances of these methods against each other.
 
 Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns 
@@ -533,7 +533,7 @@ The default polynomial centroiding technique only takes advantage of the informa
  well-sampled when the FWHM of the simulated image of star
  matches that of the smoothing kernel. Thus, when we apply 
 this method to find the centroids of stars with larger FWHM, certain amount of
-information (encoded in the Cramer-Rao lower bound) is lost, and therefore, the RMSE
+information (encoded in the Cram\'{e}r-Rao lower bound) is lost, and therefore, the RMSE
 of these methods deviates from the CRLB. This deviation becomes even larger at lower
 signal-to-noise ratios. Besides, the performance of this method slightly degrades
 in the case of undersampled stars (with FWHM close two 2 pixels). 
@@ -593,7 +593,8 @@ This is beyond the scope of this study.
 
 \begin{thebibliography}{70}
 
-\bibitem[Bertin \& Arnouts (1996)]{sex} Bertin, E., Arnouts, S. \ 1996  Astronomy and Astrophysics Supplement Series, 117, 393-404
+\bibitem[Bertin \& Arnouts (1996)]{sex} Bertin, E., Arnouts, S. \ 1996  Astronomy and Astrophysics Supplement Series, 117, 393-40
+\bibitem[Cram\'{e}r (1946)]{cramer} Cram\'{e}r, H. \ 1946 Mathematical methods of statistics, Princeton university press
 \bibitem[Lupton etal. (2001)]{sdss} Lupton, R. etal. \ 2001  arXiv: astro-ph/0101420
 \bibitem[Schechter etal. (1993)]{dophot} Schechter, P. L., Mateo, M., Saha, A. \ 1993 \pasp, 1342-1353
 \bibitem[Stetson (1987)]{daophot} Stetson, P. B. \ 1987, \pasp, 191-222
