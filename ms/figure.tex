@@ -17,6 +17,7 @@ filecolor=darkgreen,
 urlcolor=darkred,
 citecolor=darkblue }
 
+\DeclareMathOperator*{\argmax}{arg\,max}
 
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
@@ -142,24 +143,76 @@ performances against each other at saturating the Cram\'{e}r-Rao lower bound on 
 The closer an estimator is to saturating the CRLB, the more information about the quantity that we 
 need to estimate is preserved. A measure for closeness of an estimator to 
 saturating the CRLB is comparison of the root-mean-squared error of that estimator 
-with the CRLB. 
+with the CRLB. The closer the root-mean-squared-error of a given estimator is to the bound, 
+the more optimal the estimator is. 
 
 The Cram\'{e}r-Rao inequality \citep{cramer} sets a lower bound on the 
 root-mean-squared error of unbiased estimators. The CRLB is given by square-root of the inverse of 
 the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
- it is sufficient to compute the Fisher matrix. Let us assume that there are $M$ observables $\{f_{1}, ... , f_{M}\}$, each
-related to $B$ model parameters $\{\theta_{1} , ... , \theta_{B}\}$
+ it is sufficient to compute the Fisher matrix. 
+
+Let us assume that there are $M$ observables $\mathbf{f} = (f_{1}, ... , f_{M})$, each
+related to $B$ model parameters $\Boldsymbol{\mathbf{\theta}} = (\theta_{1} , ... , \theta_{B})$ 
 \beq
 f_{m} = f_{m}(\theta_{1} , ... , \theta_{B}).
+\label{genmodel}
 \eeq
 
 Assuming uncorrelated Gaussian error with variance $\sigma^{2}_{m}$ for each observable $f_{m}$, elements
 of the $B\times B$ Fisher matrix $\mathcal{F}_{ij}$ are given by
 \beq
-\mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
+\mathcal{F}_{ij} = \sum_{m=1}^{M}\frac{1}{\sigma_{m}^{2}}\frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}}
 \label{fisher}
 \eeq
 
+Let us assume that, for each parameter $\theta_{i}$, there exists a set of 
+unbiased estimators $\{\hat{\theta}_{i}\}$. The Cram\'{e}r-Rao inequality 
+states that the root-mean-squared error of this set is greater than or equal to 
+the $i$-th diagonal element of the inverse of the Fisher information matrix:
+\beq
+\text{RMSE}[\{\hat{\theta_{i}}\}] \geq \sqrt{[\mathcal{F}^{-1}]_{ii}},
+\label{inequality}
+\eeq
+where the left hand side of the inequality is called the Cram\'{e}r-Rao bound on 
+the root-mean-squared error of estimating the parameter $\theta_{i}$. Note that 
+the bound is computed assuming that the model (\ref{genmodel}) generating the data 
+is known, and that uncertainties are given by additive uncorrelated Gaussian noise.
+
+Based on inequality (\ref{inequality}), \citet{cramer} defines efficiency of unbiased 
+estimators as the ratio of the CRLB and the root-mean-squared-error such that the maximum efficiency 
+achievable by an estimator is unity. The closer the root mean-squared 
+to the CRLB, the more information about the parameter of interest is preserved, and thus the more efficient 
+the estimator is. 
+
+Let us consider the case of maximum likelihood estimate $\boldsymbol{\mathbf{\theta}}_{\text{ML}}$
+
+\begin{eqnarray}
+\boldsymbol{\mathbf{\theta}}_{\text{ML}} &=& \argmax \mathcal{L}, \\
+-2\ln \mathcal{L} &=& \sum_{m}\frac{1}{\sigma_{m}^{2}}( y_{m} - f_{m}(\boldsymbol{\mathbf{\theta}}))^{2}, \\
+\end{eqnarray}
+where $y_{m}$ is the $m$th component of the observed data $\mathbf{y}$
+\beq
+\mathbf{y} = \mathbf{f}(\boldsymbol{\mathbf{\theta}}_{\text{true}}) + \mathbf{n},
+\eeq
+under the assumption that $\mathbf{n} = (n_{1}, ... , n_{M})$ is uncorrelated Gaussian noise
+\begin{eqnarray}
+\langle n_{m} \rangle &=& 0, \\
+\langle n_{m}n_{m^{\prime}} \rangle &=& \sigma_{m}^{2}\delta_{m,m^{\prime}}. 
+\end{eqnarray}
+
+
+Maximum efficiency can be achived by maximum likelihood estimates under the condition. That is, 
+the root-mean-squared error, computed for a large ensemble of maximum liklihood estimators can become 
+arbitrarily close to the CRLB. 
+
+
+However, the relation (\ref{inequality}) does not necessarily hold for biased estimators. That is, 
+the root-mean-squared-error can be smaller than the CRLB (see \citet{lecam}; \citet{hodge}). 
+
+Furthermore, an unbiased estimator is called efficient when the root-mean-squared-error 
+and the CRLB are equal. Maximum likelihood estimators are asymptotically efficient and maximum 
+efficiency can be achieved. 
+ 
 In this investigation, the observables are the pixel-convolved PSF (PSF profile evaluated at different pixel locations), and  
 the model paramters under consideration are the centroid coordinates. Therefore, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
@@ -595,6 +648,7 @@ This is beyond the scope of this study.
 
 \bibitem[Bertin \& Arnouts (1996)]{sex} Bertin, E., Arnouts, S. \ 1996  Astronomy and Astrophysics Supplement Series, 117, 393-40
 \bibitem[Cram\'{e}r (1946)]{cramer} Cram\'{e}r, H. \ 1946 Mathematical methods of statistics, Princeton university press
+\bibitem[Le Cam (1953)]{lecam} Le Cam, L. M. \ 1953 On some asymptotic properties of maximum likelihood estimates and related Bayes' estimates (Vol. 1, No. 11), University of California press
 \bibitem[Lupton etal. (2001)]{sdss} Lupton, R. etal. \ 2001  arXiv: astro-ph/0101420
 \bibitem[Schechter etal. (1993)]{dophot} Schechter, P. L., Mateo, M., Saha, A. \ 1993 \pasp, 1342-1353
 \bibitem[Stetson (1987)]{daophot} Stetson, P. B. \ 1987, \pasp, 191-222
