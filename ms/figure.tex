@@ -180,7 +180,7 @@ is known, and that uncertainties are given by additive uncorrelated Gaussian noi
 
 Based on inequality (\ref{inequality}), \citet{cramer} defines efficiency of unbiased 
 estimators as the ratio of the CRLB and the root-mean-squared-error such that the maximum efficiency 
-achievable by an estimator is unity. The closer the root mean-squared 
+achievable by an estimator is unity. The closer the root-mean-squared 
 to the CRLB, the more information about the parameter of interest is preserved, and thus the more efficient 
 the estimator is. 
 
@@ -200,19 +200,16 @@ under the assumption that $\mathbf{n} = (n_{1}, ... , n_{M})$ is uncorrelated Ga
 \langle n_{m}n_{m^{\prime}} \rangle &=& \sigma_{m}^{2}\delta_{m,m^{\prime}}. 
 \end{eqnarray}
 
-
-Maximum efficiency can be achived by maximum likelihood estimates under the condition. That is, 
-the root-mean-squared error, computed for a large ensemble of maximum liklihood estimators can become 
-arbitrarily close to the CRLB. 
-
+Asymptotically, maximum likelihood estimators can achieve maximum efficiency. That is, for sufficiently large 
+number of estimates in a set of maximum likelihood estimates $\{\theta_{\text{ML}}\}$, the root-mean-squared 
+error becomes arbitrarily close to the CRLB (see \citet{cramer}; \citet{lecam} for proof). 
 
 However, the relation (\ref{inequality}) does not necessarily hold for biased estimators. That is, 
-the root-mean-squared-error can be smaller than the CRLB (see \citet{lecam}; \citet{hodge}). 
-
-Furthermore, an unbiased estimator is called efficient when the root-mean-squared-error 
-and the CRLB are equal. Maximum likelihood estimators are asymptotically efficient and maximum 
-efficiency can be achieved. 
- 
+the root-mean-squared-error can be smaller than the CRLB (see \citet{lecam} for examples).
+Therefore, we want to investigate the conditions under which, RMSE arising from a given centroiding method 
+becomes close to the CRLB, or whether it can become equal to the CRLB in which case the method is \emph{saturating} 
+the bound, or whether it can drop below the CRLB in which case the method is \emph{beating} the bound.   
+  
 In this investigation, the observables are the pixel-convolved PSF (PSF profile evaluated at different pixel locations), and  
 the model paramters under consideration are the centroid coordinates. Therefore, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
