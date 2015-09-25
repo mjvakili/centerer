@@ -17,10 +17,28 @@ filecolor=darkgreen,
 urlcolor=darkred,
 citecolor=darkblue }
 
+%----- typeset certain kinds of words
+\newcommand{\latin}[1]{\textit{#1}}
 \DeclareMathOperator*{\argmax}{arg\,max}
-
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
+\newcommand{\eg}{\latin{e.g.}}
+\newcommand{\etal}{\latin{et~al.}}
+\newcommand{\etc}{\latin{etc.}}
+\newcommand{\ie}{\latin{i.e.}}
+
+%----- math shih
+\newcommand{\given}{\,|\,}
+
+% these are already defined in aastex package
+%----- typeset journals  
+%\newcommand{\aj}{Astron.\,J.}
+%\newcommand{\apj}{Astrophys.\,J.}
+%\newcommand{\apjl}{Astrophys.\,J.\,Lett.}
+%\newcommand{\apjs}{Astrophys.\,J.\,Supp.\,Ser.}
+%\newcommand{\mnras}{Mon.\,Not.\,Roy.\,Ast.\,Soc.}
+%\newcommand{\pasp}{Pubs.\,Astron.\,Soc.\,Pac.}
+%\newcommand{\aap}{Astron.\,\&~Astrophys.}
 
 \begin{document}
 
@@ -152,7 +170,7 @@ the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
  it is sufficient to compute the Fisher matrix. 
 
 Let us assume that there are $M$ observables $\mathbf{f} = (f_{1}, ... , f_{M})$, each
-related to $B$ model parameters $\Boldsymbol{\mathbf{\theta}} = (\theta_{1} , ... , \theta_{B})$ 
+related to $B$ model parameters $\boldsymbol{\mathbf{\theta}} = (\theta_{1} , ... , \theta_{B})$ 
 \beq
 f_{m} = f_{m}(\theta_{1} , ... , \theta_{B}).
 \label{genmodel}
@@ -287,7 +305,7 @@ Equation (\ref{snr2}) implies that at a fixed $\gamma$ and background Gaussian n
 with variance $\sigma^{2}$, stars with broader tails (lower $\beta$) have lower SNR.
 On the other hand, stars with higher value of $\beta$ have higher SNR. 
 For sufficiently large $\beta$---where the PSF can be
-approximated by Gaussian profile---SNR is approximately given by $0.664}/(\sigma\gamma)$.
+approximated by Gaussian profile---SNR is approximately given by $0.664/(\sigma\gamma)$.
 Furthermore, at a fixed $\beta$ and variance of the background noise $\sigma^{2}$,
 observed stars with higher $\gamma$ have lower SNR.  
 
@@ -327,8 +345,9 @@ We examine fitting an exact
  we briefly discuss the centroiding methods used in our Cram\'{e}r-Rao bound saturating tests.
  
 \section{Centroiding methods}\label{sec:method}
-
-\item{\bf  Matched filter polynomial centroiding}\quad Let us consider the case 
+\begin{description}
+%\item{{\bf :N}} \quad \\ 
+\item{{\bf Matched filter polynomial centroiding}} \quad Let us consider the case 
 in which we have a good estimate of the pixel-convolved PSF at
 the position of the faint star under consideration. 
 We can smooth the image of the star, by correlating it with the 
@@ -407,7 +426,7 @@ brightest pixel. In addition, a simple second-order polynomial will provide a be
 since convolution with the PSF makes the variation of the brightness of the image
  across the 3$\times$3 patch very smooth.
  
-\item{\bf Default polynomial centroiding}\quad In the case that 
+\item{{\bf Default polynomial centroiding}} \quad In the case that 
 we do not know the PSF at the position of star, we change 
 the smoothing step in the following way. Instead of smoothing the image 
 by convolving it with the PSF, smoothing is done by convolving the image 
@@ -433,7 +452,7 @@ plugged into equation (\ref{center}) to find the centroid estimate
 of the star. This is inspired by the 3$\times$3 quartic approximation 
 used in the \textsl{Sloan Digital Sky Surveys} photometric pipeline \citep{sdss}.
 
-\item {\bf Center-of-light centroiding}\quad In addition to the methods 
+\item{{\bf Center-of-light centroiding}} \quad In addition to the methods 
 mentioned so far, we examine centroiding stars by computing their first moments
 in a 7$\times$7 patch around the brightest pixel of the image.
 
@@ -448,6 +467,8 @@ of pixel $\mathbf{p}$ respectively.
 In terms of saturating the Cram\'{e}r-Rao lower bound, we expect this simple 
 center of light centroiding to perform worse than all other methods mentioned in 
 this section. Hereafter, we call this method $7\times7$ moment centroiding.
+
+\end{description}
 
 \section{Tests}\label{sec:data}
 
