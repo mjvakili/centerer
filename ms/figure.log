@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  25 SEP 2015 18:11
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  25 SEP 2015 18:17
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -480,7 +480,12 @@ Package atveryend Info: Empty hook `BeforeClearDocument' on input line 758.
 [21 <./fwhm_psfpoly.png>] [22 <./fwhm_psfpix28poly.png>] [23 <./fwhm_moment.png
 >]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 758.
- (./figure.aux)
+ (./figure.aux
+
+Package natbib Warning: Citation(s) may have changed.
+(natbib)                Rerun to get citations correct.
+
+)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 758.
 Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 758.
 Package rerunfilecheck Info: File `figure.out' has not changed.
