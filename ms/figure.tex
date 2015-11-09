@@ -5,6 +5,7 @@
 \usepackage{bbm}
 \usepackage[breaklinks]{hyperref}	% for blackboard bold numbers
 \usepackage{hyperref}
+\usepackage{enumitem}
 \hypersetup{colorlinks}
 \usepackage{color}
 \usepackage{morefloats}
@@ -170,9 +171,19 @@ need to estimate is preserved. The closer the root-mean-squared-error of a given
 the more optimal the estimator is. 
 
 The Cram\'{e}r-Rao inequality \citep{cramer} sets a lower bound on the 
-root-mean-squared error of unbiased estimators. The CRLB is given by square-root of the inverse of 
+root-mean-squared error of unbiased estimators. The CRLB is given by the square-root of the inverse of 
 the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
- it is sufficient to compute the Fisher matrix. 
+ it is sufficient to compute the Fisher matrix. This computation relies on a set of assumptions:
+
+\begin{itemize}
+  \item Known, constant model observable with known dependence on the model parameters. 
+        In this work the model observables the Moffat PSF profiles, and the model parameters are 
+        the centroids. 
+  \item Known, stationary noise process. In the context of centroiding stars, this is equivalent to 
+        having background limited nosie due to sky background, and CCD readout noise.
+  \item Uncorrelated Gaussian noise with no outliers. 
+\end{itemize}
+ 
 
 Let us assume that there are $M$ observables $\mathbf{f} = (f_{1}, ... , f_{M})$, each
 related to $B$ model parameters $\boldsymbol{\mathbf{\theta}} = (\theta_{1} , ... , \theta_{B})$ 
