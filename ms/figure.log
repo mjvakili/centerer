@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  9 NOV 2015 16:31
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  10 NOV 2015 21:02
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -438,102 +438,109 @@ LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
  [4] [5] [6] [7]
 [8] [9] [10] [11] [12] [13] [14]
 
-Package hyperref Warning: Ignoring empty anchor on input line 693.
+Package hyperref Warning: Ignoring empty anchor on input line 688.
 
-[15] <snr_psffitting.png, id=220, 505.89pt x 505.89pt>
+[15] <snr_psffitting.png, id=221, 505.89pt x 505.89pt>
 File: snr_psffitting.png Graphic file (type png)
 
 <use snr_psffitting.png>
-Package pdftex.def Info: snr_psffitting.png used on input line 699.
+Package pdftex.def Info: snr_psffitting.png used on input line 694.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
- <snr_psfpoly.png, id=222, 505.89pt x 505.89pt>
+ <snr_psfpoly.png, id=223, 505.89pt x 505.89pt>
 File: snr_psfpoly.png Graphic file (type png)
 
 <use snr_psfpoly.png>
-Package pdftex.def Info: snr_psfpoly.png used on input line 709.
+Package pdftex.def Info: snr_psfpoly.png used on input line 704.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
- <snr_psfpix28poly.png, id=223, 505.89pt x 505.89pt>
+ <snr_psfpix28poly.png, id=224, 505.89pt x 505.89pt>
 File: snr_psfpix28poly.png Graphic file (type png)
 
 <use snr_psfpix28poly.png>
-Package pdftex.def Info: snr_psfpix28poly.png used on input line 719.
+Package pdftex.def Info: snr_psfpix28poly.png used on input line 714.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
- <snr_moment.png, id=224, 505.89pt x 505.89pt>
+ <snr_moment.png, id=225, 505.89pt x 505.89pt>
 File: snr_moment.png Graphic file (type png)
 
 <use snr_moment.png>
-Package pdftex.def Info: snr_moment.png used on input line 726.
+Package pdftex.def Info: snr_moment.png used on input line 721.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
- <fwhm_psf.png, id=225, 505.89pt x 505.89pt>
+ <fwhm_psf.png, id=226, 505.89pt x 505.89pt>
 File: fwhm_psf.png Graphic file (type png)
 
 <use fwhm_psf.png>
-Package pdftex.def Info: fwhm_psf.png used on input line 735.
+Package pdftex.def Info: fwhm_psf.png used on input line 730.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
- <fwhm_psfpoly.png, id=226, 505.89pt x 505.89pt>
+ <fwhm_psfpoly.png, id=227, 505.89pt x 505.89pt>
 File: fwhm_psfpoly.png Graphic file (type png)
 
 <use fwhm_psfpoly.png>
-Package pdftex.def Info: fwhm_psfpoly.png used on input line 746.
+Package pdftex.def Info: fwhm_psfpoly.png used on input line 741.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
- <fwhm_psfpix28poly.png, id=227, 505.89pt x 505.89pt>
+ <fwhm_psfpix28poly.png, id=228, 505.89pt x 505.89pt>
 File: fwhm_psfpix28poly.png Graphic file (type png)
 
 <use fwhm_psfpix28poly.png>
-Package pdftex.def Info: fwhm_psfpix28poly.png used on input line 756.
+Package pdftex.def Info: fwhm_psfpix28poly.png used on input line 751.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
- <fwhm_moment.png, id=228, 505.89pt x 505.89pt>
+ <fwhm_moment.png, id=229, 505.89pt x 505.89pt>
 File: fwhm_moment.png Graphic file (type png)
 
 <use fwhm_moment.png>
-Package pdftex.def Info: fwhm_moment.png used on input line 767.
+Package pdftex.def Info: fwhm_moment.png used on input line 762.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 776.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 771.
  [16
 
  <./snr_psffitting.png>] [17 <./snr_psfpoly.png>]
 [18 <./snr_psfpix28poly.png>] [19 <./snr_moment.png>] [20 <./fwhm_psf.png>]
 [21 <./fwhm_psfpoly.png>] [22 <./fwhm_psfpix28poly.png>] [23 <./fwhm_moment.png
 >]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 776.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 771.
  (./figure.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 776.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 776.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 771.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 771.
 Package rerunfilecheck Info: File `figure.out' has not changed.
 (rerunfilecheck)             Checksum: 14635A6337983EA23663591CB8D5CB5B;410.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 776.
+
+
+LaTeX Warning: Label(s) may have changed. Rerun to get cross-references right.
+
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 771.
  ) 
 Here is how much of TeX's memory you used:
  7451 strings out of 493304
- 104493 string characters out of 6139871
+ 104492 string characters out of 6139871
  200283 words of memory out of 5000000
  10726 multiletter control sequences out of 15000+600000
  15895 words of font info for 64 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
  34i,11n,28p,504b,442s stack positions out of 5000i,500n,10000p,200000b,80000s
-</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
-r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share
-/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
-ve/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/share/texlive
-/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf
--dist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/f
-onts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/ty
-pe1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/p
-ublic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/a
-msfonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts
-/cm/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7
-.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></u
-sr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/sha
-re/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/tex
-live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/te
-xmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dis
-t/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/font
-s/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/symbols/msam10.pfb>
-Output written on figure.pdf (23 pages, 7617339 bytes).
+pdfTeX warning (dest): name{equation.2.19} has been referenced but does not e
+xist, replaced by a fixed one
+
+</usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/
+share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share/t
+exlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texlive
+/texmf-dist/fonts/type1/public/amsfonts/cmextra/cmex8.pfb></usr/share/texlive/t
+exmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb></usr/share/texlive/texmf-d
+ist/fonts/type1/public/amsfonts/cm/cmmi6.pfb></usr/share/texlive/texmf-dist/fon
+ts/type1/public/amsfonts/cm/cmmi8.pfb></usr/share/texlive/texmf-dist/fonts/type
+1/public/amsfonts/cm/cmmib10.pfb></usr/share/texlive/texmf-dist/fonts/type1/pub
+lic/amsfonts/cm/cmr10.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/ams
+fonts/cm/cmr12.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/c
+m/cmr6.pfb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.p
+fb></usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr
+/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsl12.pfb></usr/share
+/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/share/texli
+ve/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/texm
+f-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dist/
+fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/fonts/
+type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type1/
+public/amsfonts/symbols/msam10.pfb>
+Output written on figure.pdf (23 pages, 7617346 bytes).
 PDF statistics:
- 351 PDF objects out of 1000 (max. 8388607)
- 287 compressed objects within 3 object streams
+ 352 PDF objects out of 1000 (max. 8388607)
+ 288 compressed objects within 3 object streams
  72 named destinations out of 1000 (max. 500000)
  105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
