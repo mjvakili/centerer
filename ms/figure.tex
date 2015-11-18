@@ -177,10 +177,10 @@ the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
 
 \begin{itemize}
   \item Known, constant model observable with known dependence on the model parameters. 
-        In this work the model observables the Moffat PSF profiles, and the model parameters are 
-        the centroids. 
+        In this work the model observables are the presumed known Moffat PSF profiles, 
+        and the model parameters are the centroids. 
   \item Known, stationary noise process. In the context of centroiding stars, this is equivalent to 
-        having background limited nosie due to sky background, and CCD readout noise.
+        having background limited nosie from sky background and CCD readout noise.
   \item Uncorrelated Gaussian noise with no outliers. 
 \end{itemize}
  
@@ -218,7 +218,7 @@ achievable by an estimator is unity. The closer the root-mean-squared
 to the CRLB, the more information about the parameter of interest is preserved, and thus the more efficient 
 the estimator is. 
 
-Let us consider the case of a maximum likelihood estimate $\boldsymbol{\mathbf{\theta}}_{\text{ML}}$, where the lieklihood function corresponds to the same generative assumptions that we used to compute the CRLB.
+Let us consider the case of a maximum likelihood estimate $\boldsymbol{\mathbf{\theta}}_{\text{ML}}$, where the likelihood function corresponds to the same generative assumptions that we used to compute the CRLB.
 
 \begin{eqnarray}
 \boldsymbol{\mathbf{\theta}}_{\text{ML}} &=& \argmax \mathcal{L}, \\
@@ -235,24 +235,24 @@ error becomes arbitrarily close to the CRLB (see \citet{cramer}; \citet{lecam} f
 
 However, the relation (\ref{inequality}) does not necessarily hold for biased estimators. That is, 
 the root-mean-squared-error for a biased estimator can be smaller than the CRLB (see \citet{lecam} for examples).
-Therefore, we want to investigate the conditions under which, RMSE arising from a given centroiding method 
+Therefore, we want to investigate the conditions under which the RMSE arising from a given centroiding method 
 becomes close to the CRLB, or whether it can become equal to the CRLB in which case the method is \emph{saturating} 
-the bound, or whether it can drop below the CRLB in which case the method is \emph{beating} the bound (in the case of bias).   
+the bound, or whether it can drop below the CRLB in which case the method is \emph{beating} the bound (and threfore must be biased).   
   
 In this investigation, the model observables for the noisy data are the pixel-convolved PSF (PSF profile evaluated at different pixel locations), and  
-the model paramters under consideration are the centroid coordinates. Therefore, $\mathcal{F}$
+the model parameters under consideration are the centroid coordinates. Therefore, $\mathcal{F}$
 is a 2$\times$2 matrix whose elements are given by
 
 \beq
-  \mathcal{F}_{ij} = \sum_{\mathbf{p}}\frac{1}{\sigma^{2}}
-                \frac{\partial f_{\mathbf{p}}}{\partial \theta_{i}}\frac{\partial f_{\mathbf{p}}}{\partial \theta_{j}},
+  \mathcal{F}_{ij} = \sum_{m}\frac{1}{\sigma^{2}}
+                \frac{\partial f_{m}}{\partial \theta_{i}}\frac{\partial f_{m}}{\partial \theta_{j}},
 \label{fish}
 \eeq
-where the summation is over pixels, $f_{\mathbf{p}}$ is the value of the PSF at pixel location $\mathbf{p}$,
-$\theta=\{x_{c},y_{c}\}$, $\sigma^{2}$ is variance of the uncorrelated Gaussian noise map $n(\mathbf{x_{p}})$
+where the summation is over pixels, $f_{m}$ is the value of the PSF at pixel location $m$,
+$\theta=\{x_{c},y_{c}\}$, $\sigma^{2}$ is variance of the uncorrelated Gaussian noise map $n(\mathbf{x}_{m})$
 \begin{eqnarray}
-\langle n(\mathbf{x_{p}}) \rangle &=& 0, \\
-\langle n(\mathbf{x_{p}})n(\mathbf{x_{p^{\prime}}}) \rangle &=& \sigma^{2}\delta_{\mathbf{p}\mathbf{p}^{\prime}}. 
+E[n(\mathbf{x}_{m})] &=& 0, \\
+E[n(\mathbf{x}_{m})n(\mathbf{x}_{m^{\prime}})] &=& \sigma^{2}\delta_{m,m^{\prime}}. 
 \end{eqnarray}
 
 Derivation of an explicit expression for the Fisher matrix $\mathcal{F}$ requires specifying a PSF model.
