@@ -229,12 +229,12 @@ where $y_{m}$ is the $m$th component of the observed data $\mathbf{y}$
 \mathbf{y} = \mathbf{f}(\boldsymbol{\mathbf{\theta}}_{\text{true}}) + \mathbf{n}.
 \eeq
 
-Asymptotically, maximum likelihood estimators can achieve maximum efficiency. That is, for sufficiently large 
-number of estimates in a set of maximum likelihood estimates $\{\theta_{\text{ML}}\}$, the root-mean-squared 
-error becomes arbitrarily close to the CRLB (see \citet{cramer}; \citet{lecam} for proof). 
+Asymptotically, maximum likelihood estimators can achieve maximum efficiency. That is, the RMSE from a 
+large set of maximum likelihood estimates $\{\theta_{\text{ML}}\}$, 
+becomes greater than or equal to the CRLB (see \citet{cramer}; \citet{lecam} for proof). 
 
 However, the relation (\ref{inequality}) does not necessarily hold for biased estimators. That is, 
-the root-mean-squared-error for a biased estimator can be smaller than the CRLB (see \citet{lecam} for examples).
+the root-mean-squared-error for a biased estimator can be smaller than the CRLB (see \citealt{lecam} for examples).
 Therefore, we want to investigate the conditions under which the RMSE arising from a given centroiding method 
 becomes close to the CRLB, or whether it can become equal to the CRLB in which case the method is \emph{saturating} 
 the bound, or whether it can drop below the CRLB in which case the method is \emph{beating} the bound (and threfore must be biased).   
