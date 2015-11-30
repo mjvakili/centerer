@@ -255,7 +255,8 @@ E[n(\mathbf{x}_{m})] &=& 0, \\
 E[n(\mathbf{x}_{m})n(\mathbf{x}_{m^{\prime}})] &=& \sigma^{2}\delta_{m,m^{\prime}}. 
 \end{eqnarray}
 
-Derivation of an explicit expression for the Fisher matrix $\mathcal{F}$ requires specifying a PSF model.
+Derivation of an explicit expression for the Fisher matrix $\mathcal{F}$ requires specifying a presumed correct 
+PSF model.
 We use the Moffat profile \citep{moffat} for our PSF simulations. 
 Moffat profile is an analytic model for stellar PSFs. It has broader wings than
 a simple Gaussian profile. The surface brightness of the Moffat profile is given by
@@ -264,7 +265,7 @@ I(r) = \frac{F(\beta -1)}{\pi \alpha^{2}}[1+(r/\alpha)^{2}]^{-\beta},
 \label{mof}
 \eeq
 where $F$ is the total flux, $\beta$ is a dimensionless parameter, and $\alpha$ is
-the length scale of the Moffat profile, with FWHM (hereafter denoted by $\gamma$)
+the scale radius of the Moffat profile, with FWHM (hereafter denoted by $\gamma$)
 being $2\alpha\sqrt{2^{1/\beta}-1}$. At a fixed $\gamma$, Moffat profiles with lower values
 of $\beta$ have broader tails. It is also important to note that for sufficiently large values of the 
 parameter $\beta$, the Moffat PSF becomes arbitrarily close to a simple Gaussian PSF. 
@@ -320,10 +321,10 @@ approximated by Gaussian profile---SNR is approximately given by $0.664/(\sigma\
 Furthermore, at a fixed $\beta$ and variance of the background noise $\sigma^{2}$,
 observed stars with higher $\gamma$ have lower SNR.  
 
-Throughout this investigation, $\beta$ is held fixed at the fiducial value of 2.5, where SNR
+Throughout this investigation, $\beta$ is held fixed at the fiducial value of $\beta=$ 2.5, where SNR
 is given by the following expression
 \beq
-\text{SNR} \simeq \frac{0.478}{\sigma \gamma}.
+\text{SNR} \simeq \frac{0.478}{\sigma \gamma} & \text{   for } \beta = 2.5.
 \eeq
 
 Given the analytic expression for the Moffat PSF model (\ref{mof}), and choice of $\beta=2.5$, 
@@ -345,16 +346,14 @@ root-mean-squared-error (hereafter RMSE) close to this.
 It is worth noting that for any PSF model whose radial light profile is some function of 
 $r/\gamma$, CRLB has the same functional form, in that it is proportional to the ratio
 between $\gamma$ and SNR. 
-For PSF profiles with shorter tails (\eg Gaussian), the prefactor of 0.685 in (\ref{crlbmoffat})
+For PSF profiles with shorter tails (\eg, Gaussian), the prefactor of 0.685 in (\ref{crlbmoffat})
 becomes smaller. In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
 We examine fitting an exact
  PSF profile to the stars. That is, in our Cram\'{e}r-Rao bound saturation tests, we find the best
- estimates of flux and centroid by optimizing the $\chi^{2}$.
- We expect this method to perform better in determing the centroids
- of stars, and deliver RMSE very close to Cram\'{e}r-Rao bound. In the next section,
- we briefly discuss the centroiding methods used in our Cram\'{e}r-Rao bound saturating tests.
- 
+ estimates of flux and centroid by optimizing the likelihood using the correct PSF.
+ We expect this method to perform best in determing the centroids
+ of stars, and deliver RMSE equal to Cram\'{e}r-Rao bound. 
 \section{Centroiding methods}\label{sec:method}
 \begin{description}
 %\item{{\bf :N}} \quad \\ 
@@ -367,10 +366,11 @@ full PSF $\mathcal{P}$ at the position of the star.
 Y^{(s)} &=& Y \star \mathcal{P}, \\
 Y^{(s)}_{[i,j]} &=& \sum_{k,l}Y_{[i-k,j-l]}\mathcal{P}_{[k,l]},
 \end{eqnarray}
-where $Y$ is the image of the star, and $Y^{(s)}$ is called matched filter. 
-Matched filter is a model where the data $Y$ is correlated (convolved in the 
-case of symmetrical PSF) with the PSF $\mathcal{P}$. It provides an optimal an 
-optimal detection map where the peak of the map is the likely position of the 
+where $Y$ is the image of the star, and $Y^{(s)}$ is sometimes called a matched filter. 
+A matched filter is a method in which the data $Y$ is correlated (convolved in the 
+case of symmetrical PSF) with the PSF $\mathcal{P}$. It is equivalent to optimizing the 
+likelihood and therefore provides an optimal map 
+where the peak of the map is the likely position of the 
 point source (Lang \emph{et al.}, in preparation).
 
 Then, we fit a simple 2d second-order polynomial 
@@ -426,9 +426,9 @@ inverting a 2$\times$2 curvature matrix
 
 When the curvature matrix $D$ has a zero (or very close to zero) deteminant,
 centroid estimates obtained from equation (\ref{center}) can become arbitrarily 
-large which leads to catastrophic outliers. 
+large, which leads to catastrophic outliers. 
 In order to tackle this issue, we add a soft regularization term
-proportional to $\sigma^{2}$ to the determinant of $D$.
+proportional to $\sigma^{2}$ to the diagonals of $D$ prior to inversion.
 
 The procedure of convolving the image of star with the PSF results in a
 more well-sampled image, which eventually, leads to having more

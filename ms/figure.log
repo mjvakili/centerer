@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  19 NOV 2015 22:27
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  30 NOV 2015 19:23
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -435,8 +435,12 @@ LaTeX Font Info:    Font shape `U/lasy/b/n' in size <8> not available
 (Font)              Font shape `U/lasy/m/n' tried instead on input line 189.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
 (Font)              Font shape `U/lasy/m/n' tried instead on input line 189.
- [4] [5] [6] [7]
-[8] [9] [10] [11] [12] [13] [14]
+ [4] [5] [6]
+! Misplaced alignment tab character &.
+l.327 ...SNR} \simeq \frac{0.478}{\sigma \gamma} &
+                                                   \text{   for } \beta = 2.5.
+? 
+[7] [8] [9] [10] [11] [12] [13] [14]
 
 Package hyperref Warning: Ignoring empty anchor on input line 688.
 
@@ -506,11 +510,11 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 771.
 Here is how much of TeX's memory you used:
  7450 strings out of 493304
  104479 string characters out of 6139871
- 200281 words of memory out of 5000000
+ 199281 words of memory out of 5000000
  10726 multiletter control sequences out of 15000+600000
  15895 words of font info for 64 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 34i,11n,28p,504b,442s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,11n,28p,504b,456s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share
 /texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
@@ -530,7 +534,7 @@ xmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/amsfonts/symbols/msam10.pfb>
-Output written on figure.pdf (23 pages, 7617282 bytes).
+Output written on figure.pdf (23 pages, 7617390 bytes).
 PDF statistics:
  350 PDF objects out of 1000 (max. 8388607)
  286 compressed objects within 3 object streams
