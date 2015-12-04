@@ -431,9 +431,7 @@ In order to tackle this issue, we add a soft regularization term
 proportional to $\sigma^{2}$ to the diagonals of $D$ prior to inversion.
 
 The procedure of convolving the image of star with the PSF results in a
-more well-sampled image, which eventually, leads to having more
-information regarding the centroids of stars in the 3$\times$3 patch around the
-brightest pixel. In addition, a simple second-order polynomial will provide a better fit 
+smoother image. Therefore, a simple second-order polynomial will provide a better fit 
 since convolution with the PSF makes the variation of the brightness of the image
  across the 3$\times$3 patch very smooth.
  
@@ -441,12 +439,12 @@ since convolution with the PSF makes the variation of the brightness of the imag
 we do not know the PSF at the position of star, we change 
 the smoothing step in the following way. Instead of smoothing the image 
 by convolving it with the PSF, smoothing is done by convolving the image 
-with a Gaussian kernel of a fixed size 
+with a default Gaussian kernel of a fixed size 
 \beq
 k(\mathbf{x}) = \frac{1}{2\pi w^2}\exp(-\mathbf{x}^{2}/2w^{2}),
 \eeq
 where throughout this study, the full-width at half-maximum of the Gaussian kernel is held at
-a fixed value of 2.8 pixels (corresponding to w $\simeq$ 1.2 pixels). Smoothing step is done as follows
+a fixed value of 2.8 pixels (corresponding to w $\simeq$ 1.2 pixels).The smoothing step is done as follows
 \begin{eqnarray}
 Y^{(s)} &=& Y \star \mathcal{K}, \\
 Y^{(s)}_{[i,j]} &=& \sum_{k,l}Y_{[i-k,j-l]}\mathcal{K}_{[k,l]},
@@ -456,14 +454,14 @@ array whose elements are given by the Gaussian kernel
 \beq
 \mathcal{K}_{[k,l]} = k(x_{k},y_{l}).
 \eeq 
-Then we apply the same 2d second-order polynomial method to the 3$\times$3 patch centered on the brightest
+Then we apply the same 2d second-order polynomial method (\ref{linearfit},\ref{center}) to the 3$\times$3 patch centered on the brightest
 pixel of the smooth image $Y^{(s)}$. Therefore, for a given star and a smoothing kernel,
 the outcome of equation (\ref{linearfit}) can be
 plugged into equation (\ref{center}) to find the centroid estimate
 of the star. This is inspired by the 3$\times$3 quartic approximation 
 used in the \textsl{Sloan Digital Sky Surveys} photometric pipeline \citep{sdss}.
 
-\item{{\bf Center-of-light centroiding}} \quad In addition to the methods 
+\item{{\bf Center-of-light centroiding}} \quad In addition to thetwo fitting methods 
 mentioned so far, we examine centroiding stars by computing their first moments
 in a 7$\times$7 patch around the brightest pixel of the image.
 
@@ -498,9 +496,9 @@ For each SNR, and for each postage-stamp with a given $\gamma$,
 zero-mean uncorrelated Gaussian noise, with standard deviation corresponding 
 to SNR and $\gamma$ through equation (\ref{snr2}), is added to each postage-stamp.
 
-In the first experiment, we study how centroiding error behaves with changing
+In the first experiment, we study how the centroiding error behaves with changing
 SNR, while $\gamma$ is held constant. In the second experiment, we study 
-how centroiding error behaves with changing $\gamma$ while SNR is held constant.
+how the centroiding error behaves with changing $\gamma$ while SNR is held constant.
 
 \section{Results}\label{sec:result}
 
@@ -508,21 +506,22 @@ how centroiding error behaves with changing $\gamma$ while SNR is held constant.
    
 In this experiment, after finding the centroiding error for each method,
 we compute the RMSE in bins of SNR in order to compare it to the CRLB. 
-Results of the first experiment are shown in Figures [\ref{1}], [\ref{2}],
-[\ref{3}], [\ref{4}]. All methods deliver results with RMSE larger 
+Results of the first experiment are shown in Figures ~\ref{1}, ~\ref{2},
+~\ref{3}, ~\ref{4}. All methods deliver results with RMSE larger 
 for fainter stars.
 
 As we expected, the RMSE from centroiding by fitting the exact PSF model [\ref{1}]
 lies on the CRLB except for simulations with SNR $\la$ 10 where the RMSE gets slightly pulled away
-from the CRLB due to presence of a few outliers. Figure [\ref{2}] demonstrates that even the matched-filter polynomial 
+from the CRLB due to presence of a few outliers. Figure ~\ref{2} demonstrates that even the matched-filter polynomial 
 centroiding is able deliver centroiding estimates as accurate as PSF profile fitting, with the exception
 of simulated stars with $\gamma$ = 2 pixels. For stars with $\gamma$ = 2 pixels, although second-order polynomial
-fitting gets close to saturating the CRLB, it fails to saturate the CRLB since the PSF is undersampled. For simulated images with higher $\gamma$, convolving the
-data with the PSF result in images that are well-sampled around the brightest pixel. This allows the 
+fitting gets close to saturating the CRLB, it fails to saturate the CRLB since the PSF is slightly undersampled. 
+For simulated images with higher $\gamma$, convolving the
+data with the PSF results in images that are wellsampled around the brightest pixel. This allows the 
 polynomial centroiding to deliver highly accurate results that can saturate the CRLB for simulated
 data with SNR $\ga$ 10.
 
-RMSE from the default polynomial centroiding [\ref{3}],
+The RMSE from the default polynomial centroiding (Figure ~\ref{3}),
 is very close to the CRLB except at the very small values of SNR (SNR $\la$ 10).
 As we increase $\gamma$ from 2 pixels to 2.8 pixels, RMSE gets closer
 to the CRLB. When we increase $\gamma$ to
@@ -530,7 +529,7 @@ to the CRLB. When we increase $\gamma$ to
 the rate at which the RMSE from this method drops
 eventually becomes smaller than the constant rate at which the CRLB
 decreases with increaing SNR. The reason for this is that even after smoothing
-the with a Gaussian kernel, the image is still relatively undersampled, and not smooth enough
+the data with a Gaussian kernel, the image is still relatively undersampled, and not smooth enough
 for a second-order polynomial fitting to provide highly accurate centroiding estimates.
 For stars with $\gamma=2.8$ pixels, since the FWHM of the Gaussian kernel matches that 
 of the PSF of underlying simulations, the smooth images are well-sampled and therefore, 
@@ -544,15 +543,15 @@ slightly more deviation as we increase $\gamma$ to 5.6 pixels.
 However, in case of 7$\times$7 moment method [\ref{4}], RMSE becomes
 quite large as we move towards fainter stars in our simulation.
 For stars with larger $\gamma$, centroid estimates from the naive center of light 
-centroiding show large deviation from saturating the CRLB. By increasing $\gamma$,
-RMSE deviates further away from the CRLB.
+centroiding do not even come close to saturating the CRLB. As $\gamma$ increases, the 
+RMSE deviates further from the CRLB.
 
 \subsection{Experiment 2}
 
 In this experiment, after finding the centroiding error for each method, we
 compute the RMSE in bins of $\gamma$ in order to compare it to the CRLB. 
 Behavior of error as a function of $\gamma$ for different values of SNR,
-is shown in figures [\ref{5}], [\ref{6}], [\ref{7}], and [\ref{8}]. 
+is shown in Figures ~\ref{5}, ~\ref{6}, ~\ref{7}, and ~\ref{8}. 
  
 Once again, the RMSE from centroiding by fitting the exact PSF model as a function of FWHM
 perfectly lies on the CRLB except at SNR = 5 where the RMSE slightly deviates
