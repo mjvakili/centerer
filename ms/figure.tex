@@ -578,7 +578,7 @@ values of SNR in this experiment.
 
 \section{Discussion}\label{sec:discussion}
 
-An optimal stellar centroiding algorithm must saturate --or come close to saturating-- the fundamental Cram\'{e}r-Rao lower 
+An optimal stellar centroiding algorithm must saturate---or come close to saturating---the fundamental Cram\'{e}r-Rao lower 
 bound. That is, in all ranges of background noise level, size, radial light profile,
 and shape, it must preserve information about the centroids of stars. In practice however,
 this is only achievable when we have a reasonably good estimate of the PSF. Since we do not always 
@@ -610,10 +610,10 @@ closer to saturating the CRLB in all ranges of signal-to-noise ratio even though
 the PSF.
 The performance of this method however, is limited by
 two important factors: \emph{(i)} signal-to-noise ratio, and \emph{(ii)} PSF size.
-The default polynomial centroiding technique only takes advantage of the information
- contained in a 3$\times$3 patch centered on the brighest pixel of the smoothed image which is only
- well-sampled when the FWHM of the simulated image of star
- matches that of the smoothing kernel. Thus, when we apply 
+The default polynomial centroiding technique only takes advantage of the information 
+contained in a 3$\times$3 patch centered on the brighest pixel of the smoothed image which is only 
+well-sampled when the FWHM of the simulated image of star 
+matches that of the smoothing kernel. Thus, when we apply 
 this method to find the centroids of stars with larger FWHM, a certain amount of
 information (encoded in the Cram\'{e}r-Rao lower bound) is lost, and therefore the RMSE
 of these methods deviates from the CRLB. This deviation becomes even larger at lower
@@ -621,8 +621,8 @@ signal-to-noise ratios. Besides, the performance of this method slightly degrade
 in the case of undersampled stars (with FWHM close two 2 pixels). 
 Presence of noise is another limitting factor.
 Although this method is able to get very close to saturating the CRLB in a wide range of
-signal-to-noise ratios, it is not reliable in the case of centroiding extremely faint stars.
- This is partly due to the fact that in the presence of noise, 
+signal-to-noise ratios, it is not reliable in the case of centroiding extremely faint stars. 
+This is partly due to the fact that in the presence of noise, 
 the brightest pixel of image does not necessarily contain the centroid of stars even after smoothing 
 the image.
 
@@ -639,8 +639,8 @@ Although this method is more accurate than default polynomial centroiding, it is
 slightly slower because it requires convolution of the image with the full potage stamp of the PSF. 
 
 In this investigation we showed that PSF fitting always performs better---in terms of saturating the CRLB---at centroiding stars.
-However, this method has its own disadvantages. First, we do not always know the the exact PSF. Second, finding
- the centroid by profile fitting is computationally expensive, whereas employing any of the 3$\times$3 polynomial techniques 
+However, this method has its own disadvantages. First, we do not always know the the exact PSF. Second, finding 
+the centroid by profile fitting is computationally expensive, whereas employing any of the 3$\times$3 polynomial techniques 
 considered in this study in large scale astronomical surveys reduces the computational cost
 of initial astrometry of the point sources considerably. 
 
@@ -648,21 +648,25 @@ Moreover, it is important to note that the PSF fitting method can be made faster
 term proportional to the dot product of the PSF model and the image in $\chi^2$. This is because 
 the other terms in $\chi^{2}$ are not sensitive to the position of the centroid. However, this only allows
 us to vary the poition of centroid, and not the flux, while fitting the PSF model
-to the star. 
+to the star. This is the advantage of a matched filter approach.
 
-Modifying the $\chi^2$ such that it contains the dot product of the PSF and image, 
-provides a nice interpretation for the PSF fitting method. It corresponds to searching for the 
-centroid in a very high resolution grid which the dot product of the image and the PSF model is
-sensitive to. On the other hand, one can think of the initial smoothing step in the default polynomial method 
-as upsampling of the image around the center by convolving it with an approximate Gaussian PSF. 
+Modifying the $\chi^2$ such that it only contains the dot product of the PSF and image, 
+provides a nice interpretation. Finding a centroid coordinate that maximizes the dot product 
+of the PSF and the star image is equivalent to finding the peak of the 
+correlation of the PSF and the image. Therefore optimizing the modified $\chi^2$ is equivalent to finding the 
+location of the peak of the matched filter. 
+ 
+On the other hand, one can think of the initial smoothing step in the default polynomial method 
+as upsampling of the image around the center by correlating it with an approximate Gaussian PSF. 
 The default polynomial centroiding is different from PSF-fitting method in that, when there is mismatch between the
 widths of the smoothing kernel and the that of the PSF, we loose some information by employing a 3$\times$3 polynomial fitting.
 When we have the advantage of knowing the PSF, this issue can be resolved by employing the matched-filter polynomial method.
 
 Having a reasonable PSF model always helps us obtain more reliable centroid estimates, but
-over a certain range of low signal-to-noise ratios and PSF sizes, one can achieve sensibly
- accurate results by employing a simple 3$\times$3 method after smooting the image with
- a Gaussian kernel of a fixed width, and without making any assumption about the PSF model at the positions of stars.
+over a certain range of low signal-to-noise ratios and PSF sizes, one can achieve sensibly 
+accurate results by employing a simple 3$\times$3 method after smoothing the image with 
+a Gaussian kernel of a fixed width, and without making any assumption about the PSF model 
+at the positions of stars.
 
 In this investigation we narrowed our focus on a set of data simulated from a particular
 PSF profile. Although there are various cases where Moffat profiles provide reasonable
@@ -673,7 +677,7 @@ would be devising a model that infers the centroids of stars and point spread fu
 This is beyond the scope of this study. 
 
 This work was partially supported by the NSF (grants IIS-1124794 and AST-1517237), NASA (grant NNX12AI50G), 
-and the Moore-Sloan Data Science Environment at NYU. We thank Jo Bovy for useful discussions.
+and the Moore-Sloan Data Science Environment at NYU. We thank Jo Bovy and Dustin Lang for useful discussions.
 
 \begin{thebibliography}{70}
 
