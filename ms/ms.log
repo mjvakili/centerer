@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  13 DEC 2015 21:45
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  13 DEC 2015 22:32
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -439,58 +439,173 @@ LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
 
 Package hyperref Warning: Ignoring empty anchor on input line 709.
 
-[15] <f1.png, id=225, 505.89pt x 505.89pt>
-File: f1.png Graphic file (type png)
- <use f1.png>
-Package pdftex.def Info: f1.png used on input line 715.
-(pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+[15]
+Package epstopdf Info: Source file: <f1.eps>
+(epstopdf)                    date: 2015-12-13 22:31:40
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f1-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f1-eps-converted-to.pdf f1
+.eps>
+(epstopdf)             \includegraphics on input line 715.
+runsystem(repstopdf --outfile=f1-eps-converted-to.pdf f1.eps)...executed safely
+ (allowed).
 
-<f2.png, id=227, 505.89pt x 505.89pt>
-File: f2.png Graphic file (type png)
- <use f2.png>
-Package pdftex.def Info: f2.png used on input line 725.
-(pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Result file: <f1-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:32:56
+(epstopdf)                    size: 606293 bytes.
+ <f1-eps-converted-to.pdf, id=225, 505.89pt x 505.89pt>
+File: f1-eps-converted-to.pdf Graphic file (type pdf)
 
-<f3.png, id=228, 505.89pt x 505.89pt>
-File: f3.png Graphic file (type png)
- <use f3.png>
-Package pdftex.def Info: f3.png used on input line 735.
+<use f1-eps-converted-to.pdf>
+Package pdftex.def Info: f1-eps-converted-to.pdf used on input line 715.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Source file: <f2.eps>
+(epstopdf)                    date: 2015-12-13 22:31:40
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f2-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f2-eps-converted-to.pdf f2
+.eps>
+(epstopdf)             \includegraphics on input line 725.
+runsystem(repstopdf --outfile=f2-eps-converted-to.pdf f2.eps)...executed safely
+ (allowed).
 
-<f4.png, id=229, 505.89pt x 505.89pt>
-File: f4.png Graphic file (type png)
- <use f4.png>
-Package pdftex.def Info: f4.png used on input line 742.
+Package epstopdf Info: Result file: <f2-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:33:01
+(epstopdf)                    size: 611732 bytes.
+
+<f2-eps-converted-to.pdf, id=226, 505.89pt x 505.89pt>
+File: f2-eps-converted-to.pdf Graphic file (type pdf)
+
+<use f2-eps-converted-to.pdf>
+Package pdftex.def Info: f2-eps-converted-to.pdf used on input line 725.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Source file: <f3.eps>
+(epstopdf)                    date: 2015-12-13 22:31:40
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f3-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f3-eps-converted-to.pdf f3
+.eps>
+(epstopdf)             \includegraphics on input line 735.
+runsystem(repstopdf --outfile=f3-eps-converted-to.pdf f3.eps)...executed safely
+ (allowed).
 
-<f5.png, id=230, 505.89pt x 505.89pt>
-File: f5.png Graphic file (type png)
- <use f5.png>
-Package pdftex.def Info: f5.png used on input line 751.
+Package epstopdf Info: Result file: <f3-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:33:06
+(epstopdf)                    size: 626763 bytes.
+
+<f3-eps-converted-to.pdf, id=227, 505.89pt x 505.89pt>
+File: f3-eps-converted-to.pdf Graphic file (type pdf)
+
+<use f3-eps-converted-to.pdf>
+Package pdftex.def Info: f3-eps-converted-to.pdf used on input line 735.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Source file: <f4.eps>
+(epstopdf)                    date: 2015-12-13 22:31:40
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f4-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f4-eps-converted-to.pdf f4
+.eps>
+(epstopdf)             \includegraphics on input line 742.
+runsystem(repstopdf --outfile=f4-eps-converted-to.pdf f4.eps)...executed safely
+ (allowed).
 
-<f6.png, id=231, 505.89pt x 505.89pt>
-File: f6.png Graphic file (type png)
- <use f6.png>
-Package pdftex.def Info: f6.png used on input line 762.
+Package epstopdf Info: Result file: <f4-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:33:10
+(epstopdf)                    size: 660516 bytes.
+
+<f4-eps-converted-to.pdf, id=228, 505.89pt x 505.89pt>
+File: f4-eps-converted-to.pdf Graphic file (type pdf)
+
+<use f4-eps-converted-to.pdf>
+Package pdftex.def Info: f4-eps-converted-to.pdf used on input line 742.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Source file: <f5.eps>
+(epstopdf)                    date: 2015-12-13 22:31:40
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f5-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f5-eps-converted-to.pdf f5
+.eps>
+(epstopdf)             \includegraphics on input line 751.
+runsystem(repstopdf --outfile=f5-eps-converted-to.pdf f5.eps)...executed safely
+ (allowed).
 
-<f7.png, id=232, 505.89pt x 505.89pt>
-File: f7.png Graphic file (type png)
- <use f7.png>
-Package pdftex.def Info: f7.png used on input line 772.
+Package epstopdf Info: Result file: <f5-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:33:15
+(epstopdf)                    size: 635497 bytes.
+
+<f5-eps-converted-to.pdf, id=229, 505.89pt x 505.89pt>
+File: f5-eps-converted-to.pdf Graphic file (type pdf)
+
+<use f5-eps-converted-to.pdf>
+Package pdftex.def Info: f5-eps-converted-to.pdf used on input line 751.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Source file: <f6.eps>
+(epstopdf)                    date: 2015-12-13 22:31:40
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f6-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f6-eps-converted-to.pdf f6
+.eps>
+(epstopdf)             \includegraphics on input line 762.
+runsystem(repstopdf --outfile=f6-eps-converted-to.pdf f6.eps)...executed safely
+ (allowed).
 
-<f8.png, id=233, 505.89pt x 505.89pt>
-File: f8.png Graphic file (type png)
- <use f8.png>
-Package pdftex.def Info: f8.png used on input line 783.
+Package epstopdf Info: Result file: <f6-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:33:20
+(epstopdf)                    size: 644107 bytes.
+
+<f6-eps-converted-to.pdf, id=230, 505.89pt x 505.89pt>
+File: f6-eps-converted-to.pdf Graphic file (type pdf)
+
+<use f6-eps-converted-to.pdf>
+Package pdftex.def Info: f6-eps-converted-to.pdf used on input line 762.
+(pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Source file: <f7.eps>
+(epstopdf)                    date: 2015-12-13 22:31:41
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f7-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f7-eps-converted-to.pdf f7
+.eps>
+(epstopdf)             \includegraphics on input line 772.
+runsystem(repstopdf --outfile=f7-eps-converted-to.pdf f7.eps)...executed safely
+ (allowed).
+
+Package epstopdf Info: Result file: <f7-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:33:25
+(epstopdf)                    size: 661215 bytes.
+
+<f7-eps-converted-to.pdf, id=231, 505.89pt x 505.89pt>
+File: f7-eps-converted-to.pdf Graphic file (type pdf)
+
+<use f7-eps-converted-to.pdf>
+Package pdftex.def Info: f7-eps-converted-to.pdf used on input line 772.
+(pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
+Package epstopdf Info: Source file: <f8.eps>
+(epstopdf)                    date: 2015-12-13 22:31:41
+(epstopdf)                    size: 11916619 bytes
+(epstopdf)             Output file: <f8-eps-converted-to.pdf>
+(epstopdf)             Command: <repstopdf --outfile=f8-eps-converted-to.pdf f8
+.eps>
+(epstopdf)             \includegraphics on input line 783.
+runsystem(repstopdf --outfile=f8-eps-converted-to.pdf f8.eps)...executed safely
+ (allowed).
+
+Package epstopdf Info: Result file: <f8-eps-converted-to.pdf>
+(epstopdf)                    date: 2015-12-13 22:33:29
+(epstopdf)                    size: 679149 bytes.
+
+<f8-eps-converted-to.pdf, id=232, 505.89pt x 505.89pt>
+File: f8-eps-converted-to.pdf Graphic file (type pdf)
+
+<use f8-eps-converted-to.pdf>
+Package pdftex.def Info: f8-eps-converted-to.pdf used on input line 783.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 792.
  [16
 
- <./f1.png>] [17 <./f2.png>] [18 <./f3.png>] [19 <./f4.png>] [20 <./f5.png>] [2
-1 <./f6.png>] [22 <./f7.png>] [23 <./f8.png>]
+ <./f1-eps-converted-to.pdf>] [17 <./f2-eps-converted-to.pdf>] [18 <./f3-eps-co
+nverted-to.pdf>] [19 <./f4-eps-converted-to.pdf>] [20 <./f5-eps-converted-to.pd
+f>] [21 <./f6-eps-converted-to.pdf>] [22 <./f7-eps-converted-to.pdf>] [23 <./f8
+-eps-converted-to.pdf>]
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 792.
  (./ms.aux)
 Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 792.
@@ -501,7 +616,7 @@ Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 792.
  ) 
 Here is how much of TeX's memory you used:
  7454 strings out of 493304
- 104089 string characters out of 6139871
+ 104633 string characters out of 6139871
  200303 words of memory out of 5000000
  10729 multiletter control sequences out of 15000+600000
  15895 words of font info for 64 fonts, out of 8000000 for 9000
@@ -527,10 +642,10 @@ t/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type
 1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1
 /public/amsfonts/symbols/msbm10.pfb>
-Output written on ms.pdf (23 pages, 7621899 bytes).
+Output written on ms.pdf (23 pages, 5366544 bytes).
 PDF statistics:
- 359 PDF objects out of 1000 (max. 8388607)
- 294 compressed objects within 3 object streams
+ 375 PDF objects out of 1000 (max. 8388607)
+ 309 compressed objects within 4 object streams
  72 named destinations out of 1000 (max. 500000)
  105 words of extra memory for PDF output out of 10000 (max. 10000000)
 
