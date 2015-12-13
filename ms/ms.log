@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  11 DEC 2015 22:27
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013/Debian) (format=pdflatex 2014.7.24)  13 DEC 2015 21:45
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -422,91 +422,91 @@ File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
 {/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2] [3]
-LaTeX Font Info:    Try loading font information for OMS+cmr on input line 181.
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 184.
 
 
 (/usr/share/texlive/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 181.
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 184.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <8> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 191.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 194.
 LaTeX Font Info:    Font shape `U/lasy/b/n' in size <6> not available
-(Font)              Font shape `U/lasy/m/n' tried instead on input line 191.
+(Font)              Font shape `U/lasy/m/n' tried instead on input line 194.
  [4] [5] [6] [7]
 [8] [9] [10] [11] [12] [13] [14]
 
-Package hyperref Warning: Ignoring empty anchor on input line 694.
+Package hyperref Warning: Ignoring empty anchor on input line 709.
 
-[15] <f1.png, id=221, 505.89pt x 505.89pt>
+[15] <f1.png, id=225, 505.89pt x 505.89pt>
 File: f1.png Graphic file (type png)
  <use f1.png>
-Package pdftex.def Info: f1.png used on input line 700.
+Package pdftex.def Info: f1.png used on input line 715.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 
-<f2.png, id=223, 505.89pt x 505.89pt>
+<f2.png, id=227, 505.89pt x 505.89pt>
 File: f2.png Graphic file (type png)
  <use f2.png>
-Package pdftex.def Info: f2.png used on input line 710.
+Package pdftex.def Info: f2.png used on input line 725.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 
-<f3.png, id=224, 505.89pt x 505.89pt>
+<f3.png, id=228, 505.89pt x 505.89pt>
 File: f3.png Graphic file (type png)
  <use f3.png>
-Package pdftex.def Info: f3.png used on input line 720.
+Package pdftex.def Info: f3.png used on input line 735.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 
-<f4.png, id=225, 505.89pt x 505.89pt>
+<f4.png, id=229, 505.89pt x 505.89pt>
 File: f4.png Graphic file (type png)
  <use f4.png>
-Package pdftex.def Info: f4.png used on input line 727.
+Package pdftex.def Info: f4.png used on input line 742.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 
-<f5.png, id=226, 505.89pt x 505.89pt>
+<f5.png, id=230, 505.89pt x 505.89pt>
 File: f5.png Graphic file (type png)
  <use f5.png>
-Package pdftex.def Info: f5.png used on input line 736.
+Package pdftex.def Info: f5.png used on input line 751.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 
-<f6.png, id=227, 505.89pt x 505.89pt>
+<f6.png, id=231, 505.89pt x 505.89pt>
 File: f6.png Graphic file (type png)
  <use f6.png>
-Package pdftex.def Info: f6.png used on input line 747.
+Package pdftex.def Info: f6.png used on input line 762.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 
-<f7.png, id=228, 505.89pt x 505.89pt>
+<f7.png, id=232, 505.89pt x 505.89pt>
 File: f7.png Graphic file (type png)
  <use f7.png>
-Package pdftex.def Info: f7.png used on input line 757.
+Package pdftex.def Info: f7.png used on input line 772.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
 
-<f8.png, id=229, 505.89pt x 505.89pt>
+<f8.png, id=233, 505.89pt x 505.89pt>
 File: f8.png Graphic file (type png)
  <use f8.png>
-Package pdftex.def Info: f8.png used on input line 768.
+Package pdftex.def Info: f8.png used on input line 783.
 (pdftex.def)             Requested size: 375.80542pt x 375.81166pt.
-Package atveryend Info: Empty hook `BeforeClearDocument' on input line 777.
+Package atveryend Info: Empty hook `BeforeClearDocument' on input line 792.
  [16
 
  <./f1.png>] [17 <./f2.png>] [18 <./f3.png>] [19 <./f4.png>] [20 <./f5.png>] [2
 1 <./f6.png>] [22 <./f7.png>] [23 <./f8.png>]
-Package atveryend Info: Empty hook `AfterLastShipout' on input line 777.
+Package atveryend Info: Empty hook `AfterLastShipout' on input line 792.
  (./ms.aux)
-Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 777.
-Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 777.
+Package atveryend Info: Executing hook `AtVeryEndDocument' on input line 792.
+Package atveryend Info: Executing hook `AtEndAfterFileList' on input line 792.
 Package rerunfilecheck Info: File `ms.out' has not changed.
 (rerunfilecheck)             Checksum: 14635A6337983EA23663591CB8D5CB5B;410.
-Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 777.
+Package atveryend Info: Empty hook `AtVeryVeryEnd' on input line 792.
  ) 
 Here is how much of TeX's memory you used:
- 7450 strings out of 493304
- 104012 string characters out of 6139871
- 199281 words of memory out of 5000000
- 10726 multiletter control sequences out of 15000+600000
+ 7454 strings out of 493304
+ 104089 string characters out of 6139871
+ 200303 words of memory out of 5000000
+ 10729 multiletter control sequences out of 15000+600000
  15895 words of font info for 64 fonts, out of 8000000 for 9000
  957 hyphenation exceptions out of 8191
- 34i,11n,28p,500b,456s stack positions out of 5000i,500n,10000p,200000b,80000s
+ 34i,11n,28p,500b,446s stack positions out of 5000i,500n,10000p,200000b,80000s
 </usr/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></us
 r/share/texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx8.pfb></usr/share
 /texlive/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/share/texli
@@ -525,11 +525,12 @@ live/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy6.pfb></usr/share/texlive/te
 xmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/share/texlive/texmf-dis
 t/fonts/type1/public/amsfonts/cm/cmti12.pfb></usr/share/texlive/texmf-dist/font
 s/type1/public/amsfonts/cm/cmtt12.pfb></usr/share/texlive/texmf-dist/fonts/type
-1/public/amsfonts/symbols/msam10.pfb>
-Output written on ms.pdf (23 pages, 7618816 bytes).
+1/public/amsfonts/symbols/msam10.pfb></usr/share/texlive/texmf-dist/fonts/type1
+/public/amsfonts/symbols/msbm10.pfb>
+Output written on ms.pdf (23 pages, 7621899 bytes).
 PDF statistics:
- 352 PDF objects out of 1000 (max. 8388607)
- 288 compressed objects within 3 object streams
- 71 named destinations out of 1000 (max. 500000)
+ 359 PDF objects out of 1000 (max. 8388607)
+ 294 compressed objects within 3 object streams
+ 72 named destinations out of 1000 (max. 500000)
  105 words of extra memory for PDF output out of 10000 (max. 10000000)
 

@@ -24,7 +24,7 @@ citecolor=darkblue }
 \newcommand{\beq}{\begin{equation}}
 \newcommand{\eeq}{\end{equation}}
 \newcommand{\eg}{\latin{e.g.}}
-\newcommand{\etal}{\latin{et~al.}}
+\newcommand{\etal}{et~al.}
 \newcommand{\etc}{\latin{etc.}}
 \newcommand{\ie}{\latin{i.e.}}
 
@@ -100,7 +100,10 @@ to a large number of simulated faint stars, assuming uncorrelated Gaussian noise
 with different signal-to-noise ratio and size realizations. Error from star 
 centroiding methods, will always have a theoretically-set lower bound, 
 known as the Cram\'{e}r-Rao lower bound (hereafter denoted by CRLB) which 
-has an inverse relation with the signal-to-noise-ratio of stars.
+has an inverse relation with the signal-to-noise-ratio of stars. In the context 
+of astrometry, the Cram\'{e}r-Rao lower bound saturation for least-squares 
+estimators has been tested in specific limits where the centroiding bias is 
+negligible (\citealt{lobos}). 
 
 Reaching the optimal measurement of the centroids of stars however, is limited
 by the lack of knowledge about the exact shape of the PSF, and also presence of noise;
@@ -108,13 +111,13 @@ both sky noise and CCD readout noise. Thus we need a fast method that returns
 optimal estimates of centroids in a realistic range of signal-to-noise ratios.
 
 To date, a number of softwares packages have been designed for the purpose of extracting astronomical
-sources and making catalogs. One of these softwares is SExtractor \citep{sex},
+sources and making catalogs. One of these softwares is SExtractor (\citealt{sextractor}),
 whose centroiding method involves first finding the zeroth moment of the object
 as a first-order estimate, and then iteratively correcting the centroid by computing
 the zeroth order moment of the object weighted by a Gaussian window function,
 until the correction falls below a particular threshold value.
 The width of the Gaussian window function is set by the object's half-light radius.
-Other examples are DAOPHOT \citep{daophot}, and DOPHOT \citep{dophot}
+Other examples are DAOPHOT (\citealt{daophot}), and DOPHOT (\citealt{dophot})
 which both assume analytic models for the stellar PSF profiles with centroid
 coordinates being free parameters of these models.
 DAOPHOT (DOPHOT) finds the centroids by fitting a Gaussian (a truncated power series for a Gaussian) PSF to
@@ -122,7 +125,7 @@ the light profile of stars.
 
 Given an analytic expression for the PSF model,
 we derive an expression for the fundamental lower bound on the centroiding error as
-a function of the parameters of the PSF model (\eg PSF size),
+a function of the parameters of the PSF model (e.g. PSF size),
 and signal-to-noise-ratio of stars. We create two sets of simulations for which we 
 know the CRLB, one with variable signal-to-noise ratio and constant FWHM, and one 
 with variable FWHM and constant signal-to-noise ratio. After applying
@@ -233,7 +236,7 @@ where $y_{m}$ is the $m$th component of the observed data $\mathbf{y}$
 
 Asymptotically, maximum likelihood estimators can achieve maximum efficiency. That is, the RMSE from a 
 large set of maximum likelihood estimates $\{\theta_{\text{ML}}\}$, 
-becomes greater than or equal to the CRLB (see \citet{cramer}; \citet{lecam} for proof). 
+becomes greater than or equal to the CRLB (see \citealt{cramer}; \citealt{lecam} for proof). 
 
 However, the relation (\ref{inequality}) does not necessarily hold for biased estimators. That is, 
 the root-mean-squared-error for a biased estimator can be smaller than the CRLB (see \citealt{lecam} for examples).
@@ -253,8 +256,8 @@ is a 2$\times$2 matrix whose elements are given by
 where the summation is over pixels, $f_{m}$ is the value of the PSF at pixel location $m$,
 $\theta=\{x_{c},y_{c}\}$, $\sigma^{2}$ is variance of the uncorrelated Gaussian noise map $n(\mathbf{x}_{m})$
 \begin{eqnarray}
-E[n(\mathbf{x}_{m})] &=& 0, \\
-E[n(\mathbf{x}_{m})n(\mathbf{x}_{m^{\prime}})] &=& \sigma^{2}\delta_{m,m^{\prime}}. 
+\mathbb{E}[n(\mathbf{x}_{m})] &=& 0, \\
+\mathbb{E}[n(\mathbf{x}_{m})n(\mathbf{x}_{m^{\prime}})] &=& \sigma^{2}\delta_{m,m^{\prime}}. 
 \end{eqnarray}
 
 Derivation of an explicit expression for the Fisher matrix $\mathcal{F}$ requires specifying a presumed correct 
@@ -351,14 +354,17 @@ between $\gamma$ and SNR.
 For PSF profiles with shorter tails (\eg, Gaussian), the prefactor of 0.685 in (\ref{crlbmoffat})
 becomes smaller. In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
-We examine fitting an exact
- PSF profile to the stars. That is, in our Cram\'{e}r-Rao bound saturation tests, we find the best
- estimates of flux and centroid by optimizing the likelihood using the correct PSF.
- We expect this method to perform best in determing the centroids
- of stars, and deliver RMSE equal to Cram\'{e}r-Rao bound. 
 \section{Centroiding methods}\label{sec:method}
 \begin{description}
-%\item{{\bf :N}} \quad \\ 
+
+\item{{\bf Centroiding via fitting a correct PSF profile}} \quad 
+
+We examine fitting an exact PSF profile to the stars. That is, 
+in our Cram\'{e}r-Rao bound saturation tests, we find the best
+estimates of flux and centroid by optimizing the likelihood using 
+the correct PSF. We expect this method to perform best in determing the centroids
+of stars, and deliver RMSE equal to Cram\'{e}r-Rao bound.
+
 \item{{\bf Matched filter polynomial centroiding}} \quad Let us consider the case 
 in which we have a good estimate of the pixel-convolved PSF at
 the position of the faint star under consideration. 
@@ -434,8 +440,16 @@ proportional to $\sigma^{2}$ to the diagonals of $D$ prior to inversion.
 
 The procedure of convolving the image of star with the PSF results in a
 smoother image. Therefore, a simple second-order polynomial will provide a better fit 
-since convolution with the PSF makes the variation of the brightness of the image
- across the 3$\times$3 patch very smooth.
+since convolution with the PSF makes the variation of the brightness of the image 
+across the 3$\times$3 patch very smooth.
+
+We should nonlinearly optmize a psf to saturate the bound.
+But because this is done through a chi-squared fitting, 
+this is equivalent to optimizing a matched filter. 
+And if the image is well sampled (in the psf-convolved image) this
+is equivalent to interpolating a matched filter on a grid. 
+Therefore we expect the matched filter centroiding method to 
+saturate the bound in cases where the image is well sampled.
  
 \item{{\bf Default polynomial centroiding}} \quad In the case that 
 we do not know the PSF at the position of star, we change 
@@ -508,11 +522,11 @@ how the centroiding error behaves with changing $\gamma$ while SNR is held const
    
 In this experiment, after finding the centroiding error for each method,
 we compute the RMSE in bins of SNR in order to compare it to the CRLB. 
-Results of the first experiment are shown in Figures ~\ref{1}, ~\ref{2},
-~\ref{3}, ~\ref{4}. All methods deliver results with RMSE larger 
+Results of the first experiment are shown in Figures~\ref{1},~\ref{2},
+~\ref{3},~\ref{4}. All methods deliver results with RMSE larger 
 for fainter stars.
 
-As we expected, the RMSE from centroiding by fitting the exact PSF model [\ref{1}]
+As we expected, the RMSE from centroiding by fitting the exact PSF model (Figure~\ref{1})
 lies on the CRLB except for simulations with SNR $\la$ 10 where the RMSE gets slightly pulled away
 from the CRLB due to presence of a few outliers. Figure ~\ref{2} demonstrates that even the matched-filter polynomial 
 centroiding is able deliver centroiding estimates as accurate as PSF profile fitting, with the exception
@@ -542,7 +556,7 @@ some information by fitting a second-order polynomial to a 3$\times$3 patch. The
  we observe slight deviation from the CRLB for stars with $\gamma$ = 4 pixels, and 
 slightly more deviation as we increase $\gamma$ to 5.6 pixels.
 
-However, in case of 7$\times$7 moment method [\ref{4}], RMSE becomes
+However, Figure~\ref{4} shows that in case of 7$\times$7 moment method, RMSE becomes
 quite large as we move towards fainter stars in our simulation.
 For stars with larger $\gamma$, centroid estimates from the naive center of light 
 centroiding do not even come close to saturating the CRLB. As $\gamma$ increases, the 
@@ -553,17 +567,17 @@ RMSE deviates further from the CRLB.
 In this experiment, after finding the centroiding error for each method, we
 compute the RMSE in bins of $\gamma$ in order to compare it to the CRLB. 
 Behavior of error as a function of $\gamma$ for different values of SNR,
-is shown in Figures ~\ref{5}, ~\ref{6}, ~\ref{7}, and ~\ref{8}. 
+is shown in Figures~\ref{5},~\ref{6},~\ref{7}, and~\ref{8}. 
  
 Once again, the RMSE from centroiding by fitting the exact PSF model as a function of FWHM
 perfectly lies on the CRLB except at SNR = 5 where the RMSE slightly deviates
-from the CRLB due to presence of a few outliers [\ref{5}]. 
+from the CRLB due to presence of a few outliers (see Figure~\ref{5}). 
 Thus, centroid estimates from fitting
 the exact PSF model always saturate the CRLB. Once again, we observe that the centroid
 estimates found by matched-filter polynomial centroiding saturate the CRLB with the
-exception of simulated stars with SNR = 5, or $\gamma$ very close to 2 pixels [\ref{6}].
+exception of simulated stars with SNR = 5, or $\gamma$ very close to 2 pixels (see Figure~\ref{6}).
 
-The default polynomial method [\ref{7}], results in RMSE very close to the CRLB.
+Figure~\ref{7} illustrates that the default polynomial method results in RMSE very close to the CRLB.
 For all four values of SNR, as we increase $\gamma$ from 2 pixels to 3 pixels,
 RMSE gets slightly closer to the CRLB since the method starts to perform
 slightly better as we move away from undersampled stars, and as the FWHM of the smoothing kernel
@@ -574,7 +588,7 @@ well-sampled.  Furthermore, increasing SNR from 5 to 40 makes the RMSE (as a fun
 closer to the CRLB. In the case of extremely faint stars (SNR = 5),
 default polynomial centroiding is not able to deliver any reliable estimate, and it fails.
 
-The centroid estimates obtained from the naive 7$\times$7 moment method [\ref{8}]
+The centroid estimates obtained from the naive 7$\times$7 moment method (see Figure ~\ref{8})
 result in RMSE much larger than the CRLB in all ranges of FWHM and for all four
 values of SNR in this experiment. 
 
@@ -683,13 +697,14 @@ and the Moore-Sloan Data Science Environment at NYU. We thank Jo Bovy and Dustin
 
 \begin{thebibliography}{70}
 
-\bibitem[Bertin \& Arnouts (1996)]{sex} Bertin, E., Arnouts, S. \ 1996  Astronomy and Astrophysics Supplement Series, 117, 393-40
-\bibitem[Cram\'{e}r (1946)]{cramer} Cram\'{e}r, H. \ 1946 Mathematical methods of statistics, Princeton university press
-\bibitem[Le Cam (1953)]{lecam} Le Cam, L. M. \ 1953 On some asymptotic properties of maximum likelihood estimates and related Bayes' estimates (Vol. 1, No. 11), University of California press
-\bibitem[Lupton \etal (2001)]{sdss} Lupton, R. etal. \ 2001  arXiv: astro-ph/0101420
-\bibitem[Schechter \etal (1993)]{dophot} Schechter, P. L., Mateo, M., Saha, A. \ 1993 \pasp, 1342-1353
-\bibitem[Stetson (1987)]{daophot} Stetson, P. B. \ 1987, \pasp, 191-222
-\bibitem[Trujillo etal. (2001)]{moffat} Trujillo, I., et al. \ 2001 \mnras, 977-985
+\bibitem[Bertin \& Arnouts (1996)]{sextractor} Bertin, E., Arnouts, S., 1996,  A\&AS , 117, 393
+\bibitem[Cram\'{e}r (1946)]{cramer} Cram\'{e}r, H., 1946, Mathematical methods of statistics, Princeton university press
+\bibitem[Le Cam (1953)]{lecam} Le Cam, L. M., 1953, University of California publications in statistics, Vol. 1 (no. 11.), 277
+\bibitem[Lobos \etal (2015)]{lobos} Lobos, R.~A., Silva, J.~F., Mendez, R.~A., Orchard, M., 2015, \pasp , 127, 1166
+\bibitem[Lupton \etal (2001)]{sdss} Lupton, R. \etal, 2001,  arXiv:astro-ph/0101420
+\bibitem[Schechter \etal (1993)]{dophot} Schechter, P. L., Mateo, M., Saha, A., 1993, \pasp , 105, 1342
+\bibitem[Stetson (1987)]{daophot} Stetson, P. B., 1987, \pasp , 99, 191
+\bibitem[Trujillo etal. (2001)]{moffat} Trujillo, I., \etal, 2001, \mnras , 328, 977
 
 \end{thebibliography}
 
