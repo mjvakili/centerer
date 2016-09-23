@@ -52,7 +52,7 @@ citecolor=darkblue }
 \altaffiltext{3}{Center for Data Science, New York University, 726 Broadway, 7th Floor, New York, NY 10003, USA}
 \email{mjvakili@nyu.edu}
 
-\title{Do fast stellar centroiding methods saturate the Cramer-Rao lower bound?}
+\title{Do fast stellar centroiding methods saturate the Cram\'{e}r-Rao lower bound?}
 
 \begin{abstract}
 One of the most demanding tasks in astronomical image processing---in terms of precision---is 
@@ -61,7 +61,7 @@ billions of point sources, including many faint stars, with short exposure times
 Real-time estimation of the centroids of stars is crucial for real-time PSF estimation, 
 and maximal precision is required for measurements of proper motion. 
 
-The fundamental Crame\'{e}r-Rao lower bound sets a limit on the root-mean-squared-error 
+The fundamental Cram\'{e}r-Rao lower bound sets a limit on the root-mean-squared-error 
 achievable by optimal estimators. Information-preserving estimators are able to deliver 
 root-mean-squared-errors lower than the Crame\'{e}r-Rao bound. In this work, we aim to compare 
 the performance of various centroiding methods, in terms of saturating the bound, when they 
@@ -84,9 +84,7 @@ never comes close to saturating the bound, and thus it does not deliver reliable
 
 \section{Introduction}
 
-Accuarate estimates of the centers of point
-sources, which are convolved with telescope point spread function (and atmospheric PSF in case of
-ground based telescopes), and also the pixel response function, are crucial to further steps of
+Accuarate estimates of the centers of point sources, which are convolved with telescope point spread function (and atmospheric PSF in case of ground based telescopes), and also the pixel response function, are crucial to further steps of
 astronomical image processing. For instance, proper measurement of the shapes of galaxies
 requires interpolation of the PSF estimates from the positions of stars across the
 image to the positions of galaxies. At the position of each star, the PSF is estimated by sub-pixel 
@@ -94,27 +92,26 @@ shifting of the star so that it is centered on its centroid. If the sub-pixel sh
 the PSF estimates will be biased. Moreover, measurements of the parallaxes and the proper motions of stars
 depends on how well we can measure their centroids. 
 
-Ideally, we want a centroiding procedure that provides measurements as precise as possible,
-without putting a huge computational burden on the photometric pipeline.
+Ideally, we want a centroiding procedure that provides measurements as precise 
+as possible, without putting a huge computational burden on the photometric pipeline.
 Reducing the computational cost becomes even more important in large surveys,
 where we want to estimate the centroids of thousands of point sources detected
 on the telescope's focal plane, for various real-time applications.
 
 In this paper, we study the optimality of various techniques for centroiding 
-faint, unsaturated stars. Our requirement for optimality is saturation of the Cram\'{e}r-Rao 
-lower bound by a centroiding method. We apply a number of centroiding methods 
-to a large number of simulated faint stars, assuming uncorrelated Gaussian noise, 
-with different signal-to-noise ratio and size realizations. Error from star 
-centroiding methods, will always have a theoretically-set lower bound, 
-known as the Cram\'{e}r-Rao lower bound (hereafter denoted by CRLB) which 
-has an inverse relation with the signal-to-noise-ratio of stars. In the context 
-of astrometry, the Cram\'{e}r-Rao lower bound saturation for least-squares 
+faint, unsaturated stars. Our requirement for optimality is saturation of the 
+theoretically-set lower bound, known as the Cram\'{e}r-Rao lower bound by the 
+centroiding methods considered in this study. We apply a number of 
+centroiding methods to a large number of simulated faint stars, assuming uncorrelated 
+Gaussian noise, with different signal-to-noise ratio and size realizations. 
+The Cram\'{e}r-Rao lower bound has an inverse relation with the signal-to-noise-ratio 
+of stars. In the context of astrometry, the Cram\'{e}r-Rao lower bound saturation for least-squares 
 estimators has been tested in specific limits in which the centroiding bias is 
 negligible (\citealt{lobos}). 
 
 Reaching the optimal measurement of the centroids of stars however, is limited
 by the lack of knowledge about the exact shape of the PSF, and also presence of noise;
-both sky noise and CCD readout noise. Thus we want investigate whether fast centroiding 
+both sky noise and CCD readout noise. Thus we want to investigate whether fast centroiding 
 estimates can saturate the bound in a realistic range of signal-to-noise ratios.
 
 %To date, a number of softwares packages have been designed for the purpose of extracting astronomical
@@ -136,14 +133,14 @@ a function of the parameters of the PSF model (e.g. PSF size),
 and signal-to-noise-ratio of stars. We create two sets of simulations for which we can 
 compute the CRLB, one with variable signal-to-noise ratio and constant FWHM, and one 
 with variable FWHM and constant signal-to-noise ratio. After applying
-different centroiding methods to the simulations,
-we investigate how close these methods can get to saturating the CRLB for
-various ranges of background Gaussian noise level and PSF FWHM.
+different centroiding methods to the simulations, we investigate how close 
+these methods can get to saturating the CRLB for various ranges of background 
+Gaussian noise level and PSF FWHM.
 
 In this work, we focus on four centroiding methods. The first method is the maximum-likelihood 
 estimator which involves fitting a PSF profile, assuming that we have a good PSF estimate, to the star. 
-The second method estimates the centroid of a star by fitting a 2d second-order polynomial to
- the 3$\times$3 patch around the brightest pixel of the image after convolution with the PSF. 
+The second method estimates the centroid of a star by fitting a 2d second-order polynomial to 
+the 3$\times$3 patch around the brightest pixel of the image after convolution with the PSF. 
 The third method centroids stars by
  smoothing the image of stars by a Gaussian kernel of a fixed size,
  and then applying the same 3$\times$3 polynomial trick to the smooth
@@ -176,7 +173,7 @@ However, it makes sense for us to use centroiding methods that saturate the CRLB
 some reasonable assumptions, even if we find that those assumptions are slightly wrong 
 in detail in real situations.
 
-In order to test the accuracy of various centroiding methods, we need to comapre their 
+In order to test the accuracy of various centroiding methods, we need to compare their 
 performances against each other at saturating the Cram\'{e}r-Rao lower bound on centroiding error. 
 The closer an estimator is to saturating the CRLB, the more information about the quantity that we 
 need to estimate is preserved. The closer the root-mean-squared-error of a given estimator is to the bound, 
@@ -390,7 +387,7 @@ point source (Lang \emph{et al.}, in preparation).
 Then, we fit a simple 2d second-order polynomial 
 $P(x,y)=a+bx+cy+dx^2+exy+fy^2$ 
 to the 3$\times$3 patch centered on the brightest pixel of the
-mathched-filter image $Y^{s}$.
+matched-filter image $Y^{s}$.
 Upon constructing a universal 9$\times$6 design matrix
 \begin{equation}
     \mathbf{A} = 
@@ -449,10 +446,10 @@ smoother image. Therefore, a simple second-order polynomial will provide a bette
 since convolution with the PSF makes the variation of the brightness of the image 
 across the 3$\times$3 patch very smooth.
 
-We should nonlinearly optmize a psf to saturate the bound.
+We should nonlinearly optimize a PSF to saturate the bound.
 But because optimization is done through a chi-squared fitting, 
 this is equivalent to optimizing a matched filter. 
-And if the image is well sampled (in the psf-convolved image) this
+And if the image is well sampled (in the PSF-convolved image) this
 is equivalent to interpolating a matched filter on a grid. 
 Therefore we expect the matched filter centroiding method to 
 saturate the bound in cases where the image is well sampled.
@@ -539,7 +536,7 @@ centroiding is able deliver centroiding estimates as accurate as PSF profile fit
 of simulated stars with $\gamma$ = 2 pixels. For stars with $\gamma$ = 2 pixels, although second-order polynomial
 fitting gets close to saturating the CRLB, it fails to saturate the CRLB since the PSF is slightly undersampled. 
 For simulated images with higher $\gamma$, convolving the
-data with the PSF results in images that are wellsampled around the brightest pixel. This allows the 
+data with the PSF results in images that are well-sampled around the brightest pixel. This allows the 
 polynomial centroiding to deliver highly accurate results that can saturate the CRLB for simulated
 data with SNR $\ga$ 10.
 
@@ -633,7 +630,7 @@ the PSF.
 The performance of this method however, is limited by
 two important factors: (i) signal-to-noise ratio, and (ii) PSF size.
 The default polynomial centroiding technique only takes advantage of the information 
-contained in a 3$\times$3 patch centered on the brighest pixel of the smoothed image which is only 
+contained in a 3$\times$3 patch centered on the brightest pixel of the smoothed image which is only 
 well-sampled when the FWHM of the simulated image of star 
 matches that of the smoothing kernel. Thus, when we apply 
 this method to find the centroids of stars with larger FWHM, a certain amount of
