@@ -145,9 +145,8 @@ The third method centroids stars by
  smoothing the image of stars by a Gaussian kernel of a fixed size,
  and then applying the same 3$\times$3 polynomial trick to the smooth
  image. This method is fast and does not require any knowledge of the 
-PSF. The last method we consider, is a center of light centroiding 
-(measurement of a first moment), applied to the 
-7$\times$7 patch around the brightest pixel of the image.
+PSF. The last method we consider, is a center-of-light centroiding 
+(measurement of a first moment), applied to the 7$\times$7 patch around the brightest pixel of the image.
 
 This paper is structured as follows. In Section \ref{sec:CRLB},
 we discuss the Cram\'{e}r-Rao lower bound, and we derive
@@ -602,8 +601,8 @@ bound. That is, in all ranges of background noise level, size, radial light prof
 and shape, it must preserve information about the centroids of stars. In practice however,
 this is only achievable when we have a reasonably good estimate of the PSF. Since we do not always 
 know the exact PSF profile, we must make use of approximate centroiding algorithms. In this work, we
-studied how close we get to saturating the CRLB with an approximate method acting on relatively low signal-to-noise ratio,
-unsaturated stars.
+studied how close we get to saturating the CRLB with an approximate method acting on relatively low 
+signal-to-noise ratio, unsaturated stars.
  
 We focused on examples from two classes of centroiding algorithms. The first class contains fast and approximate
 methods that do not require any knowledge of the PSF at the positions of stars. Of methods that belong to this class,
