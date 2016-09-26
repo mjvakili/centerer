@@ -166,32 +166,38 @@ discussed in \ref{sec:method}, with the CRLB derived in \ref{sec:CRLB}. Finally,
 
 Cram\'{e}r-Rao lower bound sets a limit, in some sense, on how well a measurement 
 can be made in noisy data.  The bound can only be computed in the context of a 
-generative model, or a probabilistic forward model of the data.  That is, we can 
+generative model, or a probabilistic forward model of the data. That is, we can 
 only compute the CRLB in the context of assumptions about the properties of the data. 
 However, it makes sense for us to use centroiding methods that saturate the CRLB under 
 some reasonable assumptions, even if we find that those assumptions are slightly wrong 
 in detail in real situations.
 
-In order to test the accuracy of various centroiding methods, we need to compare their 
-performances against each other at saturating the Cram\'{e}r-Rao lower bound on centroiding error. 
 The closer an estimator is to saturating the CRLB, the more information about the quantity that we 
-need to estimate is preserved. The closer the root-mean-squared-error of a given estimator is to the bound, 
-the more optimal the estimator is. 
+need to estimate is preserved. The closer the root-mean-squared-error of a given estimator is to the bound,  
+the more optimal---in terms of preseving the information---the estimator is. In order to test how information-preserving 
+various centroiding methods are, we need to compare their 
+performances against each other at saturating the Cram\'{e}r-Rao lower bound 
+on centroiding error. 
 
 The Cram\'{e}r-Rao inequality \citep{cramer} sets a lower bound on the 
 root-mean-squared error of unbiased estimators. The CRLB is given by the square-root of the inverse of 
-the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB,
- it is sufficient to compute the Fisher matrix. This computation relies on a set of assumptions:
+the Fisher information matrix $\mathcal{F}$. Thus, in order to find the CRLB, it is sufficient to compute the Fisher matrix. 
+This computation relies on a set of assumptions:
 
 \begin{itemize}
   \item Known, constant model observable with known dependence on the model parameters. 
         In this work the model observables are the presumed known Moffat PSF profiles, 
         and the model parameters are the centroids. 
   \item Known, stationary noise process. In the context of centroiding stars, this is equivalent to 
-        having background limited nosie from sky background and CCD readout noise.
+        having background limited noise from sky background and CCD readout noise.
   \item Uncorrelated Gaussian noise with no outliers. 
 \end{itemize}
  
+We note that the conditions of stationary noise process and uncorrelated Gaussian noise,  may not be representive of many realistic scenarios. 
+For instance, in a situation where there is substantial contribution from instruement gain---more effective for the 
+bright sources---to the noise, the last two conditions are not met. In this study however, we are only going to consider relatively faint stars, 
+for which the assumption of a Gaussian background noise is valid.    
+
 
 Let us assume that there are $M$ observables $\mathbf{f} = (f_{1}, ... , f_{M})$, each
 related to $B$ model parameters $\boldsymbol{\mathbf{\theta}} = (\theta_{1} , ... , \theta_{B})$ 
