@@ -228,11 +228,12 @@ is known, and that uncertainties are given by additive uncorrelated Gaussian noi
 
 Based on inequality (\ref{inequality}), \citet{cramer} defines efficiency of unbiased 
 estimators as the ratio of the CRLB and the root-mean-squared-error such that the maximum efficiency 
-achievable by an estimator is unity. The closer the root-mean-squared 
-to the CRLB, the more information about the parameter of interest is preserved, and thus the more efficient 
+achievable by an estimator is unity. The closer the RMSE to the CRLB, 
+the more information about the parameter of interest is preserved, and thus the more efficient 
 the estimator is. 
 
-Let us consider the case of a maximum likelihood estimate $\boldsymbol{\mathbf{\theta}}_{\text{ML}}$, where the likelihood function corresponds to the same generative assumptions that we used to compute the CRLB.
+Let us consider the case of a maximum likelihood estimate $\boldsymbol{\mathbf{\theta}}_{\text{ML}}$, 
+where the likelihood function corresponds to the same generative assumptions that we used to compute the CRLB.
 
 \begin{eqnarray}
 \boldsymbol{\mathbf{\theta}}_{\text{ML}} &=& \argmax \mathcal{L}, \\
@@ -364,6 +365,10 @@ For PSF profiles with shorter tails (e.g., Gaussian), the prefactor of 0.685 in 
 becomes smaller. In particular case of Gaussian PSF, the prefactor is approximately 0.6. 
 
 \section{Centroiding methods}\label{sec:method}
+
+In this section, we briefly discuss the approximate and the non-approximate centroiding methods considered in this 
+study. 
+
 \begin{description}
 
 \item{{\bf Centroiding by fitting a correct PSF profile}} \quad We examine fitting an exact PSF 
@@ -602,8 +607,8 @@ values of SNR in this experiment.
 
 \section{Discussion}\label{sec:discussion}
 
-An optimal stellar centroiding algorithm must saturate---or come close to saturating---the fundamental Cram\'{e}r-Rao lower 
-bound. That is, in all ranges of background noise level, size, radial light profile,
+An efficient stellar centroiding algorithm must saturate---or come close to saturating---the fundamental 
+Cram\'{e}r-Rao lower bound. That is, in all ranges of background noise level, size, radial light profile,
 and shape, it must preserve information about the centroids of stars. In practice however,
 this is only achievable when we have a reasonably good estimate of the PSF. Since we do not always 
 know the exact PSF profile, we must make use of approximate centroiding algorithms. In this work, we
