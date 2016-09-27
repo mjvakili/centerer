@@ -41,6 +41,8 @@ citecolor=darkblue }
 %\newcommand{\pasp}{Pubs.\,Astron.\,Soc.\,Pac.}
 %\newcommand{\aap}{Astron.\,\&~Astrophys.}
 
+\newcommand{\todo}[1]{{\em \textcolor{red}{ #1}}}
+
 \begin{document}
 
 \author{
@@ -109,10 +111,22 @@ of stars. In the context of astrometry, the Cram\'{e}r-Rao lower bound saturatio
 estimators has been tested in specific limits in which the centroiding bias is 
 negligible (\citealt{lobos}). 
 
-Reaching the optimal measurement of the centroids of stars however, is limited
-by the lack of knowledge about the exact shape of the PSF, and also presence of noise;
-both sky noise and CCD readout noise. Thus we want to investigate whether fast centroiding 
-estimates can saturate the bound in a realistic range of signal-to-noise ratios.
+Saturating the Cram\'{e}r-Rao lower bound in estimating the centroids of stars however, is limited
+by the lack of knowledge about the exact shape of the PSF, also presence of noise. 
+There are many sources of noise such as the CCD readout noise, sky noise, errors resulting from 
+\todo{incorrect} flatfield corrections, and photon noise from the astronomical object itself. 
+In this study, we limit our investigation to the simulated images that contain non-overlapping faint sources 
+that are sky-limitted. We assume that the generated images are not affected by flatfield corrections. 
+
+However, we focus the scope of this investigation to sky-limited images for which the sky level has been 
+subtracted. Furthermore, we assume that any instruement gain has been calibrated out, and that the 
+simulated images are free of any contamination by cosmic rays, stray light from neighboring fields, or 
+any other type of defect in real images. We expect these defects to move the centroiding errors further from the 
+fundamental bound.  
+
+We intend to investigate whether fast centroiding 
+estimates can saturate the bound in a realistic range of low signal-to-noise ratio images that are sky-limited. 
+
 
 %To date, a number of softwares packages have been designed for the purpose of extracting astronomical
 %sources and making catalogs. One of these softwares is SExtractor (\citealt{sextractor}),
@@ -192,12 +206,16 @@ This computation relies on a set of assumptions:
         having background limited noise from sky background and CCD readout noise.
   \item Uncorrelated Gaussian noise with no outliers. 
 \end{itemize}
- 
-We note that the conditions of stationary noise process and uncorrelated Gaussian noise,  may not be representive of many realistic scenarios. 
-For instance, in a situation where there is substantial contribution from instruement gain---more effective for the 
-bright sources---to the noise, the last two conditions are not met. In this study however, we are only going to consider relatively faint stars, 
-for which the assumption of a Gaussian background noise is valid.    
 
+\todo{HOGG HELP: can you read the following paragraph and see whether it makes sense or not?}
+
+Note that in this study, we explicitly focus on sky-limited images. In the sky-limited images, the contribution 
+to the Poisson pixel noise is largely domiated by the sky rather than the objects. The exceptions are the very bright 
+sources, but we only consider relatively low signal-to-noise ratio faint stellar sources. After subtraction of the 
+sky background level, distribution of the Poisson pixel noise can be approximated by a Gaussian distribution with 
+zero mean. \todo{Also mention in the discussion: The assumption of uncorrelated Gaussian noise is only an approximation 
+to a Poisson distribution which has broader tails than what we expect from a Gaussian!} 
+\todo{HOGG HELP: can you write a few words about uncorrelated noise?}
 
 Let us assume that there are $M$ observables $\mathbf{f} = (f_{1}, ... , f_{M})$, each
 related to $B$ model parameters $\boldsymbol{\mathbf{\theta}} = (\theta_{1} , ... , \theta_{B})$ 
@@ -253,6 +271,8 @@ the root-mean-squared-error for a biased estimator can be smaller than the CRLB 
 Therefore, we want to investigate the conditions under which the RMSE arising from a given centroiding method 
 becomes close to the CRLB, or whether it can become equal to the CRLB in which case the method is \emph{saturating} 
 the bound, or whether it can drop below the CRLB in which case the method is \emph{beating} the bound (and therefore the estimator must be biased).   
+
+\todo{Given that the authors are using simulated data, a direct search for biases in the estimator outputs is far more powerful than using violations of the Cramer-Rao inequality to infer biased techniques.}
   
 In this investigation, the model observables for the noisy data are the pixel-convolved PSF (PSF profile evaluated at different pixel locations), and  
 the model parameters under consideration are the centroid coordinates. Therefore, $\mathcal{F}$
@@ -270,8 +290,8 @@ $\theta=\{x_{c},y_{c}\}$, and $\sigma^{2}$ is variance of the uncorrelated Gauss
 \mathbb{E}[n(\mathbf{x}_{m})n(\mathbf{x}_{m^{\prime}})] &=& \sigma^{2}\delta_{m,m^{\prime}}. 
 \end{eqnarray}
 
-Derivation of an explicit expression for the Fisher matrix $\mathcal{F}$ requires specifying a presumed correct 
-PSF model.
+Derivation of an explicit expression for the Fisher matrix $\mathcal{F}$ requires 
+specifying a presumed correct PSF model.
 We use the Moffat profile \citep{moffat} for our PSF simulations. 
 Moffat profile is an analytic model for stellar PSFs. It has broader wings than
 a simple Gaussian profile. The surface brightness of the Moffat profile is given by
@@ -284,6 +304,13 @@ the scale radius of the Moffat profile, with FWHM (hereafter denoted by $\gamma$
 being $2\alpha\sqrt{2^{1/\beta}-1}$. At a fixed $\gamma$, Moffat profiles with lower values
 of $\beta$ have broader tails. It is also important to note that for sufficiently large values of the 
 parameter $\beta$, the Moffat PSF becomes arbitrarily close to a simple Gaussian PSF. 
+
+\todo{HOGG HELP: can you read the following paragraph and maybe add a few words to it?}
+
+Note that in our PSF simulations, we assume that the individual generated images are 
+Nyquist sampled. All pixels in the images are identical, and the stars are simulated 
+by sampling from the pixel-convolved PSF. In well-sampled images, the center of 
+the pixel-convolved PSF must be very close to the center of the optical PSF.
  
 In order to investigate the performance of centroiding methods for
  different background noise levels and different
@@ -494,6 +521,8 @@ used in the \textsl{Sloan Digital Sky Surveys} photometric pipeline \citep{sdss}
 mentioned so far, we examine centroiding stars by computing their first moments
 in a 7$\times$7 patch around the brightest pixel of the image.
 
+\todo{The use of a 7x7 kernel appears arbitrary. For the sake of a fair comparison with the matched filter, the size of the kernel should be equivalent to that used in the matched filter section.}
+
 \begin{eqnarray}
 x_{c} &=& \frac{\sum_{m}x_{m}Y_{m}}{\sum_{m}Y_{m}}, \\
 y_{c} &=& \frac{\sum_{m}y_{m}Y_{m}}{\sum_{m}Y_{m}},
@@ -626,6 +655,8 @@ is the matched-filter polynomial centroiding, and the
 second example is the full PSF profile fitting. In terms of saturating the Cram\'{e}r-Rao bound, we compared 
 the performances of these methods against each other.
 
+\todo{ The authors imply the PSF-fitting can only be used when the PSF is known. This is not true; one of the variables in PSF-fitting algorithms is often the PSF size (and sometimes shape) itself.}
+
 Our results suggest that in all ranges of FWHM and SNR, the PSF fitting method returns 
 centroid estimates that saturate the CRLB; with the only exceptions at SNR less than 10, 
 in which case a few centroiding ouliers cause the RMSE to slightly deviate
@@ -634,6 +665,8 @@ very high SNR values and very small ranges of $\gamma$, do not come close to
 saturating the CRLB. In a considerable range of PSF sizes and background noise levels, 
 this method fails to deliver any reliable centroiding estimates.
  
+\todo{The authors should quantify the difference in accuracy between the 7x7 moment method and an optimal estimator. Is it 10$\%$ worse? 10 times worse?}
+
 On the other hand, the RMSE of centroid estimates of the default polynomial centroiding are much 
 closer to saturating the CRLB in all ranges of signal-to-noise ratio even though this method does not require knowledge of 
 the PSF.
@@ -655,6 +688,8 @@ This is partly due to the fact that in the presence of noise,
 the brightest pixel of image does not necessarily contain the centroid of stars even after smoothing 
 the image.
 
+\todo{The intent of the statement that the default polynomial centroiding uses only a 3x3 pixel region of the smoothed image is unclear. While this is a factually true statement, the smoothing algorithm requires far more than 3x3 pixels on the original image to operate.}
+
 Once we modify the polynomial method further by convolving the image with the full postage stamp
 of the PSF, we obtain results that saturate the CRLB in a wide range of PSF sizes and noise levels.  
 This is due to the fact that once the images of stars are convolved with the correct PSF, they become so well-sampled and smooth
@@ -672,6 +707,8 @@ However, this method has its own disadvantages. First, we do not always know the
 the centroid by profile fitting is computationally expensive, whereas employing any of the 3$\times$3 polynomial techniques 
 considered in this study in large scale astronomical surveys reduces the computational cost
 of initial astrometry of the point sources considerably. 
+
+\todo{If PSF-fitting is to be argued against for speed reasons, the authors should compare the speed of PSF-fitting astrometry and flux estimates against matched filter astrometry plus PSF-fitting flux estimation. It is not clear that the PSF-fitting only approach would be slower, given that the matched filter requires a convolution as well as something with the accuracy of PSF-fitting to estimate flux.}
 
 Moreover, it is important to note that the PSF fitting method can be made faster by only keeping the 
 term proportional to the dot product of the PSF model and the image in $\chi^2$. This is because 
@@ -696,6 +733,8 @@ over a certain range of low signal-to-noise ratios and PSF sizes, one can achiev
 accurate results by employing a simple 3$\times$3 method after smoothing the image with 
 a Gaussian kernel of a fixed width, and without making any assumption about the PSF model 
 at the positions of stars.
+
+\todo{It should be noted that estimation of a PSF within a few tenths of a pixel is trivial from most images. Thus, when dealing with realistic images, there is little if any difference between a true matched filter and the default polynomial.}
 
 In this investigation we narrowed our focus on a set of data simulated from a particular
 PSF profile. Although there are various cases where Moffat profiles provide reasonable
