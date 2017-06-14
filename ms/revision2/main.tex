@@ -299,8 +299,9 @@ a Gaussian distribution
 p(y_{i}) = \mathcal{N}(FP_{i},\sigma^{2}). 
 \eeq
 
-The optimal estimator of flux is the matched-filter flux estimator 
-$\tilde{F}=\sum_{i}y_{i}P_{i}$. It can be shown that 
+%The optimal estimator of flux is the matched-filter flux estimator 
+\todo{The optimal estimator of flux is proportional to the matched-filter flux
+$\tilde{F}=\sum_{i}y_{i}P_{i}/\sum_{i}P_{i}^{2}$.} It can be shown that 
 \beq
 p(\tilde{F}) = \mathcal{N}(F , \frac{\sigma^{2}}{\sum_{i}P_{i}^{2}}),
 \eeq  
@@ -412,6 +413,22 @@ It can be shown that with the choice of Poisson likelihood (Eq~\ref{eq:poisson_l
 \label{crlbmoffat}
 \eeq
 
+The optimal estimator of flux in this case, is given by
+\beq
+F^{\star} = \frac{\sum_i \Big(y_i - gb\Big)P_i}{\sum_i gP_i^2}.
+\label{eq:optimalf}
+\eeq
+SNR is the ratio of the mean and variance of the distribution function that $F^{\star}$ is drawn from. Combining Eqs.~\ref{eq:poisson_likelihood} and~\ref{eq:optimalf}, one can show that the SNR is given by 
+\beq
+\text{SNR} = \frac{F\sqrt{\sum_i P_i^2}}{\sqrt{\sum_i(FP_i+b)}}
+\eeq
+
+Following the assumptions of previous section: normalized flux and correctly subtracted background sky, we have
+
+\beq
+\text{SNR} = \frac{2(\beta-1)(2^{1/\beta}-1)^{1/2}}{\pi^{1/2}(2\beta-1)^{1/2}}\frac{1}{\gamma}.
+\label{snr3}
+\eeq
 
 \section{Centroiding methods}\label{sec:method}
 
