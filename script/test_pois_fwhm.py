@@ -16,7 +16,7 @@ Dependencies: numpy
 Author: Mohammadjavad Vakili (July and August 2014)
 """
 
-#import centererr
+import centererr
 import numpy as np
 import sys
 import h5py
@@ -116,7 +116,6 @@ if __name__ == '__main__':
        F.close()
     
     elif opts.method.startswith('spoly'):
-       import spolynom
        #cent = []
        erx = []
        ery = []
@@ -127,7 +126,9 @@ if __name__ == '__main__':
        #dset = F.create_dataset("MyDataset" , (100000 , 17 , 17) , 'f8')       #saving
 
        for i in range(sample):
-        print i 
+        
+        
+		         
         xc =  np.array([xx[i],yy[i]])          
         #data = centererr.profile.makeMoffat(size , f[i] , beta , xc)
         
@@ -139,7 +140,7 @@ if __name__ == '__main__':
         #if ([bp[1][0] , bp[0][0]] == [8,8]):                 #filtering out the true brightest pixels
 
         if (1<2):                                             #not filtering anything  
-          xs = spolynom.find_centroid(data , 2.8, sigma[i])
+          xs = centererr.spolynom.find_centroid(data , 1.2, sigma[i])
           
           erx.append((xs[1] - xc[0])**2.)
           ery.append((xs[0] - xc[1])**2.)
@@ -150,8 +151,8 @@ if __name__ == '__main__':
           #  flag.append(i)
        F.close() 
        #np.savetxt("center5_s40_00.txt" , np.array(cent))
-       np.savetxt('erx55_s%d_00r.txt'%(snr), np.array(erx)  , fmt=  '%.12f')          #tb if true brightest pixel and nothing if not!
-       np.savetxt("ery55_s%d_00r.txt"%(snr)  , np.array(ery)  , fmt=  '%.12f')
+       np.savetxt('erx5_s%d_00r.txt'%(snr), np.array(erx)  , fmt=  '%.12f')          #tb if true brightest pixel and nothing if not!
+       np.savetxt("ery5_s%d_00r.txt"%(snr)  , np.array(ery)  , fmt=  '%.12f')
        #np.savetxt("flag5_s5_00_r.txt" , np.array(flag) , fmt = '%.12f')
        #np.savetxt("fwhm5_s%d_00r.txt"%(snr) , np.array(fwhm) , fmt = '%.12f')
        #np.savetxt("curv5_s20_00rs.txt"   , np.array(cur) , fmt = '%.12f' )
@@ -198,96 +199,17 @@ if __name__ == '__main__':
           #data = centererr.profile.makeMoffat(size , f[i] , beta , 0.0 , xc)
           #data += np.random.normal(0, sigma[i] , data.shape)
           data = DATA[i]
-          xs = centererr.fitting.fitting_centroid(data , f[i] , sigma[i] , 2.5)
+          xs = centererr.fitting.fitting_centroid(data , sigma[i] , f[i] , 2.5)
           
           erx.append((xs[0]  - xc[0])**2.)
           ery.append((xs[1]  - xc[1])**2.)
           #fwhm.append(f[i])
           
-       np.savetxt("erx3_s%d_00rnew.txt"%(snr)   , np.array(erx)   , fmt = '%.12f')
-       np.savetxt("ery3_s%d_00rnew.txt"%(snr)   , np.array(ery)   , fmt = '%.12f')
+       np.savetxt("erx3_s%d_00r.txt"%(snr)   , np.array(erx)   , fmt = '%.12f')
+       np.savetxt("ery3_s%d_00r.txt"%(snr)   , np.array(ery)   , fmt = '%.12f')
        #np.savetxt("flag3_s10_00.txt" , np.array(flag) , fmt = '%.12f')
        #np.savetxt("fwhm3_s10_00.txt" , np.array(fwhm) , fmt = '%.12f')
        F.close()
-
-    elif opts.method.startswith('moment'):
-       
-       erx = []
-       ery = []
-       flag = []
-       fwhm = []
-       
-
-       for i in range(sample):
-          
-          xc =  np.array([xx[i],yy[i]])                  # true centroid
-          #data = centererr.profile.makeMoffat(size , f[i] , beta , 0.0 , xc)
-          #data += np.random.normal(0, sigma[i] , data.shape)
-          data = DATA[i]
-          xs = centererr.moment.find_cen(data)
-          
-          erx.append((xs[1]  - xc[0])**2.)
-          ery.append((xs[0]  - xc[1])**2.)
-          #fwhm.append(f[i])
-          
-       np.savetxt("erx6_s%d_00r.txt"%(snr)   , np.array(erx)   , fmt = '%.12f')
-       np.savetxt("ery6_s%d_00r.txt"%(snr)   , np.array(ery)   , fmt = '%.12f')
-       #np.savetxt("flag3_s10_00.txt" , np.array(flag) , fmt = '%.12f')
-       #np.savetxt("fwhm3_s10_00.txt" , np.array(fwhm) , fmt = '%.12f')
-       F.close()
-
-    elif opts.method.startswith('3by3'):
-     
-       import moment3by3  
-       erx = []
-       ery = []
-       flag = []
-       fwhm = []
-       
-
-       for i in range(sample):
-          print i 
-          xc =  np.array([xx[i],yy[i]])                  # true centroid
-          #data = centererr.profile.makeMoffat(size , f[i] , beta , 0.0 , xc)
-          #data += np.random.normal(0, sigma[i] , data.shape)
-          data = DATA[i]
-          xs = moment3by3.find_cen(data)
-          
-          erx.append((xs[1]  - xc[0])**2.)
-          ery.append((xs[0]  - xc[1])**2.)
-          #fwhm.append(f[i])
-          
-       np.savetxt("erx66_s%d_00r.txt"%(snr)   , np.array(erx)   , fmt = '%.12f')
-       np.savetxt("ery66_s%d_00r.txt"%(snr)   , np.array(ery)   , fmt = '%.12f')
-       #np.savetxt("flag3_s10_00.txt" , np.array(flag) , fmt = '%.12f')
-       #np.savetxt("fwhm3_s10_00.txt" , np.array(fwhm) , fmt = '%.12f')
-       F.close()
-    elif opts.method.startswith('psfpoly'):
-       
-       erx = []
-       ery = []
-       flag = []
-       fwhm = []
-       
-
-       for i in range(sample):
-          
-          xc =  np.array([xx[i],yy[i]])                  # true centroid
-          #data = centererr.profile.makeMoffat(size , f[i] , beta , 0.0 , xc)
-          #data += np.random.normal(0, sigma[i] , data.shape)
-          data = DATA[i]
-          xs = centererr.psfpoly.find_centroid(data , f[i] , sigma[i])
-          
-          erx.append((xs[1]  - xc[0])**2.)
-          ery.append((xs[0]  - xc[1])**2.)
-          #fwhm.append(f[i])
-          
-       np.savetxt("erx8_s%d_00r.txt"%(snr)   , np.array(erx)   , fmt = '%.12f')
-       np.savetxt("ery8_s%d_00r.txt"%(snr)   , np.array(ery)   , fmt = '%.12f')
-       #np.savetxt("flag3_s10_00.txt" , np.array(flag) , fmt = '%.12f')
-       #np.savetxt("fwhm3_s10_00.txt" , np.array(fwhm) , fmt = '%.12f')
-       F.close()
-    
     
     elif opts.method.startswith('efitting'):
        
@@ -307,6 +229,6 @@ if __name__ == '__main__':
           er.append(((xs[0]  - xc[0])**2. + (xs[1]  -xc[1])**2.)**.5)
           fwhm.append(f[i])
           
-       np.savetxt("er4_s10_02.txt" , np.array(er) ,fmt='%.8f')
+       np.savetxt("er4_s%d_00r.txt"%(snr) , np.array(er) ,fmt='%.8f')
        np.savetxt("flag4_s10_02.txt" , np.array(flag) , fmt = '%.8f')
        np.savetxt("fwhm4_s10_02.txt" , np.array(fwhm) , fmt = '%.8f')
