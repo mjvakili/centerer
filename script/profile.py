@@ -19,7 +19,7 @@ def makeMoffat(size , fwhm =3 , b = 2.5  , center = None):
     
     return ((b - 1.)*(1. + r**2.)**(-1.*b))/(np.pi*(a**2.))
 
-def makeDoubleMoffat(size , separation, fwhm =3 , b = 2.5  , center = None):
+def makeDoubleMoffat(size , flux, separation, fwhm =3 , b = 2.5  , center = None):
 
     """generate two moffat stars one at center 
        and another one at center_x + separation & center_y 
@@ -39,11 +39,11 @@ def makeDoubleMoffat(size , separation, fwhm =3 , b = 2.5  , center = None):
     a = fwhm/(2.*(2**(1./b)-1)**.5)
     r = ((x-x0)**2./a**2. + (y-y0)**2./a**2.)**.5
    
-    x1 , y1 = center2[0] + separation , center2[1]
+    x1 , y1 = x0 + separation , y0
     
     r1 = ((x-x1)**2./a**2. + (y-y1)**2./a**2.)**.5
  
-    return ((b - 1.)*(1. + r**2.)**(-1.*b))/(np.pi*(a**2.)) + ((b - 1.)*(1. + r1**2.)**(-1.*b))/(np.pi*(a**2.))
+    return ((b - 1.)*(1. + r**2.)**(-1.*b))/(np.pi*(a**2.)) + flux * ((b - 1.)*(1. + r1**2.)**(-1.*b))/(np.pi*(a**2.))
 
 def makeMoffatGrad(size , fwhm =3 , b = 2.5  , center = None):
 
